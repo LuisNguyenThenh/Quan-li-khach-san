@@ -20,7 +20,7 @@ int main()
 {
     int nRetCode = 0;
     HMODULE hModule = ::GetModuleHandle(nullptr);
-
+    client a = client();
     if (hModule != nullptr)
     {
         // initialize MFC and print and error on failure
@@ -40,11 +40,11 @@ int main()
             CSocket clientsocket;
             clientsocket.Create();
             if (clientsocket.Connect(_T("127.0.0.1"), 1234) != 0) {
-                //cout << "Connect successfully.\n";
+                cout << "Connect successfully.\n";
                 client a = client();
                 char* tmp;
                 int lengthMsg;
-  
+     
                 do {
                     int p = a.clientA.username.length();
                     int q = a.clientA.strpass.length();

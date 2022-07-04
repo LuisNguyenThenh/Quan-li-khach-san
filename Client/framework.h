@@ -27,6 +27,7 @@
 #include "afxsock.h"
 #include <Windows.h> 
 #include <fstream>
+#include <conio.h>
 using namespace std;
 
 enum statusCursor { UP, DOWN, LEFT, RIGHT, enter, BACK };
@@ -44,7 +45,7 @@ public:
 };
 
 struct user {
-	string username, strpass;
+	string username, strpass, idBanking;
 };
 
 class client
@@ -57,4 +58,5 @@ public:
 	bool registerValid(user clientA);
 	// Log in
 	bool loginValid(user clientA);
+	void accountLogin();
 };
