@@ -50,8 +50,10 @@ struct user {
 class client
 {
 public:
+	user clientA; consoleGraphic conSole;
 	client();
 	// Register
+	void accountRegister(user& clientA);
 	bool registerValid(user clientA);
 	// Log in
 	bool loginValid(user clientA);

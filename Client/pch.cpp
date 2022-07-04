@@ -36,27 +36,14 @@ void consoleGraphic::ShowCur(bool CursorVisibility) {
 	SetConsoleCursorInfo(handle, &cursor);
 }
 
-client::client() {
-	consoleGraphic conSole;
-	user clientA;
-	do {
-		cout << "Username: "; conSole.gotoxy(30, 0); cout << "(Username is \'0\' to \'9\' and \'a\' to \'z\')\n";
-		cout << "Password: ";
-		conSole.gotoxy(10, 0);
-		cin >> clientA.username;
-		conSole.gotoxy(10, 1);
-		cin >> clientA.strpass;
-		if (registerValid(clientA) == 0) {
-			conSole.gotoxy(0, 3); cout << "Username or password is not valid. Please try another one.\n";
-			system("pause");
-			system("cls");
-		}
-	} while (registerValid(clientA) == 0);
+client::client() {	
+	accountRegister(this->clientA);
 
 	fstream out;
 	out.open("Text.txt", ios::app);
-	out << clientA.username << ' ' << clientA.strpass << endl;
+	out << this->clientA.username << ' ' << this->clientA.strpass << endl;
 	out.close();
+
 	/*for (int i = 0;; i++) {
 		cin >> strPassword[i];
 		conSole.gotoxy(9 + i, 1);
@@ -105,4 +92,20 @@ bool client::registerValid(user clientA) {
 			return 0;
 	}
 	return 1;
+}
+
+void client::accountRegister(user& clientA) {
+	do {
+		cout << "Username: "; conSole.gotoxy(30, 0); cout << "(Username is \'0\' to \'9\' and \'a\' to \'z\')\n";
+		cout << "Password: ";
+		conSole.gotoxy(10, 0);
+		cin >> clientA.username;
+		conSole.gotoxy(10, 1);
+		cin >> clientA.strpass;
+		if (registerValid(clientA) == 0) {
+			conSole.gotoxy(0, 3); cout << "Username or password is not valid. Please try another one.\n";
+			system("pause");
+			system("cls");
+		}
+	} while (registerValid(clientA) == 0);
 }

@@ -19,7 +19,6 @@ using namespace std;
 int main()
 {
     int nRetCode = 0;
-    client a = client();
     HMODULE hModule = ::GetModuleHandle(nullptr);
 
     if (hModule != nullptr)
@@ -34,6 +33,44 @@ int main()
         else
         {
             // TODO: code your application's behavior here.
+            if (!AfxSocketInit()) {
+                cout << "Can't connect to server.\n";
+                return 0;
+            }
+            CSocket clientsocket;
+            clientsocket.Create();
+            if (clientsocket.Connect(_T("127.0.0.1"), 1234) != 0) {
+                //cout << "Connect successfully.\n";
+                client a = client();
+                char* tmp;
+                int lengthMsg;
+  
+                do {
+                    int p = a.clientA.username.length();
+                    int q = a.clientA.strpass.length();
+                    clientsocket.Send(&p, sizeof(p), 0);
+                    clientsocket.Send(&a.clientA.username, p, 0);
+                    clientsocket.Send(&q, sizeof(q), 0);
+                    clientsocket.Send(&a.clientA.strpass, q, 0);
+
+                    // nhan so luong byte va tin nhan tu server
+                    clientsocket.Receive((char*)&lengthMsg, sizeof(int), 0);
+                    tmp = new char[lengthMsg + 1];
+                    clientsocket.Receive((char*)tmp, lengthMsg, 0);
+                    tmp[lengthMsg] = '\0';
+                    
+                    // xac nhan dong ket noi.
+                    if (tmp == "oke") {
+                        delete tmp;
+                        break;
+                    }
+
+                    cout << *tmp << endl;
+                    delete tmp;
+                    
+                } while (1);
+
+            }
         }
     }
     else
