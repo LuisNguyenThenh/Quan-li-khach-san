@@ -80,18 +80,21 @@ int main()
 
 
                     //Nhan do dai cua thong diep 
-                    ServerSocket.Receive((char*)&MsgSize, sizeof(int), 0);
+                    if (ServerSocket.Receive((char*)&MsgSize, sizeof(int), 0) != SOCKET_ERROR)
+                    {
+                        // Tao bo nho 
+                        ClientMsg = new char[MsgSize + 1];
 
-                    // Tao bo nho 
-                    ClientMsg = new char[MsgSize + 1];
+                        //Nhan thong diep
+                        if (ServerSocket.Receive((char*)ClientMsg, MsgSize, 0) != SOCKET_ERROR)
+                        {
+                            ClientMsg[MsgSize] = '\0';
 
-                    //Nhan thong diep
-                    ServerSocket.Receive((char*)ClientMsg, MsgSize, 0);
-
-                    ClientMsg[MsgSize] = '\0';
-
-                    cout << "Client:" << ClientMsg << endl;
-                    delete[] ClientMsg;
+                            cout << "Client:" << ClientMsg << endl;
+                        }
+                        delete[] ClientMsg;
+                    }
+                    
                 }
 
             }
