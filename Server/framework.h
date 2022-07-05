@@ -22,9 +22,19 @@
 
 #include <iostream>
 #include <string>
-#include <ctime>
 #include <algorithm>
-#include "afxsock.h"
-#include <Windows.h> 
-#include <fstream>
-#include <conio.h>
+#include <ctime>
+#include "afxsock.h";
+using namespace std;
+
+struct user {
+	string username, strpass, idBanking;
+};
+
+class Server {
+public:
+	Server();
+
+	//check login
+	bool loginValid(user clientA);
+};
