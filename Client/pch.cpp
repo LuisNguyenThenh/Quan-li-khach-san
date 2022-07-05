@@ -131,6 +131,7 @@ void client::accountLogin() {
 		system("cls");
 		do {
 			cout << "Username: ";
+			conSole.gotoxy(0, 1);
 			cout << "Password: ";
 			conSole.gotoxy(10, 0);
 			cin >> clientA.username;
