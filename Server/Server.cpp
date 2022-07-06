@@ -1,4 +1,4 @@
-// Server.cpp : This file contains the 'main' function. Program execution begins and ends there.
+﻿// Server.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
 #include "pch.h"
@@ -15,11 +15,72 @@
 CWinApp theApp;
 
 using namespace std;
+using namespace cv;
+
+
+//TESTING
+void gotoxy(int x, int y)
+{
+    static HANDLE h = NULL;
+    if (!h)
+        h = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD c = { x, y };
+    SetConsoleCursorPosition(h, c);
+}
+int whereX()
+{
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi))
+        return csbi.dwCursorPosition.X;
+    return -1;
+}
+//========= lấy tọa độ y của con trỏ hiện tại =======
+int whereY()
+{
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi))
+        return csbi.dwCursorPosition.Y;
+    return -1;
+}
+void print_image(const char* s)
+{
+    Mat image = imread(s);
+    bool check = image.empty();
+    if (!image.empty())
+    {
+        imshow("Hotel Marriot", image);
+        cout << "Loaded picture" << endl;
+        waitKey(0);
+    }
+    else
+    {
+        cout << "Can not open picture!" << endl;
+    }
+    return;
+}
+//TESTING
 
 int main()
 {
-    int nRetCode = 0;
+    // TESTING
+    vector <thread> threads;
+    threads.push_back(thread(print_image, "hotel.jpg"));
+    Sleep(1000);
+    threads.push_back(thread(print_image, "hotel.jpg"));
+    Sleep(1000);
 
+    for (auto& th : threads) th.join();
+
+     for (int i = 0; i < 50;i++)
+     {
+         cout << "HELLO WORLD!" << endl;
+     }
+     //delete_error_content_while_print_pic();
+    
+
+    //TESTING
+
+    int nRetCode = 0;
     HMODULE hModule = ::GetModuleHandle(nullptr);
 
     if (hModule != nullptr)
@@ -34,7 +95,7 @@ int main()
         else
         {
             // TODO: code your application's behavior here.
-            Server k = Server();
+            //Server k = Server();
         }
     }
     else
@@ -43,6 +104,6 @@ int main()
         wprintf(L"Fatal Error: GetModuleHandle failed\n");
         nRetCode = 1;
     }
-
+    
     return nRetCode;
 }

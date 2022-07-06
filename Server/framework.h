@@ -24,6 +24,7 @@
 #include <string>
 #include <algorithm>
 #include <ctime>
+#include <opencv2/highgui.hpp>
 #include "afxsock.h";
 using namespace std;
 
