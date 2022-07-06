@@ -41,9 +41,9 @@ int main()
             if (clientsocket.Connect(_T("127.0.0.1"), 1234) != 0) {
                 cout << "Connect successfully.\n";
                 client a = client();
-                char* tmp = new char;
-                int lengthMsg;
                 int flag;
+                int number;
+                clientsocket.Receive((char*)&number, sizeof(int), 0);
 
                 while (1) {
                     int p = a.clientA.username.length();
@@ -54,17 +54,14 @@ int main()
                     clientsocket.Send(&a.clientA.strpass, sizeof(q), 0);
                     
                     clientsocket.Receive((char*)&flag, sizeof(int), 0);
-                    cout << flag;
-                    break;
-                    /*if (flag == 0) {
-                        cout << "Username or Password does not correct.\n";
+                    if (flag == 1) {
+                        cout << "Login Successfully.\n";
+                        break;
                     }
                     else {
-                        cout << "Login successfully";
-                        break;
-                    }*/
-
-                }
+                        cout << "Username or Password does not correct.\n";
+                    }
+                 }
                 clientsocket.Close();
             }
         }
