@@ -98,47 +98,34 @@ bool client::registerValid(user clientA) {
 	return 1;
 }
 
-void client::accountRegister(user& clientA) {
+void accountRegister(user& clientA) {
+	client a;
 	do {
-		cout << "Username: "; conSole.gotoxy(30, 0); cout << "(Username is \'0\' to \'9\' and \'a\' to \'z\')\n";
+		cout << "Username: "; a.conSole.gotoxy(30, 0); cout << "(Username is \'0\' to \'9\' and \'a\' to \'z\')\n";
 		cout << "Password: ";
-		conSole.gotoxy(0, 2); cout << "ID Banking: ";
-		conSole.gotoxy(10, 0);
+		a.conSole.gotoxy(0, 2); cout << "ID Banking: ";
+		a.conSole.gotoxy(10, 0);
 		cin >> clientA.username;
-		conSole.gotoxy(10, 1);
+		a.conSole.gotoxy(10, 1);
 		cin >> clientA.strpass;
-		conSole.gotoxy(12, 2);
+		a.conSole.gotoxy(12, 2);
 		cin >> clientA.idBanking;
-		if (registerValid(clientA) == 0) {
-			conSole.gotoxy(0, 4); cout << "Username or password is not valid. Please try another one.\n";
+		if (a.registerValid(clientA) == 0) {
+			a.conSole.gotoxy(0, 4); cout << "Username or password is not valid. Please try another one.\n";
 			system("pause");
 			system("cls");
 		}
-	} while (registerValid(clientA) == 0);
+	} while (a.registerValid(clientA) == 0);
 }
 
 void client::accountLogin() {
-	// thong bao da co account hay ch? 
-	cout << "Did you have any account ? (Y or N)\n";
-	char c = _getch();
-	if (c == 'n') {
-		system("cls");
-		accountRegister(this->clientA);
-	}
-	
-	// neu da co tien hanh dang nhap.
-	else {
-		system("cls");
-		do {
-			cout << "Username: ";
-			conSole.gotoxy(0, 1);
-			cout << "Password: ";
-			conSole.gotoxy(10, 0);
-			cin >> clientA.username;
-			conSole.gotoxy(10, 1);
-			cin >> clientA.strpass;
-			if (!loginValid(this->clientA))
-				cout << "Username or password does not correct.!";
-		} while (!loginValid(this->clientA));
-	}
+	// neu da co tien hanh dang nhap
+	system("cls");
+	cout << "Username: ";
+	conSole.gotoxy(0, 1);
+	cout << "Password: ";
+	conSole.gotoxy(10, 0);
+	cin >> clientA.username;
+	conSole.gotoxy(10, 1);
+	cin >> clientA.strpass;
 }

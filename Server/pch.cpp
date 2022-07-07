@@ -36,30 +36,46 @@ Server::Server() {
         cout << "Connected to client " << i + 1 << "/" << nClient << endl;
         sockClient[i].Send((char*)&i, sizeof(int), 0);
     }
-
-    user* client = new user[nClient];
-    // ktra dang nhap
-    // username 
-    for (int i = 0; i < nClient; i++) {
-        int p;
-        sockClient[i].Receive((char*)&p, sizeof(int), 0);
-        sockClient[i].Receive(&client[i].username, sizeof(p), 0);
-    }
-    //password
-    for (int i = 0; i < nClient; i++) {
-        int q;
-        sockClient[i].Receive((char*)&q, sizeof(int), 0);
-        sockClient[i].Receive(&client[i].strpass, sizeof(q), 0);
-    }
-
-    for (int i = 0; i < nClient; i++) {
-        if (this->loginValid(client[i],s)) {
-            int flag = 1; // gui 1 xac nhan dang nhap thanh cong 
-            sockClient[i].Send((char*)&flag, sizeof(int), 0);
+    int q; int i = 0;
+    for (int j = i; j < nClient; j++) {
+        sockClient[j].Receive((char*)&q, sizeof(int), 0);
+        user* client = new user[nClient];
+        // dang ki luu do file code o day duoi cai if
+        if (q == 0) {
+            int p;
+            sockClient[j].Receive((char*)&p, sizeof(int), 0);
+            sockClient[j].Receive(&client[j].username, sizeof(p), 0);
+            int q;
+            sockClient[j].Receive((char*)&q, sizeof(int), 0);
+            sockClient[j].Receive(&client[j].strpass, sizeof(q), 0);
         }
-        else {
-            int flag = 0; // gui 0 dang nhap that bai.
-            sockClient[i].Send((char*)&flag, sizeof(int), 0);
+        if (q == 1) {
+            // ktra dang nhap
+            while (1) {
+                // username 
+                int p;
+                sockClient[j].Receive((char*)&p, sizeof(int), 0);
+                sockClient[j].Receive(&client[j].username, sizeof(p), 0);
+                //password
+                int q;
+                sockClient[j].Receive((char*)&q, sizeof(int), 0);
+                sockClient[j].Receive(&client[j].strpass, sizeof(q), 0);
+                int flag;
+                if (this->loginValid(client[j], s)) {
+                    flag = 1; // gui 1 xac nhan dang nhap thanh cong 
+                    sockClient[j].Send((char*)&flag, sizeof(int), 0);
+                }
+                else {
+                    flag = 0; // gui 0 dang nhap that bai.
+                    sockClient[j].Send((char*)&flag, sizeof(int), 0);
+                }
+                // nhan flag = 1 dang nhap thanh cong
+                sockClient[j].Receive((char*)&flag, sizeof(int), 0);
+                if (flag == 1)
+                    break;
+                // tien hanh kiem tra lai tai client thu i
+                else i = j;
+            }
         }
     }
 }
