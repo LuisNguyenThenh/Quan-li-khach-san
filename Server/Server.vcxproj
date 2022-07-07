@@ -155,6 +155,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="framework.h" />
+    <ClInclude Include="json.hpp" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Server.h" />
@@ -168,12 +169,16 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Server.cpp" />
+    <ClCompile Include="Data_management.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Server.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="hotel.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Userdata.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

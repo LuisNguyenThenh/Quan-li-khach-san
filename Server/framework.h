@@ -24,10 +24,12 @@
 #include <string>
 #include <algorithm>
 #include <ctime>
+#include "json.hpp"
+#include<fstream>
 #include <opencv2/highgui.hpp>
 #include "afxsock.h";
+using json = nlohmann::json;
 using namespace std;
-
 struct user {
 	string username, strpass, idBanking;
 };
@@ -39,3 +41,4 @@ public:
 	//check login
 	bool loginValid(user clientA);
 };
+user* Getuser();

@@ -4,6 +4,19 @@
 #include "framework.h"
 // When you are using pre-compiled headers, this source file is necessary for compilation to succeed.
 
+
+bool Server::loginValid(user clientA, user* database) {
+    for (int i = 0; i < 3; i++) {
+        if (database[i].username == clientA.username) {
+            for (int k = 0; k < clientA.strpass.length(); k++) {
+                if (database[i].strpass[k] != clientA.strpass[k])
+                    return 0;
+            }
+            return 1;
+        }
+    }
+    return 1;
+}
 Server::Server() {
     CSocket server;
     const unsigned int port = 1234; // port server
@@ -16,7 +29,7 @@ Server::Server() {
     int nClient = 0;
     cout << "Enter the number of clients: ";
     cin >> nClient;
-
+    user* s = Getuser();
     CSocket* sockClient = new CSocket[nClient];
     for (int i = 0; i < nClient; i++) {
         server.Accept(sockClient[i]);
@@ -40,7 +53,7 @@ Server::Server() {
     }
 
     for (int i = 0; i < nClient; i++) {
-        if (loginValid(client[i])) {
+        if (this->loginValid(client[i],s)) {
             int flag = 1; // gui 1 xac nhan dang nhap thanh cong 
             sockClient[i].Send((char*)&flag, sizeof(int), 0);
         }
@@ -49,25 +62,4 @@ Server::Server() {
             sockClient[i].Send((char*)&flag, sizeof(int), 0);
         }
     }
-}
-
-bool Server::loginValid(user clientA) {
-    user s[3];
-    s[0].username = "thanh";
-    s[1].username = "phuoc";
-    s[2].username = "thai";
-    s[0].strpass = "thanh123";
-    s[1].strpass = "thanh123";
-    s[2].strpass = "thanh123";
-
-    for (int i = 0; i < 3; i++) {
-        if (s[i].username == clientA.username) {
-            for (int k = 0; k < clientA.strpass.length(); k++) {
-                if (s[i].strpass[k] != clientA.strpass[k])
-                    return 0;
-            }
-            return 1;
-        }
-    }
-    return 1;
 }
