@@ -7,22 +7,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Client", "Client\Client.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server", "Server\Server.vcxproj", "{92F2CF9C-1C18-4047-B325-AD370265C0DA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bin", "bin", "{52DF9505-F928-44DE-A034-8B2DEFDF44CF}"
-	ProjectSection(SolutionItems) = preProject
-		bin\opencv_annotation.exe = bin\opencv_annotation.exe
-		bin\opencv_interactive-calibration.exe = bin\opencv_interactive-calibration.exe
-		bin\opencv_version.exe = bin\opencv_version.exe
-		bin\opencv_version_win32.exe = bin\opencv_version_win32.exe
-		bin\opencv_videoio_ffmpeg440_64.dll = bin\opencv_videoio_ffmpeg440_64.dll
-		bin\opencv_videoio_msmf440_64.dll = bin\opencv_videoio_msmf440_64.dll
-		bin\opencv_videoio_msmf440_64d.dll = bin\opencv_videoio_msmf440_64d.dll
-		bin\opencv_visualisation.exe = bin\opencv_visualisation.exe
-		bin\opencv_world440.dll = bin\opencv_world440.dll
-		bin\opencv_world440.pdb = bin\opencv_world440.pdb
-		bin\opencv_world440d.dll = bin\opencv_world440d.dll
-		bin\opencv_world440d.pdb = bin\opencv_world440d.pdb
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
