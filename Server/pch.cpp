@@ -36,8 +36,7 @@ Server::Server() {
         cout << "Connected to client " << i + 1 << "/" << nClient << endl;
         sockClient[i].Send((char*)&i, sizeof(int), 0);
     }
-    int q; 
-    int i = 0;
+    int q; int i = 0;
     for (int j = i; j < nClient; j++) {
         sockClient[j].Receive((char*)&q, sizeof(int), 0);
         user* client = new user[nClient];
