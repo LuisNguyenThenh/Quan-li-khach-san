@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Resource Files\bin">
+      <UniqueIdentifier>{f71ea006-3b2b-45b9-9746-4b56b3c0a200}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -58,6 +61,42 @@
   <ItemGroup>
     <None Include="Userdata.json">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="bin\opencv_annotation.exe">
+      <Filter>Resource Files\bin</Filter>
+    </None>
+    <None Include="bin\opencv_interactive-calibration.exe">
+      <Filter>Resource Files\bin</Filter>
+    </None>
+    <None Include="bin\opencv_version.exe">
+      <Filter>Resource Files\bin</Filter>
+    </None>
+    <None Include="bin\opencv_version_win32.exe">
+      <Filter>Resource Files\bin</Filter>
+    </None>
+    <None Include="bin\opencv_videoio_ffmpeg440_64.dll">
+      <Filter>Resource Files\bin</Filter>
+    </None>
+    <None Include="bin\opencv_videoio_msmf440_64.dll">
+      <Filter>Resource Files\bin</Filter>
+    </None>
+    <None Include="bin\opencv_videoio_msmf440_64d.dll">
+      <Filter>Resource Files\bin</Filter>
+    </None>
+    <None Include="bin\opencv_visualisation.exe">
+      <Filter>Resource Files\bin</Filter>
+    </None>
+    <None Include="bin\opencv_world440.dll">
+      <Filter>Resource Files\bin</Filter>
+    </None>
+    <None Include="bin\opencv_world440.pdb">
+      <Filter>Resource Files\bin</Filter>
+    </None>
+    <None Include="bin\opencv_world440d.dll">
+      <Filter>Resource Files\bin</Filter>
+    </None>
+    <None Include="bin\opencv_world440d.pdb">
+      <Filter>Resource Files\bin</Filter>
     </None>
   </ItemGroup>
 </Project>
