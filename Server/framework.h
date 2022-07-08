@@ -26,7 +26,7 @@
 #include <ctime>
 #include "json.hpp"
 #include<fstream>
-#include <opencv2/highgui.hpp>
+#include <thread>
 #include "afxsock.h";
 using json = nlohmann::json;
 using namespace std;

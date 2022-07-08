@@ -15,7 +15,6 @@
 CWinApp theApp;
 
 using namespace std;
-using namespace cv;
 
 
 //TESTING
@@ -42,32 +41,14 @@ int whereY()
         return csbi.dwCursorPosition.Y;
     return -1;
 }
-void print_image(const char* s)
-{
-    Mat image = imread(s);
-    bool check = image.empty();
-    if (!image.empty())
-    {
-        imshow("Hotel Marriot", image);
-        cout << "Loaded picture" << endl;
-        waitKey(0);
-    }
-    else
-    {
-        cout << "Can not open picture!" << endl;
-    }
-    return;
-}
+
 //TESTING
 
 int main()
 {
     // TESTING
     vector <thread> threads;
-    threads.push_back(thread(print_image, "hotel.jpg"));
-    Sleep(1000);
-    threads.push_back(thread(print_image, "hotel.jpg"));
-    Sleep(1000);
+
 
     for (auto& th : threads) th.join();
 
