@@ -36,22 +36,17 @@ int main()
                 cout << "Can't connect to server.\n";
                 return 0;
             }
-            CSocket clientsocket;
             clientsocket.Create();
             if (clientsocket.Connect(_T("127.0.0.1"), 1234) != 0) {
                 cout << "Connect successfully.\n";
                 int number;
                 clientsocket.Receive((char*)&number, sizeof(int), 0);
+                char c; menu(c);
                 user clientA;
                 // thong bao da co account hay ch? 
-                cout << "Did you have any account ? (Y or N)\n";
-                char c = _getch();
-                int flag = 1;
                 // tien hanh dki tai khoan
-                if (c == 'n') {
+                if (c == '2') {
                     system("cls");
-                    flag = 0;
-                    clientsocket.Send((char*)&flag, sizeof(int), 0);
                     accountRegister(clientA);
                     int p = clientA.username.length(),
                         q = clientA.strpass.length();
@@ -61,8 +56,7 @@ int main()
                     clientsocket.Send(&clientA.strpass, sizeof(q), 0);
                 }
                 // tien hanh dang nhhap
-                else {
-                    clientsocket.Send((char*)&flag, sizeof(int), 0);
+                if (c == '1') {
                     while (1) {
                         client a = client();
                         int p = a.clientA.username.length();
@@ -71,7 +65,7 @@ int main()
                         clientsocket.Send(&a.clientA.username, sizeof(p), 0);
                         clientsocket.Send((char*)&q, sizeof(int), 0);
                         clientsocket.Send(&a.clientA.strpass, sizeof(q), 0);
-
+                        int flag;
                         clientsocket.Receive((char*)&flag, sizeof(int), 0);
                         if (flag == 1) {
                             cout << "Login Successfully.\n";
@@ -83,8 +77,12 @@ int main()
                             cout << "Username or Password does not correct.\n";
                         }
                     }
-                    clientsocket.Close();
                 }
+                if (c == '3');
+                if (c == '4');
+                if (c == '5')
+                    clientsocket.Close();
+                clientsocket.Close();
             }
         }
     }

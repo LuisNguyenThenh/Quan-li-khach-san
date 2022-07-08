@@ -43,45 +43,6 @@ client::client() {
 	out.open("Text.txt", ios::app);
 	out << this->clientA.username << ' ' << this->clientA.strpass << endl;
 	out.close();
-
-	/*for (int i = 0;; i++) {
-		cin >> strPassword[i];
-		conSole.gotoxy(9 + i, 1);
-		cout << "*";
-		if (strPassword[i] == '\n') {
-			strPassword[i] = '\0';
-			break;
-		}
-	}*/
-	/*if (loginValid(clientA))
-		cout << "valid!";
-	else
-		cout << "Username or Password doesn't correct.\n";*/
-}
-
-// phan nay cua server lam nham qua client :)
-//bool client::loginValid(string strA, string strB) {
-//	user s[3];
-//	s[0].username = "thanh";
-//	s[1].username = "phuoc";
-//	s[2].username = "thai";
-//	s[0].strpass = "thanh123";
-//	s[1].strpass = "thanh123";
-//	s[2].strpass = "thanh123";
-//	for (int i = 0; i < 3; i++) {
-//		if (strA == s[i].username) {
-//			for (int j = 0; j < strB.length(); j++) {
-//				if (s[i].strpass[j] != strB[j])
-//					return 0;
-//			}
-//			return 1;
-//		}
-//	}
-//	return 0;
-//}
-
-bool client::loginValid(user clientA) {
-	return 1;
 }
 
 bool client::registerValid(user clientA) {
@@ -128,4 +89,36 @@ void client::accountLogin() {
 	cin >> clientA.username;
 	conSole.gotoxy(10, 1);
 	cin >> clientA.strpass;
+}
+
+void menu(char& c) {
+	cout << "+------------------------------------+\n";
+	cout << "|                MENU                |\n";
+	cout << "+------------------------------------+\n";
+	cout << "| 1. Login                           |\n";
+	cout << "| 2. Register                        |\n";
+	cout << "| 3. Look up                         |\n";
+	cout << "| 4. Reservation                     |\n";
+	cout << "| 5. Exit                            |\n";
+	cout << "+------------------------------------+\n";
+	do {
+		c = _getch();
+		if (c == '1') {
+			int k = 1;
+			clientsocket.Send((char*)&k, sizeof(int), 0);
+		}
+		if (c == '2') {
+			int k = 0;
+			clientsocket.Send((char*)&k, sizeof(int), 0);
+		}
+		if (c == '3') {
+			int k = 2;
+			clientsocket.Send((char*)&k, sizeof(int), 0);
+		}
+		if (c == '4') {
+			int k = 3;
+			clientsocket.Send((char*)&k, sizeof(int), 0);
+		}
+	} while (c < '1' || c > '4');
+	
 }

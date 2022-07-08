@@ -29,7 +29,7 @@
 #include <fstream>
 #include <conio.h>
 using namespace std;
-
+CSocket clientsocket;
 enum statusCursor { UP, DOWN, LEFT, RIGHT, enter, BACK };
 
 class consoleGraphic
@@ -60,3 +60,4 @@ public:
 	void accountLogin();
 };
 void accountRegister(user& clientA);
+void menu(char& c);
