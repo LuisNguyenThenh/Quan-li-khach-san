@@ -39,6 +39,6 @@ public:
 	Server();
 
 	//check login
-	bool loginValid(user clientA);
+	bool loginValid(user clientA, user* database);
 };
 user* Getuser();
