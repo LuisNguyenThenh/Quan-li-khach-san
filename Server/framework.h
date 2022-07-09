@@ -81,3 +81,5 @@ string double_to_string(double a);
 void string_to_char(string t, char*& s);
 
 Hotel* get_hotel_from_list(char* name_hotel, Hotel*& list_hotel);
+void getRequirefromMenu(CSocket& sockClient);
+void getRequirefromLookup(CSocket& sockClient);

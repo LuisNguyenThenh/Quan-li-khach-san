@@ -76,6 +76,7 @@ int main()
                         if (flag == 1) {
                             cout << "Login Successfully.\n";
                             clientsocket.Send((char*)&flag, sizeof(int), 0);
+                            menuClient(clientsocket);
                             break;
                         }
                         else {

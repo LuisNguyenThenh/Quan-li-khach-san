@@ -28,6 +28,7 @@
 #include <Windows.h> 
 #include <fstream>
 #include <conio.h>
+#include <stdio.h>
 using namespace std;
 
 enum statusCursor { UP, DOWN, LEFT, RIGHT, enter, BACK };
@@ -61,3 +62,5 @@ public:
 };
 void accountRegister(user& clientA);
 void booking(CSocket &connector);
+void lookup(CSocket& connector);
+void menuClient(CSocket& connector);

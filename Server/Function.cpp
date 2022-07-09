@@ -1,6 +1,25 @@
 ﻿#include "pch.h"
 #include "framework.h"
+#include <conio.h>
 
+void lookup(CSocket& connector) {
+	cout << "+-------------------------+\n";
+	cout << "|       INFORMATION       |\n";
+	cout << "+-------------------------+\n";
+	cout << "| 1. Hotel                |\n";
+	cout << "| 2. Booking information  |\n";
+	cout << "+-------------------------+\n";
+	char c = _getch();
+	int flag = 1;
+	if (c == '1') {
+		connector.Send((char*)&flag, sizeof(int), 0);
+	}
+	if (c == '2') {
+		flag = 0;
+		connector.Send((char*)&flag, sizeof(int), 0);
+	}
+	return;
+}
 
 void booking(CSocket& connector, Hotel*& list_hotel)
 {
@@ -116,5 +135,39 @@ void booking(CSocket& connector, Hotel*& list_hotel)
 	// Hoa don
 
 	connector.Send((char*)&total_money, sizeof(int), 0);
+	return;
+}
+
+// nhan lenh tra cuu hoac dat phong tu client
+void getRequirefromMenu(CSocket& sockClient) {
+	int flag;
+	sockClient.Receive((char*)&flag, sizeof(int), 0);
+	if (flag == 1)
+	{
+		// look up
+		int k;
+		sockClient.Receive((char*)&flag, sizeof(int), 0);
+		if (k == 1) {
+
+		}
+		if (k == 0) {
+
+		}
+	}
+	if (flag == 0) {
+		// preservation
+
+	}
+}
+// nhan lenh tra cuu ten khach san, ngay vao o va ngay roi di.
+void getRequirefromLookup(CSocket& sockClient) {
+	int flag;
+	sockClient.Receive((char*)&flag, sizeof(int), 0);
+	if (flag == 1) {
+
+	}
+	if (flag == 0) {
+
+	}
 	return;
 }

@@ -34,16 +34,14 @@ void Load_data_hotel(Hotel* &list_hotel)
 	int number_hotel;
 	fin >> number_hotel;
 	
-	cout << number_hotel << endl;
+	//cout << number_hotel << endl;
 	list_hotel = new Hotel[number_hotel];
 
 	//Gán số lương khách sạn ở phần tử đầu tiên của danh sách.
 	list_hotel[0].num_hotel = number_hotel;
 	for (int i = 0; i < number_hotel; i++)
 	{
-		
 		list_hotel[i].Load_info_hotel(fin);
-
 	}
 	//for (int i = 0; i < number_hotel; i++)
 	//{

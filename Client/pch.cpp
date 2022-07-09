@@ -258,5 +258,5 @@ void booking(CSocket& connector)
 	cout << "Total: " << total_money << " USD" << endl;
 	
 	return;
-
 }
+

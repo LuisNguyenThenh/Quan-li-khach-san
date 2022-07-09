@@ -1,4 +1,4 @@
-﻿// pch.cpp: source file corresponding to the pre-compiled header
+﻿    // pch.cpp: source file corresponding to the pre-compiled header
 
 #include "pch.h"
 #include "framework.h"
@@ -38,7 +38,6 @@ Server::Server() {
         sockClient[i].Send((char*)&i, sizeof(int), 0);
     }
     int q; 
-    
     int i = 0;
     for (int j = i; j < nClient; j++) {
         sockClient[j].Receive((char*)&q, sizeof(int), 0);
@@ -74,8 +73,10 @@ Server::Server() {
                 }
                 // nhan flag = 1 dang nhap thanh cong
                 sockClient[j].Receive((char*)&flag, sizeof(int), 0);
-                if (flag == 1)
+                if (flag == 1) {
+                    getRequirefromMenu(sockClient[i]);
                     break;
+                }
                 // tien hanh kiem tra lai tai client thu i
                 else i = j;
             }
@@ -184,7 +185,7 @@ char* Hotel::Get_info_hotel()
         tmp = tmp + num + ".\n";
 
         tmp = tmp + string("Number Suite room available: ") + int_to_string(number_Suite_room_available) + "\n";
-        tmp = tmp + string("Pricen Suite room: ") + double_to_string(price_Suite_room) + " USD \n\n";
+        tmp = tmp + string("Price Suite room: ") + double_to_string(price_Suite_room) + " USD \n\n";
         count++;
     }
     char* s;
