@@ -1,5 +1,6 @@
 #include <conio.h>
 #include "framework.h"
+#include "pch.h"
 
 void lookup(CSocket& connector) {
 	cout << "+-------------------------+\n";

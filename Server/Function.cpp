@@ -146,7 +146,7 @@ void getRequirefromMenu(CSocket& sockClient) {
 	{
 		// look up
 		int k;
-		sockClient.Receive((char*)&flag, sizeof(int), 0);
+		sockClient.Receive((char*)&k, sizeof(int), 0);
 		if (k == 1) {
 
 		}
