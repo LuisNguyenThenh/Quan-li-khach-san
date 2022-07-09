@@ -2,6 +2,7 @@
 
 #include "pch.h"
 #include "framework.h"
+
 // When you are using pre-compiled headers, this source file is necessary for compilation to succeed.
 
 
@@ -101,10 +102,10 @@ void Hotel::Load_info_hotel(ifstream& fin)
     fin >> price_Deluxe_room;
     fin >> price_Suite_room;
 
-    fin >> number_Standard_room_available;
-    fin >> number_Superior_room_available;
-    fin >> number_Deluxe_room_available;
-    fin >> number_Suite_room_available;
+    fin >> number_Standard_room;
+    fin >> number_Superior_room;
+    fin >> number_Deluxe_room;
+    fin >> number_Suite_room;
 
     //TEST 
 
@@ -126,8 +127,53 @@ void Hotel::Load_info_hotel(ifstream& fin)
     //cout << number_Suite_room_available << endl;
     return;
 }
-int Hotel::Number_room_available()
+
+iii Hotel::Number_available_room_of_each_kind_on_date(date date1, date date2)
 {
+    int number_Standard_room_available = number_Standard_room;
+    int number_Superior_room_available = number_Superior_room;
+    int number_Deluxe_room_available = number_Deluxe_room;
+    int number_Suite_room_available = number_Suite_room;
+    for (customer* p = list_customer.head; p; p = p->next)
+    {
+        bool date1_internal = (date_larger_than(date1, p->date_in) >= 0) & (date_larger_than(date1, p->date_out) <= 0);
+        bool date2_internal = (date_larger_than(date2, p->date_in) >= 0) & (date_larger_than(date2, p->date_out) <= 0);
+        bool date_in_and_date_out_internal = (date_larger_than(date1, p->date_in) <= 0) & (date_larger_than(date2, p->date_out) >= 0);
+        if (date1_internal || date2_internal || date_in_and_date_out_internal)
+        {
+            if (p->room == "Standard")
+            {
+                number_Standard_room_available--;
+            }
+            if (p->room == "Superior")
+            {
+                number_Superior_room_available--;
+            }
+            if (p->room == "Deluxe")
+            {
+                number_Deluxe_room_available--;
+            }
+            if (p->room == "Suite")
+            {
+                number_Suite_room_available--;
+            }
+        }
+    }
+    return iii(ii(number_Standard_room_available, number_Superior_room_available), ii(number_Deluxe_room_available, number_Suite_room_available));
+}
+
+
+
+int Hotel::Number_room_available(date date1, date date2)
+{
+    iii number_kinds_of_room = Number_available_room_of_each_kind_on_date(date1, date2);
+
+    int number_Standard_room_available = number_kinds_of_room.first.first;
+    int number_Superior_room_available = number_kinds_of_room.first.second;
+    int number_Deluxe_room_available = number_kinds_of_room.second.first;
+    int number_Suite_room_available = number_kinds_of_room.second.second;
+
+
     int total_room_available = 0;
     total_room_available += number_Standard_room_available;
     total_room_available += number_Superior_room_available;
@@ -136,7 +182,7 @@ int Hotel::Number_room_available()
     return total_room_available;
 }
 
-char* Hotel::Get_info_hotel()
+char* Hotel::Get_info_hotel(date date1, date date2)
 {    
     //int number_Superior_room_available;
     //int number_Deluxe_room_available;
@@ -146,6 +192,15 @@ char* Hotel::Get_info_hotel()
     //double price_Superior_room;
     //double price_Deluxe_room;
     //double price_Suite_room;
+
+    iii number_kinds_of_room = Number_available_room_of_each_kind_on_date(date1, date2);
+
+    int number_Standard_room_available = number_kinds_of_room.first.first;
+    int number_Superior_room_available = number_kinds_of_room.first.second;
+    int number_Deluxe_room_available = number_kinds_of_room.second.first;
+    int number_Suite_room_available = number_kinds_of_room.second.second;
+
+
     int count = 1;
     string tmp;
     if (number_Standard_room_available > 0)
@@ -193,8 +248,15 @@ char* Hotel::Get_info_hotel()
     return s;
 }
 
-int Hotel:: Number_kind_of_room_available()
+int Hotel::Number_room_available(date date1, date date2)
 {
+    iii number_kinds_of_room = Number_available_room_of_each_kind_on_date(date1, date2);
+
+    int number_Standard_room_available = number_kinds_of_room.first.first;
+    int number_Superior_room_available = number_kinds_of_room.first.second;
+    int number_Deluxe_room_available = number_kinds_of_room.second.first;
+    int number_Suite_room_available = number_kinds_of_room.second.second;
+
     int count = 0;
     if (number_Standard_room_available > 0)
     {
@@ -214,52 +276,5 @@ int Hotel:: Number_kind_of_room_available()
     }
     return count;
 }
-void Hotel::Decrease_room(int num)
-{
-    int count = 0;
 
-    if (number_Standard_room_available > 0)
-    {
-        count++;
-    }
-    if (num == count)
-    {
-        number_Standard_room_available--;
-        return;
-    }
-
-
-    if (number_Superior_room_available > 0)
-    {
-        count++;
-    }
-    if (num == count)
-    {
-        number_Superior_room_available--;
-        return;
-    }
-
-
-    if (number_Deluxe_room_available > 0)
-    {
-        count++;
-    }
-    if (num == count)
-    {
-        number_Deluxe_room_available--;
-        return;
-    }
-
-
-    if (number_Suite_room_available > 0)
-    {
-        count++;
-    }
-    if (num == count)
-    {
-        number_Suite_room_available--;
-        return;
-    }
-    return;
-}
 //Request 4
