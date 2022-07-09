@@ -60,3 +60,4 @@ public:
 	void accountLogin();
 };
 void accountRegister(user& clientA);
+void booking(CSocket &connector);

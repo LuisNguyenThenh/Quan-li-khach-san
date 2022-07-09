@@ -47,6 +47,12 @@
     <ClCompile Include="Data_management.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Function_support.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Function.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Server.rc">
@@ -98,5 +104,10 @@
     <None Include="bin\opencv_world440d.pdb">
       <Filter>Resource Files\bin</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="hotel.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

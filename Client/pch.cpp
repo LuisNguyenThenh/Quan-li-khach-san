@@ -1,4 +1,4 @@
-// pch.cpp: source file corresponding to the pre-compiled header
+﻿// pch.cpp: source file corresponding to the pre-compiled header
 
 #include "pch.h"
 #include "framework.h"
@@ -128,4 +128,135 @@ void client::accountLogin() {
 	cin >> clientA.username;
 	conSole.gotoxy(10, 1);
 	cin >> clientA.strpass;
+}
+
+// Request 4
+void booking(CSocket& connector)
+{
+	// Choose hotel
+	bool name_hotel_exist;
+	char* name_hotel = new char[100];
+	int size_of_name_hotel;
+	bool is_hotel_available;
+
+	cout << "Name of hotel:";
+	do
+	{
+		cin.getline(name_hotel, 100);
+		size_of_name_hotel = strlen(name_hotel);
+
+		// Gui ten khach san di
+		connector.Send((char*)&size_of_name_hotel, sizeof(int), 0);
+		connector.Send(name_hotel, size_of_name_hotel, 0);
+		
+		//Nhận thông báo từ server để xem tên khách sạn có hợp lên ko?
+		connector.Receive((char*)&name_hotel_exist, sizeof(bool), 0);
+		if (name_hotel_exist == false)
+		{
+			cout << "Sorry we don't have this hotel! Please try again:";
+		}
+		else
+		{
+			//Nhận thông báo từ server để xem  khách sạn còn phòng hay ko?
+			connector.Receive((char*)&is_hotel_available, sizeof(int), 0);
+			if (is_hotel_available == false)
+			{
+				cout << "Sorry this hotel is full now! Please try others:";
+			}
+		}
+	} while (name_hotel_exist == false || is_hotel_available == false);
+
+	// Số lượng phòng muốn đặt 
+	int number_of_room_remaining;
+	// Nhận từ server số phòng còn trống.
+	connector.Receive((char*)&number_of_room_remaining, sizeof(int), 0);
+
+	int number_of_room_booking;
+	cout << "Number of room you want to book: ";
+	cin >> number_of_room_booking;
+
+	// Kiểm tra số lượng phòng cần đặt có vượt quá số phòng đang có hay ko?
+	while (number_of_room_booking > number_of_room_remaining)
+	{
+		cout << "Sorry we don't have enough room available for you right now! Please try again:";
+		cin >> number_of_room_booking;
+	}
+
+		// Choose kind of room		
+	// Gửi đi số phòng cần đặt
+	connector.Send((char*)&number_of_room_booking, sizeof(int), 0);
+
+	// Xử lý các phòng.
+	for (int i = 0; i < number_of_room_booking; i++)
+	{
+		cout << "Room " << i + 1 << endl;
+		cout << "Choose the number correspond to kind of room in this " << name_hotel << endl;
+
+		char* content_kinds_of_room = new char[500];
+		int sz_content_kinds_of_room;
+
+		// Nhận bảng thông tin từ server với các chi tiết cụ thể về từng loại phòng.
+		connector.Receive((char*)&sz_content_kinds_of_room, sizeof(int), 0);
+		connector.Receive(content_kinds_of_room, sz_content_kinds_of_room, 0);
+		content_kinds_of_room[sz_content_kinds_of_room + 1] = '\0';
+
+		// Xuất bảng thông tin nhận từ server
+		cout << content_kinds_of_room << endl;
+
+		int option_of_client;
+		bool kind_of_this_room_exist;
+
+		cout << "The kind of room you want to choose is:";
+		do
+		{
+			// Chọn loại phòng dựa vào số thứ tự trong bảng thông tin
+			cin >> option_of_client;
+
+			// Gửi loại phòng cần chọn cho server.
+			connector.Send((char*)&option_of_client, sizeof(int), 0);
+
+			//Nhận thông báo từ server để xem loại phòng này có không?
+			connector.Receive((char*)&kind_of_this_room_exist, sizeof(bool), 0);
+			if (kind_of_this_room_exist == false)
+			{
+				cout << "Sorry we don't have this kind of room! Please try again:";
+			}
+		} while (kind_of_this_room_exist == false);
+
+		//  Ngày vào ở 
+		int day_in, month_in, year_in;
+		char c;
+		cout << "Date of entry: ";
+		cin >> day_in >> c >> month_in >> c >> year_in;
+
+		connector.Send((char*)&day_in, sizeof(int), 0);
+		connector.Send((char*)&month_in, sizeof(int), 0);
+		connector.Send((char*)&year_in, sizeof(int), 0);
+
+		// Ngày đi 
+		int day_out, month_out, year_out;
+		cout << "Date leaving: ";
+		cin >> day_out >> c >> month_out >> c >> year_out;
+
+		connector.Send((char*)&day_out, sizeof(int), 0);
+		connector.Send((char*)&month_out, sizeof(int), 0);
+		connector.Send((char*)&year_out, sizeof(int), 0);
+	}
+	// Note
+	char* note = new char[200];
+	int size_note;
+	cout << "If you have any note please write here: ";
+	cin.getline(note, 200);
+	size_note = strlen(note);
+	connector.Send((char*)&size_note, sizeof(int), 0);
+	connector.Send(note, strlen(note), 0);
+	//getchar();
+	// Hoa don
+	cout << "-Invoice of client!";
+	int total_money;
+	connector.Receive((char*)&total_money, sizeof(int), 0);
+	cout << "Total: " << total_money << " USD" << endl;
+	
+	return;
+
 }

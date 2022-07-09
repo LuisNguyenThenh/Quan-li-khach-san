@@ -1,0 +1,53 @@
+4
+Marriot Hotel
+aaaaaaaaaaaaa
+bbbbbbbbbbb
+ccccccc
+ddddddd
+12.99
+100.99
+599.99
+1599.99
+128
+65
+34
+10
+Muong Thanh Hotel
+aaaaaaaaaaaaa
+bbbbbbbbbbb
+ccccccc
+ddddddd
+25.99
+129.99
+699.99
+1789.99
+157
+56
+21
+3
+Pullman Hotel
+aaaaaaaaaaaaa
+bbbbbbbbbbb
+ccccccc
+ddddddd
+39.99
+259.99
+789.99
+1999.99
+98
+43
+21
+4
+Moevenpick Hotel
+aaaaaaaaaaaaa
+bbbbbbbbbbb
+ccccccc
+ddddddd
+59.99
+359.99
+1089.99
+3009.99
+87
+43
+12
+1

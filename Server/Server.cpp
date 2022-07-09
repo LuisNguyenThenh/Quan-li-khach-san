@@ -46,20 +46,20 @@ int whereY()
 
 int main()
 {
-    // TESTING
-    vector <thread> threads;
+    //// TESTING
+    //vector <thread> threads;
 
 
-    for (auto& th : threads) th.join();
+    //for (auto& th : threads) th.join();
 
-     for (int i = 0; i < 50;i++)
-     {
-         cout << "HELLO WORLD!" << endl;
-     }
-     //delete_error_content_while_print_pic();
-    
+    // for (int i = 0; i < 50;i++)
+    // {
+    //     cout << "HELLO WORLD!" << endl;
+    // }
+    // //delete_error_content_while_print_pic();
+    //
 
-    //TESTING
+    ////TESTING
 
     int nRetCode = 0;
     HMODULE hModule = ::GetModuleHandle(nullptr);
@@ -75,6 +75,10 @@ int main()
         }
         else
         {
+            Hotel* list_hotel;
+            Load_data_hotel(list_hotel);
+            cout << "Loaded data successfully!" << endl;
+            Server sever=Server();
             // TODO: code your application's behavior here.
             //Server k = Server();
         }
