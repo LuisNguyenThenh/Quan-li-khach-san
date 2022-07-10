@@ -121,9 +121,8 @@ void booking(CSocket& connector, Hotel*& list_hotel)
 		connector.Receive(note, size_note, 0);
 		note[size_note] = '\0';
 		new_booking->note = note;
-
+		hotel->Add_customer(new_booking);
 	}
-
 	//getchar();
 	// Hoa don
 	connector.Send((char*)&total_money, sizeof(int), 0);
