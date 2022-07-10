@@ -65,7 +65,7 @@ class customer
 public:
 	char* user_name;
     date date_in, date_out;
-    char* room ;
+    int kind_room;
 	char* note;
 	customer* next = NULL;
 	customer* pre = NULL;
@@ -74,6 +74,7 @@ public:
 class link_list
 {
 public:
+    int number_customer = 0;
 	customer* head = NULL;
     customer* tail = NULL;
     bool is_empty()
@@ -101,6 +102,7 @@ public:
     }
     void add(customer* p)
     {
+        number_customer++;
         if (this->head == NULL)
         {
             this->head = this->tail = p;
@@ -116,6 +118,7 @@ public:
     }
     void remove(char* s)
     {
+        number_customer--;
         customer* x = NULL;
         for (customer* p = this->head; p; p = p->next)
         {
@@ -172,7 +175,7 @@ public:
     // First hotel will manage 
 	int num_hotel = 0;
 
-    link_list list_customer;
+    link_list list_booking;
 
 	char* name = new char[200];
 
@@ -190,19 +193,26 @@ public:
 	char* decription_Superior_room = new char[200];
 	char* decription_Deluxe_room = new char[200];
 	char* decription_Suite_room = new char[200];
-
+    
+    
+    void Add_customer(customer* p);
 	void Load_info_hotel(ifstream &fin);
 	int Number_room_available(date date1, date date2);
 	char* Get_info_hotel(date date1, date date2);
 	int Number_kind_of_room_available(date date1, date date2);
-
+    double Price_of_kind_room(int kind);
     iii Number_available_room_of_each_kind_on_date(date date1,date date2);
 
+    bool Is_kind_of_room_available_on_date(date date1, date date2, int kind);
+
 };
+
+
 void Load_data_hotel(Hotel*& list_hotel);
 string int_to_string(int a);
 string double_to_string(double a);
 void string_to_char(string t, char*& s);
+void copy_string(char*& s, char*& t);
 
 Hotel* get_hotel_from_list(char* name_hotel, Hotel*& list_hotel);
 void getRequirefromMenu(CSocket& sockClient);
@@ -211,3 +221,4 @@ void getRequirefromLookup(CSocket& sockClient);
 
 bool kiem_tra_ngay_thang_nam(int day, int m, int y);
 int date_larger_than(date date1, date date2);
+int distance_time(date date1, date date2);

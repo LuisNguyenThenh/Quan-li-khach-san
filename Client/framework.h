@@ -60,7 +60,17 @@ public:
 	bool loginValid(user clientA);
 	void accountLogin();
 };
+class date
+{
+public:
+	int d, m, y;
+};
+
 void accountRegister(user& clientA);
 void booking(CSocket &connector);
 void lookup(CSocket& connector);
 void menuClient(CSocket& connector);
+
+int date_larger_than(date date1, date date2);
+bool kiem_tra_ngay_thang_nam(date date);
+bool kiem_tra_nam_nhuan(int y);

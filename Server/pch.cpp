@@ -88,7 +88,6 @@ Server::Server() {
 void Hotel::Load_info_hotel(ifstream& fin)
 {
     char c[2];
-    fin.getline(c, 1);
 
     fin.getline(name, 199);
     
@@ -107,24 +106,58 @@ void Hotel::Load_info_hotel(ifstream& fin)
     fin >> number_Deluxe_room;
     fin >> number_Suite_room;
 
+    int number_customer;
+    fin >> number_customer;
+    fin.getline(c, 1);
+
+    for (int i = 0; i < number_customer; i++)
+    {
+        customer* p = new customer;
+        p->user_name = new char[200];
+        p->note = new char[200];
+        fin.getline(p->user_name,199);
+
+        fin >> p->date_in.d;
+        fin >> p->date_in.m;
+        fin >> p->date_in.y;
+        fin >> p->date_out.d;
+        fin >> p->date_out.m;
+        fin >> p->date_out.y;
+        fin >> p->kind_room;
+
+        fin.getline(c, 1);
+        fin.getline(p->note, 199);
+
+        Add_customer(p);
+
+        //Test
+        //cout << p->user_name << endl;
+        //cout << p->date_in.d << endl;
+        //cout << p->date_in.m << endl;
+        //cout << p->date_in.y << endl;
+        //cout << p->date_out.d << endl;
+        //cout << p->date_out.m << endl;
+        //cout << p->date_out.y << endl;
+        //cout << p->room << endl;
+        //cout << p->note << endl;
+    }
+    
     //TEST 
 
     //cout << name << endl;
-
     //cout << decription_Standard_room << endl;
     //cout << decription_Superior_room << endl;
     //cout << decription_Deluxe_room << endl;
     //cout << decription_Suite_room << endl;
-
     //cout << price_Standard_room << endl;
     //cout << price_Superior_room << endl;
     //cout << price_Deluxe_room << endl;
     //cout << price_Suite_room << endl;
+    //cout << number_Standard_room << endl;
+    //cout << number_Superior_room<< endl;
+    //cout << number_Deluxe_room << endl;
+    //cout << number_Suite_room << endl;
 
-    //cout << number_Standard_room_available << endl;
-    //cout << number_Superior_room_available << endl;
-    //cout << number_Deluxe_room_available << endl;
-    //cout << number_Suite_room_available << endl;
     return;
 }
 
@@ -134,26 +167,26 @@ iii Hotel::Number_available_room_of_each_kind_on_date(date date1, date date2)
     int number_Superior_room_available = number_Superior_room;
     int number_Deluxe_room_available = number_Deluxe_room;
     int number_Suite_room_available = number_Suite_room;
-    for (customer* p = list_customer.head; p; p = p->next)
+    for (customer* p = list_booking.head; p; p = p->next)
     {
         bool date1_internal = (date_larger_than(date1, p->date_in) >= 0) & (date_larger_than(date1, p->date_out) <= 0);
         bool date2_internal = (date_larger_than(date2, p->date_in) >= 0) & (date_larger_than(date2, p->date_out) <= 0);
         bool date_in_and_date_out_internal = (date_larger_than(date1, p->date_in) <= 0) & (date_larger_than(date2, p->date_out) >= 0);
         if (date1_internal || date2_internal || date_in_and_date_out_internal)
         {
-            if (p->room == "Standard")
+            if (p->kind_room == 1)
             {
                 number_Standard_room_available--;
             }
-            if (p->room == "Superior")
+            if (p->kind_room == 2)
             {
                 number_Superior_room_available--;
             }
-            if (p->room == "Deluxe")
+            if (p->kind_room == 3)
             {
                 number_Deluxe_room_available--;
             }
-            if (p->room == "Suite")
+            if (p->kind_room == 4)
             {
                 number_Suite_room_available--;
             }
@@ -248,7 +281,7 @@ char* Hotel::Get_info_hotel(date date1, date date2)
     return s;
 }
 
-int Hotel::Number_room_available(date date1, date date2)
+int Hotel::Number_kind_of_room_available(date date1, date date2)
 {
     iii number_kinds_of_room = Number_available_room_of_each_kind_on_date(date1, date2);
 
@@ -277,4 +310,55 @@ int Hotel::Number_room_available(date date1, date date2)
     return count;
 }
 
+void Hotel::Add_customer(customer* p)
+{
+    list_booking.add(p);
+    return;
+}
+bool Hotel::Is_kind_of_room_available_on_date(date date1, date date2, int kind)
+{
+    iii number_kinds_of_room = Number_available_room_of_each_kind_on_date(date1, date2);
+
+    int number_Standard_room_available = number_kinds_of_room.first.first;
+    int number_Superior_room_available = number_kinds_of_room.first.second;
+    int number_Deluxe_room_available = number_kinds_of_room.second.first;
+    int number_Suite_room_available = number_kinds_of_room.second.second;
+    if (kind == 1)
+    {
+        return (number_Standard_room_available > 0);
+    }
+    if (kind == 2)
+    {
+        return (number_Superior_room_available > 0);
+    }
+    if (kind == 3)
+    {
+        return (number_Deluxe_room_available > 0);
+    }
+    if (kind == 4)
+    {
+        return (number_Suite_room_available > 0);
+    }
+
+}
+
+double Hotel::Price_of_kind_room(int kind)
+{
+    if (kind == 1)
+    {
+        return price_Standard_room;
+    }
+    if (kind == 2)
+    {
+        return price_Superior_room;
+    }
+    if (kind == 3)
+    {
+        return price_Deluxe_room;
+    }
+    if (kind == 4)
+    {
+        return price_Suite_room;
+    }
+}
 //Request 4

@@ -25,6 +25,19 @@ void string_to_char(string t,char*& s)
 	s[t.length()] = '\0';
 	return;
 }
+
+void copy_string(char*& s, char*& t)
+{
+	s = new char[strlen(t) + 1];
+	for (int i = 0; i < strlen(t); i++)
+	{
+		s[i] = t[i];
+	}
+	s[strlen(t)] = '\0';
+	return;
+}
+
+
 void Load_data_hotel(Hotel* &list_hotel)
 {
 	ifstream fin;
@@ -33,11 +46,11 @@ void Load_data_hotel(Hotel* &list_hotel)
 
 	int number_hotel;
 	fin >> number_hotel;
-	
-	//cout << number_hotel << endl;
+
+	char c[2];
+	fin.getline(c, 1);
 	list_hotel = new Hotel[number_hotel];
 
-	//Gán số lương khách sạn ở phần tử đầu tiên của danh sách.
 	list_hotel[0].num_hotel = number_hotel;
 	for (int i = 0; i < number_hotel; i++)
 	{
@@ -105,5 +118,53 @@ int date_larger_than(date date1, date date2)
 	if (date1.d > date2.d) return 1;
 	if (date1.d < date2.d) return -1;
 
+	return 0;
+}
+
+int tim_ngay(date date)
+{
+	int thang[13] = { 0 };
+
+	thang[1] = thang[3] = thang[5] = thang[7] = thang[8] = thang[10] = thang[12] = 31;
+	for (int i = 1; i <= 12; i++)
+	{
+		if (thang[i] == 0) thang[i] = 30;
+	}
+	bool ok = kiem_tra_nam_nhuan(date.y);
+	if (ok == true) thang[2] = 29;
+	else thang[2] = 28;
+	int sum = 0;
+	for (int i = 1; i < date.m; i++)
+	{
+		sum += thang[i];
+	}
+	sum += date.d;
+	return sum;
+}
+
+int distance_time(date date1, date date2)
+{
+	if (date1.y > date2.y) return 0;
+	int so_ngay_thu_1 = tim_ngay(date1);
+	int so_ngay_thu_2 = tim_ngay(date2);
+	if (date1.y == date2.y)
+	{
+		return so_ngay_thu_2 - so_ngay_thu_1;
+	}
+	if (date2.y == date1.y + 1)
+	{
+		return (365 - so_ngay_thu_1 + kiem_tra_nam_nhuan(date1.y)) + so_ngay_thu_2;
+	}
+	if (date2.y >= date1.y + 2)
+	{
+		int new_y1 = date1.y + 1;
+		int new_y2 = date2.y - 1;
+		so_ngay_thu_1 = (365 - so_ngay_thu_1 + kiem_tra_nam_nhuan(date1.y));
+		int so_boi_cua_4 = int(date2.y / 4) - int((date1.y - 1) / 4);
+		int so_boi_cua_100 = int(date2.y / 100) - int((date1.y - 1) / 100);
+		int so_boi_cua_400 = int(date2.y / 400) - int((date1.y - 1) / 400);
+		int kq = so_ngay_thu_1 + so_ngay_thu_2 + (new_y2 - new_y1 + 1) * 365 + so_boi_cua_4 - so_boi_cua_100 + so_boi_cua_400;
+		return kq;
+	}
 	return 0;
 }

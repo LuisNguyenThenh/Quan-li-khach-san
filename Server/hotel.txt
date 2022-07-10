@@ -12,6 +12,17 @@ ddddddd
 65
 34
 10
+2
+lenguyenthai
+1 2 2019
+2 3 2020
+2
+NONE and nothing
+lenguyenkhang
+1 2 2012
+2 3 2023
+3
+Get me more water
 Muong Thanh Hotel
 aaaaaaaaaaaaa
 bbbbbbbbbbb
@@ -25,6 +36,17 @@ ddddddd
 56
 21
 3
+2
+lenguyenthai
+1 2 2019
+2 3 2020
+4
+NONE and nothing
+lenguyenkhang
+1 2 2012
+2 3 2023
+1
+Get me more water
 Pullman Hotel
 aaaaaaaaaaaaa
 bbbbbbbbbbb
@@ -38,6 +60,17 @@ ddddddd
 43
 21
 4
+2
+lenguyenthai
+1 2 2019
+2 3 2020
+2
+NONE and nothing
+lenguyenkhang
+1 2 2012
+2 3 2023
+3
+Get me more water
 Moevenpick Hotel
 aaaaaaaaaaaaa
 bbbbbbbbbbb
@@ -51,3 +84,14 @@ ddddddd
 43
 12
 1
+2
+lenguyenthai
+1 2 2019
+2 3 2020
+2
+NONE and nothing
+lenguyenkhang
+1 2 2012
+2 3 2023
+3
+Get me more water
