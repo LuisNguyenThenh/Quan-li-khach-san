@@ -61,6 +61,12 @@ int main()
 
     ////TESTING
 
+    initwindow(600, 500, "Tutorial");
+    setbkcolor(WHITE);
+    readimagefile("hotel.jpg",100,100,300,300);
+    
+    
+    
     int nRetCode = 0;
     HMODULE hModule = ::GetModuleHandle(nullptr);
 

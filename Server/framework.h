@@ -28,10 +28,13 @@
 #include <cstring>
 #include <stdio.h>
 #include <string.h>
-#include<fstream>
+#include <fstream>
+#include "graphics.h"
+#pragma comment(lib,"graphics.lib")
 #include <sstream>
 #include <thread>
 #include <vector>
+
 #include "afxsock.h"
 #define fi first
 #define se second
