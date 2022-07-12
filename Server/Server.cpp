@@ -17,57 +17,52 @@ CWinApp theApp;
 using namespace std;
 
 
-//TESTING
-void gotoxy(int x, int y)
-{
-    static HANDLE h = NULL;
-    if (!h)
-        h = GetStdHandle(STD_OUTPUT_HANDLE);
-    COORD c = { x, y };
-    SetConsoleCursorPosition(h, c);
-}
-int whereX()
-{
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-    if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi))
-        return csbi.dwCursorPosition.X;
-    return -1;
-}
-//========= lấy tọa độ y của con trỏ hiện tại =======
-int whereY()
-{
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-    if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi))
-        return csbi.dwCursorPosition.Y;
-    return -1;
-}
+////TESTING
+//void gotoxy(int x, int y)
+//{
+//    static HANDLE h = NULL;
+//    if (!h)
+//        h = GetStdHandle(STD_OUTPUT_HANDLE);
+//    COORD c = { x, y };
+//    SetConsoleCursorPosition(h, c);
+//}
+//int whereX()
+//{
+//    CONSOLE_SCREEN_BUFFER_INFO csbi;
+//    if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi))
+//        return csbi.dwCursorPosition.X;
+//    return -1;
+//}
+////========= lấy tọa độ y của con trỏ hiện tại =======
+//int whereY()
+//{
+//    CONSOLE_SCREEN_BUFFER_INFO csbi;
+//    if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi))
+//        return csbi.dwCursorPosition.Y;
+//    return -1;
+//}
 
 //TESTING
-
-int main()
+vector <thread> thread_image;
+void print_image(const char* s)
 {
-    //// TESTING
-    //vector <thread> threads;
-
-
-    //for (auto& th : threads) th.join();
-
-    // for (int i = 0; i < 50;i++)
-    // {
-    //     cout << "HELLO WORLD!" << endl;
-    // }
-    // //delete_error_content_while_print_pic();
-    //
-    for (int i = 0; i <= 10; i++)
-    {
-        cout << "hello!" << endl;
-    }
-
     Mat image;
     image = imread("hotel.jpg");
 
     imshow("Hotel", image);
     waitKey(0);
+    return;
+}
+
+
+int main()
+{
+
+    //thread_image.push_back(thread(print_image, "hotel.jpg"));
+    //Sleep(1000);
+    //thread_image.push_back(thread(print_image, "hotel.jpg"));
+
+
     int nRetCode = 0;
     HMODULE hModule = ::GetModuleHandle(nullptr);
 

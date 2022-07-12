@@ -29,7 +29,13 @@
 #include <fstream>
 #include <conio.h>
 #include <stdio.h>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#define fi first
+#define se second
+//using json = nlohmann::json;
 using namespace std;
+using namespace cv;
 
 enum statusCursor { UP, DOWN, LEFT, RIGHT, enter, BACK };
 
