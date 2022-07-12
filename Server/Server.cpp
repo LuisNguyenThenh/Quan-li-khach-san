@@ -58,15 +58,16 @@ int main()
     // }
     // //delete_error_content_while_print_pic();
     //
+    for (int i = 0; i <= 10; i++)
+    {
+        cout << "hello!" << endl;
+    }
 
-    ////TESTING
+    Mat image;
+    image = imread("hotel.jpg");
 
-    initwindow(600, 500, "Tutorial");
-    setbkcolor(WHITE);
-    readimagefile("hotel.jpg",100,100,300,300);
-    
-    
-    
+    imshow("Hotel", image);
+    waitKey(0);
     int nRetCode = 0;
     HMODULE hModule = ::GetModuleHandle(nullptr);
 

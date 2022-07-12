@@ -29,18 +29,19 @@
 #include <stdio.h>
 #include <string.h>
 #include <fstream>
-#include "graphics.h"
+//#include "graphics.h"
 #pragma comment(lib,"graphics.lib")
 #include <sstream>
 #include <thread>
 #include <vector>
-
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
 #include "afxsock.h"
 #define fi first
 #define se second
 //using json = nlohmann::json;
 using namespace std;
-
+using namespace cv;
 
 typedef pair <int, int> ii;
 typedef pair <ii, ii> iii;
