@@ -52,26 +52,14 @@ int main()
                     system("cls");
                     flag = 0;
                     clientsocket.Send((char*)&flag, sizeof(int), 0);
-                    accountRegister(clientA);
-                    int p = clientA.username.length(),
-                        q = clientA.strpass.length();
-                    clientsocket.Send((char*)&p, sizeof(int), 0);
-                    clientsocket.Send(&clientA.username, sizeof(p), 0);
-                    clientsocket.Send((char*)&q, sizeof(int), 0);
-                    clientsocket.Send(&clientA.strpass, sizeof(q), 0);
+                    accountRegister(clientA, clientsocket);
+                    
                 }
                 // tien hanh dang nhhap
                 else {
                     clientsocket.Send((char*)&flag, sizeof(int), 0);
                     while (1) {
-                        client a = client();
-                        int p = a.clientA.username.length();
-                        int q = a.clientA.strpass.length();
-                        clientsocket.Send((char*)&p, sizeof(int), 0);
-                        clientsocket.Send(&a.clientA.username, sizeof(p), 0);
-                        clientsocket.Send((char*)&q, sizeof(int), 0);
-                        clientsocket.Send(&a.clientA.strpass, sizeof(q), 0);
-
+                        sendInfoLogin(clientsocket, clientA);
                         clientsocket.Receive((char*)&flag, sizeof(int), 0);
                         if (flag == 1) {
                             cout << "Login Successfully.\n";

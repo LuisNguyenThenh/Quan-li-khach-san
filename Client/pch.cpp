@@ -43,20 +43,6 @@ client::client() {
 	out.open("Text.txt", ios::app);
 	out << this->clientA.username << ' ' << this->clientA.strpass << endl;
 	out.close();
-
-	/*for (int i = 0;; i++) {
-		cin >> strPassword[i];
-		conSole.gotoxy(9 + i, 1);
-		cout << "*";
-		if (strPassword[i] == '\n') {
-			strPassword[i] = '\0';
-			break;
-		}
-	}*/
-	/*if (loginValid(clientA))
-		cout << "valid!";
-	else
-		cout << "Username or Password doesn't correct.\n";*/
 }
 
 // phan nay cua server lam nham qua client :)
@@ -80,10 +66,6 @@ client::client() {
 //	return 0;
 //}
 
-bool client::loginValid(user clientA) {
-	return 1;
-}
-
 bool client::registerValid(user clientA) {
 	if (clientA.username.length() < 5 || clientA.strpass.length() < 3 || clientA.idBanking.length() != 10)
 		return 0;
@@ -98,7 +80,7 @@ bool client::registerValid(user clientA) {
 	return 1;
 }
 
-void accountRegister(user& clientA) {
+void accountRegister(user& clientA, CSocket& clientsocket) {
 	client a;
 	do {
 		cout << "Username: "; a.conSole.gotoxy(30, 0); cout << "(Username is \'0\' to \'9\' and \'a\' to \'z\')\n";
@@ -116,6 +98,12 @@ void accountRegister(user& clientA) {
 			system("cls");
 		}
 	} while (a.registerValid(clientA) == 0);
+	int p = clientA.username.length(),
+		q = clientA.strpass.length();
+	clientsocket.Send((char*)&p, sizeof(int), 0);
+	clientsocket.Send(&clientA.username, sizeof(p), 0);
+	clientsocket.Send((char*)&q, sizeof(int), 0);
+	clientsocket.Send(&clientA.strpass, sizeof(q), 0);
 }
 
 void client::accountLogin() {
@@ -125,8 +113,18 @@ void client::accountLogin() {
 	conSole.gotoxy(0, 1);
 	cout << "Password: ";
 	conSole.gotoxy(10, 0);
-	cin >> clientA.username;
-	conSole.gotoxy(10, 1);
-	cin >> clientA.strpass;
+	char c;
+	int i = 0;
+	cin >> this->clientA.username;
+	do {
+		c = _getch();
+		this->clientA.strpass[i] = c;
+		conSole.gotoxy(10 + i, 1); cout << "*";
+		if (c == 23) {
+			this->clientA.strpass[i] = '\0';
+			break;
+		}
+		i++;
+	} while (c != 23);
 }
 

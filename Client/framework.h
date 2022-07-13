@@ -63,16 +63,20 @@ public:
 	// Register
 	bool registerValid(user clientA);
 	// Log in
-	bool loginValid(user clientA);
 	void accountLogin();
 };
+
 class date
 {
 public:
 	int d, m, y;
 };
 
-void accountRegister(user& clientA);
+struct hotelInfo {
+	string nameHotel; int d1, m1, y1, d2, m2, y2;
+};
+
+void accountRegister(user& clientA, CSocket& clientsocket);
 void booking(CSocket &connector);
 void lookup(CSocket& connector);
 void menuClient(CSocket& connector);
@@ -80,3 +84,5 @@ void menuClient(CSocket& connector);
 int date_larger_than(date date1, date date2);
 bool kiem_tra_ngay_thang_nam(date date);
 bool kiem_tra_nam_nhuan(int y);
+void sendInfoLogin(CSocket& clientsocket, user clientA);
+void lookup(CSocket& clientsocket);

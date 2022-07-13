@@ -183,8 +183,41 @@ void menuClient(CSocket& connector) {
 	int flag = 1;
 	if (c == '1') {
 		connector.Send((char*)&flag, sizeof(int), 0);
+		lookup(connector);
 	}
 	if (c == '2') {
 		connector.Send((char*)&flag, sizeof(int), 0);
 	}
+}
+
+void sendInfoLogin(CSocket& clientsocket, user clientA) {
+	client a = client();
+	int p = a.clientA.username.length();
+	int q = a.clientA.strpass.length();
+	clientsocket.Send((char*)&p, sizeof(int), 0);
+	clientsocket.Send(&a.clientA.username, sizeof(p), 0);
+	clientsocket.Send((char*)&q, sizeof(int), 0);
+	clientsocket.Send(&a.clientA.strpass, sizeof(q), 0);
+}
+
+void lookup(CSocket& clientsocket) {
+	hotelInfo a;
+	system("cls");
+	cout << "Name of hotel you want to book: ";
+	cin >> a.nameHotel;
+	cout << "Check-in date: ";
+	cin >> a.d1 >> a.m1 >> a.y1;
+	cout << "Check-out date: ";
+	cin >> a.d2 >> a.m2 >> a.y2;
+
+	int len = a.nameHotel.length();
+	clientsocket.Send((char*)&len, sizeof(int), 0);
+	clientsocket.Send((char*)&a.nameHotel, sizeof(len), 0);
+	clientsocket.Send((char*)&a.d1, sizeof(int), 0);
+	clientsocket.Send((char*)&a.m1, sizeof(int), 0);
+	clientsocket.Send((char*)&a.y1, sizeof(int), 0);
+	clientsocket.Send((char*)&a.d2, sizeof(int), 0);
+	clientsocket.Send((char*)&a.m2, sizeof(int), 0);
+	clientsocket.Send((char*)&a.y2, sizeof(int), 0);
+	return;
 }
