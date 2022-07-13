@@ -15,7 +15,7 @@
 CWinApp theApp;
 
 using namespace std;
-
+user clientA;
 int main()
 {
     int nRetCode = 0;
@@ -37,12 +37,13 @@ int main()
                 return 0;
             }
             CSocket clientsocket;
-            clientsocket.Create();
-            if (clientsocket.Connect(_T("127.0.0.1"), 1234) != 0) {
+            clientsocket.Create(1590);
+            if (clientsocket.Connect(_T("127.0.0.1"), 1234) != 0) 
+            {
                 cout << "Connect successfully.\n";
                 int number;
                 clientsocket.Receive((char*)&number, sizeof(int), 0);
-                user clientA;
+                
                 // thong bao da co account hay ch? 
                 cout << "Did you have any account ? (Y or N)\n";
                 char c = _getch();
@@ -52,7 +53,7 @@ int main()
                     system("cls");
                     flag = 0;
                     clientsocket.Send((char*)&flag, sizeof(int), 0);
-                    accountRegister(clientA);
+                    accountRegister();
                     int p = clientA.username.length(),
                         q = clientA.strpass.length();
                     clientsocket.Send((char*)&p, sizeof(int), 0);

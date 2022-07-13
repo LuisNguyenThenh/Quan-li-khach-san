@@ -29,9 +29,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <fstream>
-//#include "graphics.h"
 #pragma comment(lib,"graphics.lib")
 #include <sstream>
+#include <iomanip>
 #include <thread>
 #include <vector>
 #include <opencv2/core/core.hpp>
@@ -46,21 +46,26 @@ using namespace cv;
 typedef pair <int, int> ii;
 typedef pair <ii, ii> iii;
 
+// Global variable
+
+
+
+
 struct user {
 	string username, strpass, idBanking;
 };
 
 class Server {
 public:
+    
 	Server();
 
 	//check login
 	bool loginValid(user clientA);
 };
 
-class date
+struct date
 {
-public:
     int d,  m,  y;
 };
 
@@ -210,17 +215,23 @@ public:
     bool Is_kind_of_room_available_on_date(date date1, date date2, int kind);
 
 };
+extern vector <thread> threadimages;
+extern vector <thread> threadclient;
+extern Hotel* list_hotel;
+extern int nClient;
+extern CSocket cserver;
+extern int bESCPressed;
 
 
-void Load_data_hotel(Hotel*& list_hotel);
+void Load_data_hotel();
 string int_to_string(int a);
 string double_to_string(double a);
 void string_to_char(string t, char*& s);
 void copy_string(char*& s, char*& t);
-
-Hotel* get_hotel_from_list(char* name_hotel, Hotel*& list_hotel);
+Hotel* get_hotel_from_list(char* name_hotel);
 void getRequirefromMenu(CSocket& sockClient);
 void getRequirefromLookup(CSocket& sockClient);
+void solve_client();
 
 
 bool kiem_tra_ngay_thang_nam(int day, int m, int y);

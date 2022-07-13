@@ -38,7 +38,7 @@ void copy_string(char*& s, char*& t)
 }
 
 
-void Load_data_hotel(Hotel* &list_hotel)
+void Load_data_hotel()
 {
 	ifstream fin;
 	fin.open("hotel.txt", ios::in|ios::beg);
@@ -67,7 +67,7 @@ void Load_data_hotel(Hotel* &list_hotel)
 	fin.close();
 	return;
 }
-Hotel* get_hotel_from_list(char* name_hotel, Hotel*& list_hotel)
+Hotel* get_hotel_from_list(char* name_hotel)
 {
 	int number_hotel = list_hotel[0].num_hotel;
 	for (int i = 0; i < number_hotel; i++)
@@ -164,7 +164,7 @@ int distance_time(date date1, date date2)
 		int so_boi_cua_100 = int(date2.y / 100) - int((date1.y - 1) / 100);
 		int so_boi_cua_400 = int(date2.y / 400) - int((date1.y - 1) / 400);
 		int kq = so_ngay_thu_1 + so_ngay_thu_2 + (new_y2 - new_y1 + 1) * 365 + so_boi_cua_4 - so_boi_cua_100 + so_boi_cua_400;
-		return kq;
+		return abs(kq);
 	}
 	return 0;
 }

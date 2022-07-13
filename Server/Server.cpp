@@ -43,7 +43,12 @@ using namespace std;
 //}
 
 //TESTING
-vector <thread> thread_image;
+vector <thread> threadimages;
+vector <thread> threadclient;
+Hotel* list_hotel;
+CSocket cserver;
+int nClient = 0;
+int bESCPressed = 0;
 void print_image(const char* s)
 {
     Mat image;
@@ -54,11 +59,14 @@ void print_image(const char* s)
     return;
 }
 
-
 int main()
 {
-
-    //thread_image.push_back(thread(print_image, "hotel.jpg"));
+    vector <thread> threads;
+   // Sleep(10000);
+    Load_data_hotel();
+    cout << "Loaded data successfully!" << endl;
+    //threads.push_back(thread(print_image, "hotel.jpg"));
+    //threads[0].join();
     //Sleep(1000);
     //thread_image.push_back(thread(print_image, "hotel.jpg"));
 
@@ -77,12 +85,12 @@ int main()
         }
         else
         {
-            Hotel* list_hotel;
-            Load_data_hotel(list_hotel);
-            cout << "Loaded data successfully!" << endl;
-            Server sever=Server();
+
+            Server server = Server();
+           // return 0;
             // TODO: code your application's behavior here.
             //Server k = Server();
+
         }
     }
     else
@@ -91,6 +99,6 @@ int main()
         wprintf(L"Fatal Error: GetModuleHandle failed\n");
         nRetCode = 1;
     }
-    
+
     return nRetCode;
 }

@@ -21,7 +21,7 @@
 //	return;
 //}
 
-void booking(CSocket& connector, Hotel*& list_hotel)
+void booking(CSocket& connector)
 {
 
 	int size_username;
@@ -31,7 +31,7 @@ void booking(CSocket& connector, Hotel*& list_hotel)
 	char* username = new char[size_username + 1];
 	connector.Receive((char*)username, size_username, 0);
 	username[size_username] = '\0';
-
+	cout << username << endl;
 	double total_money = 0;
 	// Choose hotel
 	bool name_hotel_exist;
@@ -46,10 +46,10 @@ void booking(CSocket& connector, Hotel*& list_hotel)
 		connector.Receive((char*)&size_of_name_hotel, sizeof(int), 0);
 		connector.Receive(name_hotel, size_of_name_hotel, 0);
 
-		name_hotel[size_of_name_hotel + 1] = '\0';
-
+		name_hotel[size_of_name_hotel] = '\0';
+		cout << name_hotel << endl;
 		//Nhận thông báo từ server để xem tên khách sạn có hợp lên ko?
-		hotel = get_hotel_from_list(name_hotel, list_hotel);
+		hotel = get_hotel_from_list(name_hotel);
 		if (hotel == NULL)
 		{
 			name_hotel_exist = false;
@@ -97,35 +97,46 @@ void booking(CSocket& connector, Hotel*& list_hotel)
 		date date_out;
 		bool kind_of_this_room_exist;
 		connector.Receive((char*)&option_of_client, sizeof(int), 0);
+		//cout << option_of_client << endl;
 		do
 		{
 
 			// Gửi loại phòng cần chọn cho server.
 			connector.Receive((char*)&date_in, sizeof(date), 0);
-
+		//	cout << date_in.d << " " << date_in.m << " " << date_in.y << endl;
 			connector.Receive((char*)&date_out, sizeof(date), 0);
+
+		//	cout << date_out.d << " " << date_out.m << " " << date_out.y << endl;
+
 
 			kind_of_this_room_exist = hotel->Is_kind_of_room_available_on_date(date_in, date_out, option_of_client);
 			//Nhận thông báo từ server để xem loại phòng này có không?
 			connector.Send((char*)&kind_of_this_room_exist, sizeof(bool), 0);
 		} while (kind_of_this_room_exist == false);
+
+
+
 		new_booking->date_in = date_in;
 		new_booking->date_out = date_out;
 		new_booking->kind_room = option_of_client;
 		// Note
-		total_money += double(hotel->Price_of_kind_room(option_of_client) * double(distance_time(date_in, date_out)));
+		total_money += double(hotel->Price_of_kind_room(option_of_client) * double(distance_time(date_in, date_out)+1));
+		cout << total_money << endl;
+		cout << " " << hotel->Price_of_kind_room(option_of_client) << endl;
+		cout<<" " << distance_time(date_in, date_out) << endl;
 		int size_note;
 
 		connector.Receive((char*)&size_note, sizeof(int), 0);
 		char* note = new char[size_note + 1];
 		connector.Receive(note, size_note, 0);
 		note[size_note] = '\0';
+		cout << note << endl;
 		new_booking->note = note;
 		hotel->Add_customer(new_booking);
 	}
 	//getchar();
 	// Hoa don
-	connector.Send((char*)&total_money, sizeof(int), 0);
+	connector.Send((char*)&total_money, sizeof(double), 0);
 
 	delete[] name_hotel;
 	delete[] username;
@@ -139,18 +150,11 @@ void getRequirefromMenu(CSocket& sockClient) {
 	if (flag == 1)
 	{
 		// look up
-		int k;
-		sockClient.Receive((char*)&k, sizeof(int), 0);
-		if (k == 1) {
-
-		}
-		if (k == 0) {
-
-		}
 	}
 	if (flag == 0) {
 		// preservation
-
+		//cout << "kjsdf" << endl;
+		booking(sockClient);
 	}
 }
 // nhan lenh tra cuu ten khach san, ngay vao o va ngay roi di.

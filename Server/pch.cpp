@@ -1,7 +1,10 @@
 ﻿    // pch.cpp: source file corresponding to the pre-compiled header
-
-#include "pch.h"
+#pragma once 
 #include "framework.h"
+#include "pch.h"
+#include <conio.h>
+
+
 
 // When you are using pre-compiled headers, this source file is necessary for compilation to succeed.
 
@@ -19,70 +22,117 @@ bool Server::loginValid(user clientA) {
     return 1;
 }
 
-Server::Server() {
-    CSocket server;
-    const unsigned int port = 1234; // port server
-    AfxSocketInit(NULL);
 
-    server.Create(port);
-    server.Listen(5); // maximum queue = 5
+void  solve_client()
+{
+   // user* s = new user;
+    HMODULE hModule = ::GetModuleHandle(nullptr);
 
-    // so luong socket ket noi den server
-    int nClient = 0;
-    cout << "Enter the number of clients: ";
-    cin >> nClient;
-	user* s = new user;
-    CSocket* sockClient = new CSocket[nClient];
-    for (int i = 0; i < nClient; i++) {
-        server.Accept(sockClient[i]);
-        cout << "Connected to client " << i + 1 << "/" << nClient << endl;
-        sockClient[i].Send((char*)&i, sizeof(int), 0);
-    }
-    int q; 
+    
+        // initialize MFC and print and error on failure
+        if (!AfxWinInit(hModule, nullptr, ::GetCommandLine(), 0))
+        {
+            // TODO: code your application's behavior here.
+            wprintf(L"Fatal Error: MFC initialization failed\n");
+        }
+
+    CSocket sockClient;
+    
+    cserver.Accept(sockClient);
+
+    nClient++;
+    cout << "Connected to client " << nClient << endl;
+    sockClient.Send((char*)&nClient, sizeof(int), 0);
+
+    int q;
     int i = 0;
-    for (int j = i; j < nClient; j++) {
-        sockClient[j].Receive((char*)&q, sizeof(int), 0);
-        user* client = new user[nClient];
-        // dang ki luu do file code o day duoi cai if
-        if (q == 0) {
+    sockClient.Receive((char*)&q, sizeof(int), 0);
+    user client;
+    // dang ki luu do file code o day duoi cai if
+    if (q == 0)
+    {
+        int p;
+        sockClient.Receive((char*)&p, sizeof(int), 0);
+        sockClient.Receive(&client.username, sizeof(p), 0);
+        int q;
+        sockClient.Receive((char*)&q, sizeof(int), 0);
+        sockClient.Receive(&client.strpass, sizeof(q), 0);
+    }
+    if (q == 1)
+    {
+        // ktra dang nhap
+        while (1) {
+            // username 
             int p;
-            sockClient[j].Receive((char*)&p, sizeof(int), 0);
-            sockClient[j].Receive(&client[j].username, sizeof(p), 0);
+            sockClient.Receive((char*)&p, sizeof(int), 0);
+            sockClient.Receive(&client.username, sizeof(p), 0);
+            //password
             int q;
-            sockClient[j].Receive((char*)&q, sizeof(int), 0);
-            sockClient[j].Receive(&client[j].strpass, sizeof(q), 0);
-        }
-        if (q == 1) {
-            // ktra dang nhap
-            while (1) {
-                // username 
-                int p;
-                sockClient[j].Receive((char*)&p, sizeof(int), 0);
-                sockClient[j].Receive(&client[j].username, sizeof(p), 0);
-                //password
-                int q;
-                sockClient[j].Receive((char*)&q, sizeof(int), 0);
-                sockClient[j].Receive(&client[j].strpass, sizeof(q), 0);
-                int flag;
-                if (this->loginValid(client[j])) {
-                    flag = 1; // gui 1 xac nhan dang nhap thanh cong 
-                    sockClient[j].Send((char*)&flag, sizeof(int), 0);
-                }
-                else {
-                    flag = 0; // gui 0 dang nhap that bai.
-                    sockClient[j].Send((char*)&flag, sizeof(int), 0);
-                }
-                // nhan flag = 1 dang nhap thanh cong
-                sockClient[j].Receive((char*)&flag, sizeof(int), 0);
-                if (flag == 1) {
-                    getRequirefromMenu(sockClient[i]);
-                    break;
-                }
-                // tien hanh kiem tra lai tai client thu i
-                else i = j;
+            sockClient.Receive((char*)&q, sizeof(int), 0);
+            sockClient.Receive(&client.strpass, sizeof(q), 0);
+            int flag;
+            //DANG TEST CHO NAY
+           // if (server.loginValid(client))
+            if (1)
+            {
+                flag = 1; // gui 1 xac nhan dang nhap thanh cong 
+                sockClient.Send((char*)&flag, sizeof(int), 0);
             }
+            else
+            {
+                flag = 0; // gui 0 dang nhap that bai.
+                sockClient.Send((char*)&flag, sizeof(int), 0);
+            }
+            // nhan flag = 1 dang nhap thanh cong
+            sockClient.Receive((char*)&flag, sizeof(int), 0);
+            if (flag == 1) {
+                getRequirefromMenu(sockClient);
+                break;
+            }
+            // tien hanh kiem tra lai tai client thu i
         }
     }
+    return ;
+}
+
+
+Server::Server() {
+    
+    const unsigned int port = 1234; // port server
+    
+    cout << "Number maximum client can service:";
+    int n = 2;
+    AfxSocketInit(NULL);
+   
+    cserver.Create(port);
+    cout<<cserver.Listen(5);
+    
+    CSocket sockClient;
+
+
+
+   // while (1);
+
+
+    // solve_client();
+// AfxSocketInit(NULL);
+ //Wait for client prepare
+ //Sleep(1000);
+
+ // if (bESCPressed == 1) return;
+
+ //cserver.Accept(sockClient);
+
+  // maximum queue = 20
+
+ // so luong socket ket noi den server
+ //Solve
+// Sleep(2000);
+// thread thread_server(Manage_number_client_access,n);
+    thread thread_server(solve_client);
+ thread_server.join();
+ //solve_client(0);
+    return;
 }
 
 void Hotel::Load_info_hotel(ifstream& fin)
