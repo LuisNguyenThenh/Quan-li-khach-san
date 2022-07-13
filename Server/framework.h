@@ -21,8 +21,6 @@
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
 #include <iostream>
-#include <string>
-#include <algorithm>
 #include <ctime>
 #include "json.hpp"
 #include<fstream>

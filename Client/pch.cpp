@@ -1,7 +1,6 @@
 // pch.cpp: source file corresponding to the pre-compiled header
 
 #include "pch.h"
-#include "framework.h"
 // When you are using pre-compiled headers, this source file is necessary for compilation to succeed.
 
 consoleGraphic::consoleGraphic() {
@@ -38,7 +37,6 @@ void consoleGraphic::ShowCur(bool CursorVisibility) {
 
 client::client() {	
 	accountLogin();
-	
 	fstream out;
 	out.open("Text.txt", ios::app);
 	out << this->clientA.username << ' ' << this->clientA.strpass << endl;
