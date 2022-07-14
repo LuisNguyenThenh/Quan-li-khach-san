@@ -1,4 +1,4 @@
-﻿    // pch.cpp: source file corresponding to the pre-compiled header
+﻿// pch.cpp: source file corresponding to the pre-compiled header
 #pragma once 
 #include "framework.h"
 #include "pch.h"
@@ -23,27 +23,19 @@ bool Server::loginValid(user clientA) {
 }
 
 
-void  solve_client()
+void solve_client(CSocket* client1)
 {
-   // user* s = new user;
-    HMODULE hModule = ::GetModuleHandle(nullptr);
 
-    
-        // initialize MFC and print and error on failure
-        if (!AfxWinInit(hModule, nullptr, ::GetCommandLine(), 0))
-        {
-            // TODO: code your application's behavior here.
-            wprintf(L"Fatal Error: MFC initialization failed\n");
-        }
-
+    user* s = new user;
+    bool check = true;
     CSocket sockClient;
-    
-    cserver.Accept(sockClient);
-
+    sockClient.AttachHandle(sockClient, client1, 0);
+    //sockClient;
+    //
+    //
     nClient++;
     cout << "Connected to client " << nClient << endl;
     sockClient.Send((char*)&nClient, sizeof(int), 0);
-
     int q;
     int i = 0;
     sockClient.Receive((char*)&q, sizeof(int), 0);
@@ -92,46 +84,65 @@ void  solve_client()
             // tien hanh kiem tra lai tai client thu i
         }
     }
-    return ;
+    return;
+}
+void Press_ESC()
+{
+    bESCPressed = 0;
+    do
+    {
+        bESCPressed = (_getch() == 27);
+    } while (!bESCPressed);
+    //cout<<cserver.ShutDown(2);
+    cserver.Close();
+    for (int i = 0; i < socketclients.size(); i++)
+    {
+        // //   socketclients[i]->ShutDown(2);
+        socketclients[i]->Close();
+    }
+    return;
 }
 
 
+
 Server::Server() {
-    
+
     const unsigned int port = 1234; // port server
-    
-    cout << "Number maximum client can service:";
+
+    cout << "Waiting for client access..." << endl;
     int n = 2;
     AfxSocketInit(NULL);
-   
-    cserver.Create(port);
-    cout<<cserver.Listen(5);
-    
-    CSocket sockClient;
+    cserver.Create(1234);
+    cserver.Listen(5);
+
+    thread Exit(Press_ESC);
 
 
+    while (bESCPressed == 0)
+    {
+        CSocket new_client;
+        // cout << "OKEE" << endl;
+        cserver.Accept(new_client);
 
-   // while (1);
+        if (bESCPressed == 1) break;
 
+        CSocket* p_client = new_client.FromHandle(new_client);
+        socketclients.push_back(p_client);
+        threadclient.push_back(thread(solve_client, p_client));
+    }
 
-    // solve_client();
-// AfxSocketInit(NULL);
- //Wait for client prepare
- //Sleep(1000);
+    for (int i = 0; i < threadclient.size(); i++)
+    {
+        threadclient[i].join();
+    }
+    for (int i = 0; i < socketclients.size(); i++)
+    {
+        socketclients[i]->Close();
+    }
 
- // if (bESCPressed == 1) return;
+    Exit.join();
 
- //cserver.Accept(sockClient);
-
-  // maximum queue = 20
-
- // so luong socket ket noi den server
- //Solve
-// Sleep(2000);
-// thread thread_server(Manage_number_client_access,n);
-    thread thread_server(solve_client);
- thread_server.join();
- //solve_client(0);
+    // while (1);
     return;
 }
 
@@ -140,7 +151,7 @@ void Hotel::Load_info_hotel(ifstream& fin)
     char c[2];
 
     fin.getline(name, 199);
-    
+
     fin.getline(decription_Standard_room, 199);
     fin.getline(decription_Superior_room, 199);
     fin.getline(decription_Deluxe_room, 199);
@@ -165,7 +176,7 @@ void Hotel::Load_info_hotel(ifstream& fin)
         customer* p = new customer;
         p->user_name = new char[200];
         p->note = new char[200];
-        fin.getline(p->user_name,199);
+        fin.getline(p->user_name, 199);
 
         fin >> p->date_in.d;
         fin >> p->date_in.m;
@@ -191,7 +202,7 @@ void Hotel::Load_info_hotel(ifstream& fin)
         //cout << p->room << endl;
         //cout << p->note << endl;
     }
-    
+
     //TEST 
 
     //cout << name << endl;
@@ -266,7 +277,7 @@ int Hotel::Number_room_available(date date1, date date2)
 }
 
 char* Hotel::Get_info_hotel(date date1, date date2)
-{    
+{
     //int number_Superior_room_available;
     //int number_Deluxe_room_available;
     //int number_Suite_room_available;
@@ -290,7 +301,7 @@ char* Hotel::Get_info_hotel(date date1, date date2)
     {
         string num = int_to_string(count);
         tmp = tmp + num + ".\n";
-        
+
         tmp = tmp + string("Number Standard room available: ") + int_to_string(number_Standard_room_available) + "\n";
         tmp = tmp + string("Price Standard room: ") + double_to_string(price_Standard_room) + " USD \n\n";
         count++;

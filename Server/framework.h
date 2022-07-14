@@ -22,6 +22,12 @@
 
 #include <iostream>
 #include <string>
+
+#ifdef __WIN32__
+WORD versionWanted = MAKEWORD(1, 1);
+WSADATA wsaData;
+WSAStartup(versionWanted, &wsaData);
+#endif
 #include <algorithm>
 #include <ctime>
 //#include "json.hpp"
@@ -34,6 +40,7 @@
 #include <iomanip>
 #include <thread>
 #include <vector>
+#include <windows.h>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include "afxsock.h"
@@ -52,39 +59,39 @@ typedef pair <ii, ii> iii;
 
 
 struct user {
-	string username, strpass, idBanking;
+    string username, strpass, idBanking;
 };
 
 class Server {
 public:
-    
-	Server();
 
-	//check login
-	bool loginValid(user clientA);
+    Server();
+
+    //check login
+    bool loginValid(user clientA);
 };
 
 struct date
 {
-    int d,  m,  y;
+    int d, m, y;
 };
 
 class customer
 {
 public:
-	char* user_name;
+    char* user_name;
     date date_in, date_out;
     int kind_room;
-	char* note;
-	customer* next = NULL;
-	customer* pre = NULL;
+    char* note;
+    customer* next = NULL;
+    customer* pre = NULL;
 };
 
 class link_list
 {
 public:
     int number_customer = 0;
-	customer* head = NULL;
+    customer* head = NULL;
     customer* tail = NULL;
     bool is_empty()
     {
@@ -182,45 +189,47 @@ class Hotel
 {
 public:
     // First hotel will manage 
-	int num_hotel = 0;
+    int num_hotel = 0;
 
     link_list list_booking;
 
-	char* name = new char[200];
+    char* name = new char[200];
 
-	int number_Standard_room;
-	int number_Superior_room;
-	int number_Deluxe_room;
-	int number_Suite_room;
+    int number_Standard_room;
+    int number_Superior_room;
+    int number_Deluxe_room;
+    int number_Suite_room;
 
-	double price_Standard_room;
-	double price_Superior_room;
-	double price_Deluxe_room;
-	double price_Suite_room;
+    double price_Standard_room;
+    double price_Superior_room;
+    double price_Deluxe_room;
+    double price_Suite_room;
 
-	char* decription_Standard_room = new char[200];
-	char* decription_Superior_room = new char[200];
-	char* decription_Deluxe_room = new char[200];
-	char* decription_Suite_room = new char[200];
-    
-    
+    char* decription_Standard_room = new char[200];
+    char* decription_Superior_room = new char[200];
+    char* decription_Deluxe_room = new char[200];
+    char* decription_Suite_room = new char[200];
+
+
     void Add_customer(customer* p);
-	void Load_info_hotel(ifstream &fin);
-	int Number_room_available(date date1, date date2);
-	char* Get_info_hotel(date date1, date date2);
-	int Number_kind_of_room_available(date date1, date date2);
+    void Load_info_hotel(ifstream& fin);
+    int Number_room_available(date date1, date date2);
+    char* Get_info_hotel(date date1, date date2);
+    int Number_kind_of_room_available(date date1, date date2);
     double Price_of_kind_room(int kind);
-    iii Number_available_room_of_each_kind_on_date(date date1,date date2);
+    iii Number_available_room_of_each_kind_on_date(date date1, date date2);
 
     bool Is_kind_of_room_available_on_date(date date1, date date2, int kind);
 
 };
 extern vector <thread> threadimages;
 extern vector <thread> threadclient;
+extern vector <CSocket* > socketclients;
+
 extern Hotel* list_hotel;
 extern int nClient;
-extern CSocket cserver;
 extern int bESCPressed;
+extern CSocket cserver;
 
 
 void Load_data_hotel();
@@ -231,8 +240,7 @@ void copy_string(char*& s, char*& t);
 Hotel* get_hotel_from_list(char* name_hotel);
 void getRequirefromMenu(CSocket& sockClient);
 void getRequirefromLookup(CSocket& sockClient);
-void solve_client();
-
+void solve_client(CSocket* client1);
 
 bool kiem_tra_ngay_thang_nam(int day, int m, int y);
 int date_larger_than(date date1, date date2);

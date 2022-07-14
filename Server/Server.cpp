@@ -45,6 +45,7 @@ using namespace std;
 //TESTING
 vector <thread> threadimages;
 vector <thread> threadclient;
+vector <CSocket* > socketclients;
 Hotel* list_hotel;
 CSocket cserver;
 int nClient = 0;
@@ -62,7 +63,7 @@ void print_image(const char* s)
 int main()
 {
     vector <thread> threads;
-   // Sleep(10000);
+    // Sleep(10000);
     Load_data_hotel();
     cout << "Loaded data successfully!" << endl;
     //threads.push_back(thread(print_image, "hotel.jpg"));
@@ -86,10 +87,12 @@ int main()
         else
         {
 
+            AfxSocketInit(NULL);
+
             Server server = Server();
-           // return 0;
-            // TODO: code your application's behavior here.
-            //Server k = Server();
+            // return 0;
+             // TODO: code your application's behavior here.
+             //Server k = Server();
 
         }
     }

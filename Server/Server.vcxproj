@@ -178,7 +178,7 @@
       </AdditionalManifestDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d $(SolutionDir)bin $(OutDir)</Command>
+      <Command>xcopy /y /d $(SolutionDir)Server\opencv_world440d.dll $(OutDir)</Command>
     </PostBuildEvent>
     <PreLinkEvent>
       <Command>
@@ -232,7 +232,7 @@
       </AdditionalManifestDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d $(SolutionDir)bin $(OutDir)</Command>
+      <Command>xcopy /y /d $(SolutionDir)Server\opencv_world440d.dll $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
@@ -293,18 +293,6 @@
     <Image Include="hotel.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\opencv_annotation.exe" />
-    <None Include="bin\opencv_interactive-calibration.exe" />
-    <None Include="bin\opencv_version.exe" />
-    <None Include="bin\opencv_version_win32.exe" />
-    <None Include="bin\opencv_videoio_ffmpeg440_64.dll" />
-    <None Include="bin\opencv_videoio_msmf440_64.dll" />
-    <None Include="bin\opencv_videoio_msmf440_64d.dll" />
-    <None Include="bin\opencv_visualisation.exe" />
-    <None Include="bin\opencv_world440.dll" />
-    <None Include="bin\opencv_world440.pdb" />
-    <None Include="bin\opencv_world440d.dll" />
-    <None Include="bin\opencv_world440d.pdb" />
     <None Include="Userdata.json" />
   </ItemGroup>
   <ItemGroup>
