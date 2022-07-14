@@ -23,89 +23,75 @@ bool Server::loginValid(user clientA) {
 }
 
 
-void solve_client(CSocket* client1)
+void solve_client(CSocket* sockclient)
 {
-
-    user* s = new user;
-    bool check = true;
-    CSocket sockClient;
-    sockClient.AttachHandle(sockClient, client1, 0);
-    //sockClient;
-    //
-    //
-    nClient++;
-    cout << "Connected to client " << nClient << endl;
-    sockClient.Send((char*)&nClient, sizeof(int), 0);
-    int q;
-    int i = 0;
-    sockClient.Receive((char*)&q, sizeof(int), 0);
-    user client;
-    // dang ki luu do file code o day duoi cai if
-    if (q == 0)
-    {
-        int p;
-        sockClient.Receive((char*)&p, sizeof(int), 0);
-        sockClient.Receive(&client.username, sizeof(p), 0);
-        int q;
-        sockClient.Receive((char*)&q, sizeof(int), 0);
-        sockClient.Receive(&client.strpass, sizeof(q), 0);
-    }
-    if (q == 1)
-    {
-        // ktra dang nhap
-        while (1) {
-            // username 
-            int p;
-            sockClient.Receive((char*)&p, sizeof(int), 0);
-            sockClient.Receive(&client.username, sizeof(p), 0);
-            //password
-            int q;
-            sockClient.Receive((char*)&q, sizeof(int), 0);
-            sockClient.Receive(&client.strpass, sizeof(q), 0);
-            int flag;
-            //DANG TEST CHO NAY
-           // if (server.loginValid(client))
-            if (1)
-            {
-                flag = 1; // gui 1 xac nhan dang nhap thanh cong 
-                sockClient.Send((char*)&flag, sizeof(int), 0);
-            }
-            else
-            {
-                flag = 0; // gui 0 dang nhap that bai.
-                sockClient.Send((char*)&flag, sizeof(int), 0);
-            }
-            // nhan flag = 1 dang nhap thanh cong
-            sockClient.Receive((char*)&flag, sizeof(int), 0);
-            if (flag == 1) {
-                getRequirefromMenu(sockClient);
-                break;
-            }
-            // tien hanh kiem tra lai tai client thu i
-        }
-    }
+    CSocket* sockClient = (CSocket*)sockclient;
+    cout << nClient << endl;
+    sockClient->Send((char*)&nClient, sizeof(int), 0);
+    int q = 0;
+    sockClient->Receive((char*)&q, sizeof(int), 0);
+    // user* s = new user;
+    // bool check = true;
+    // //sockClient;
+    // //
+    // //
+    // nClient++;
+    // cout << "Connected to client " << nClient << endl;
+    // sockClient->Send((char*)&nClient, sizeof(int), 0);
+    // int q=0;
+    // 
+    // int i = 0;
+    //// sockClient->Receive((char*)&q, sizeof(int), 0);
+    //// return;
+    // user client;
+    // // dang ki luu do file code o day duoi cai if
+    // if (q == 0)
+    // {
+    //     int p;
+    //     sockClient->Receive((char*)&p, sizeof(int), 0);
+    //   //  sockClient->Receive(&client.username, sizeof(p), 0);
+    //     int q;
+    //   //  sockClient->Receive((char*)&q, sizeof(int), 0);
+    //   //  sockClient->Receive(&client.strpass, sizeof(q), 0);
+    // }
+    // if (q == 1)
+    // {
+    //     // ktra dang nhap
+    //     while (1) {
+    //         // username 
+    //         int p;
+    //         sockClient->Receive((char*)&p, sizeof(int), 0);
+    //         sockClient->Receive(&client.username, sizeof(p), 0);
+    //         //password
+    //         int q;
+    //         sockClient->Receive((char*)&q, sizeof(int), 0);
+    //         sockClient->Receive(&client.strpass, sizeof(q), 0);
+    //         int flag;
+    //         //DANG TEST CHO NAY
+    //        // if (server.loginValid(client))
+    //         if (1)
+    //         {
+    //             flag = 1; // gui 1 xac nhan dang nhap thanh cong 
+    //             sockClient->Send((char*)&flag, sizeof(int), 0);
+    //         }
+    //         else
+    //         {
+    //             flag = 0; // gui 0 dang nhap that bai.
+    //             sockClient->Send((char*)&flag, sizeof(int), 0);
+    //         }
+    //         // nhan flag = 1 dang nhap thanh cong
+    //         sockClient->Receive((char*)&flag, sizeof(int), 0);
+    //         if (flag == 1) {
+    //             getRequirefromMenu(sockClient);
+    //             break;
+    //         }
+    //         // tien hanh kiem tra lai tai client thu i
+    //     }
+    // }
     return;
 }
-void Press_ESC()
+Server::Server()
 {
-    bESCPressed = 0;
-    do
-    {
-        bESCPressed = (_getch() == 27);
-    } while (!bESCPressed);
-    //cout<<cserver.ShutDown(2);
-    cserver.Close();
-    for (int i = 0; i < socketclients.size(); i++)
-    {
-        // //   socketclients[i]->ShutDown(2);
-        socketclients[i]->Close();
-    }
-    return;
-}
-
-
-
-Server::Server() {
 
     const unsigned int port = 1234; // port server
 
@@ -115,36 +101,47 @@ Server::Server() {
     cserver.Create(1234);
     cserver.Listen(5);
 
-    thread Exit(Press_ESC);
 
-
-    while (bESCPressed == 0)
+    while (1)
     {
-        CSocket new_client;
-        // cout << "OKEE" << endl;
-        cserver.Accept(new_client);
+        CSocket* new_client = new CSocket;
+        //    // cout << "OKEE" << endl;
+        cserver.Accept(*new_client);
 
-        if (bESCPressed == 1) break;
-
-        CSocket* p_client = new_client.FromHandle(new_client);
-        socketclients.push_back(p_client);
-        threadclient.push_back(thread(solve_client, p_client));
+        thread first(solve_client, new_client);
     }
+    // thread Exit(Press_ESC);
 
-    for (int i = 0; i < threadclient.size(); i++)
-    {
-        threadclient[i].join();
-    }
-    for (int i = 0; i < socketclients.size(); i++)
-    {
-        socketclients[i]->Close();
-    }
+    //// pthread_create()
+    // while (bESCPressed == 0)
+    // {
+    //     CSocket* new_client=new CSocket;
+    //    // cout << "OKEE" << endl;
+    //     cserver.Accept(*new_client);
+    //     
+    //     if (bESCPressed == 1) break;
+    //     
 
-    Exit.join();
+    //    // p_client->Send((char*)&nClient, sizeof(int), 0);
+    //     socketclients.push_back(new_client);
+    //    threadclient.push_back(thread(solve_client, new_client));
+    // }
+    // 
+    // for (int i = 0; i < threadclient.size(); i++)
+    // {
+    //     threadclient[i].join();
+    // }
+    // for (int i = 0; i < socketclients.size(); i++)
+    // {
+    //     socketclients[i]->Close();
+    // }
+
+
 
     // while (1);
     return;
 }
+
 
 void Hotel::Load_info_hotel(ifstream& fin)
 {
