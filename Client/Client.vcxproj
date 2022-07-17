@@ -253,7 +253,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Client.h" />
+    <ClInclude Include="core.hpp" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="highgui.hpp" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />

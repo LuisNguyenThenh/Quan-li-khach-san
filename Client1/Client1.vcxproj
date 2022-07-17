@@ -132,6 +132,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_world440d.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d $(SolutionDir)Server\opencv_world440d.dll $(OutDir)</Command>
@@ -155,6 +156,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_world440d.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /y /d $(SolutionDir)Server\opencv_world440d.dll $(OutDir)</Command>
@@ -162,7 +164,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Client1.h" />
+    <ClInclude Include="core.hpp" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="highgui.hpp" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />

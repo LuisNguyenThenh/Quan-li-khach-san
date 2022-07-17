@@ -30,8 +30,8 @@
 #include <iomanip>
 #include <conio.h>
 #include <stdio.h>
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
+#include "core.hpp"
+#include "highgui.hpp"
 #define fi first
 #define se second
 //using json = nlohmann::json;
@@ -53,7 +53,10 @@ public:
 };
 
 struct user {
-	string username, strpass, idBanking;
+	char* username = new char[100];
+	char* strpass = new char[100];
+	// Co the doi
+	std::string idBanking;
 };
 
 class client
@@ -74,10 +77,17 @@ public:
 };
 
 extern user clientA;
+extern vector <thread> threadimage;
+
+
 void accountRegister();
-void booking(CSocket &connector);
-void lookup(CSocket& connector);
-void menuClient(CSocket& connector);
+void booking(int connector);
+void lookup(int connector);
+void menuClient(int connector);
+void recv_image(int socket);
+void show_image(cv::Mat image);
+
+
 
 int date_larger_than(date date1, date date2);
 bool kiem_tra_ngay_thang_nam(date date);

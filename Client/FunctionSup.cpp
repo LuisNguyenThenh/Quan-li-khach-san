@@ -42,7 +42,7 @@ int date_larger_than(date date1, date date2)
 
 	return 0;
 }
-void string_to_char(string t, char*& s)
+void string_to_char(std::string t, char*& s)
 {
 	s = new char[t.length() + 1];
 	for (int i = 0; i < t.length(); i++)

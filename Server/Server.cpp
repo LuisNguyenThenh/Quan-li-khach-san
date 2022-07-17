@@ -1,9 +1,9 @@
-﻿// Server.cpp : This file contains the 'main' function. Program execution begins and ends there.
+﻿// test_new socket.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include "pch.h"
 #include "framework.h"
-#include "Server.h"
+#include "pch.h"
+#pragma comment (lib, "ws2_32.lib")
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -14,65 +14,22 @@
 
 CWinApp theApp;
 
-using namespace std;
 
-
-////TESTING
-//void gotoxy(int x, int y)
-//{
-//    static HANDLE h = NULL;
-//    if (!h)
-//        h = GetStdHandle(STD_OUTPUT_HANDLE);
-//    COORD c = { x, y };
-//    SetConsoleCursorPosition(h, c);
-//}
-//int whereX()
-//{
-//    CONSOLE_SCREEN_BUFFER_INFO csbi;
-//    if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi))
-//        return csbi.dwCursorPosition.X;
-//    return -1;
-//}
-////========= lấy tọa độ y của con trỏ hiện tại =======
-//int whereY()
-//{
-//    CONSOLE_SCREEN_BUFFER_INFO csbi;
-//    if (GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi))
-//        return csbi.dwCursorPosition.Y;
-//    return -1;
-//}
-
-//TESTING
-vector <thread> threadimages;
-vector <thread> threadclient;
-vector <CSocket* > socketclients;
+std::vector <std::thread> threadimages;
+std::vector <std::thread> threadclient;
+std::vector <int> idsocketclient;
 Hotel* list_hotel;
-CSocket cserver;
 int nClient = 0;
-int bESCPressed = 0;
-void print_image(const char* s)
-{
-    Mat image;
-    image = imread("hotel.jpg");
-
-    imshow("Hotel", image);
-    waitKey(0);
-    return;
-}
-
+int bESCPressed;
+int server;
+sockaddr_in server_addr;
 int main()
 {
-    vector <thread> threads;
-    // Sleep(10000);
-    Load_data_hotel();
-    cout << "Loaded data successfully!" << endl;
-    //threads.push_back(thread(print_image, "hotel.jpg"));
-    //threads[0].join();
-    //Sleep(1000);
-    //thread_image.push_back(thread(print_image, "hotel.jpg"));
 
-
+    //std::cout << double_to_string(31.46566);
+    int a = 0;
     int nRetCode = 0;
+
     HMODULE hModule = ::GetModuleHandle(nullptr);
 
     if (hModule != nullptr)
@@ -84,16 +41,29 @@ int main()
             wprintf(L"Fatal Error: MFC initialization failed\n");
             nRetCode = 1;
         }
+
         else
         {
+            WSADATA wsData;
+            WORD ver = MAKEWORD(2, 2);
 
-            AfxSocketInit(NULL);
+            int wsOk = WSAStartup(ver, &wsData);
+            if (wsOk != 0)
+            {
+                // cerr << "Can't Initialize winsock! Quitting" << std::endl;
+            }
+            Load_data_hotel();
+            std::cout << "Load data successfully!" << std::endl;
 
-            Server server = Server();
-            // return 0;
-             // TODO: code your application's behavior here.
-             //Server k = Server();
+            std::cout << "Start" << std::endl;
+            int n = 2;
 
+            //Mat image;
+
+            Server solve_server = Server();
+
+            WSACleanup();
+            // TODO: code your application's behavior here.
         }
     }
     else

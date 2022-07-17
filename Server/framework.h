@@ -1,5 +1,4 @@
 #pragma once
-
 #include "targetver.h"
 #include <stdio.h>
 #include <tchar.h>
@@ -22,36 +21,38 @@
 
 #include <iostream>
 #include <string>
+#include "core.hpp"
+#include "highgui.hpp"
 
-#ifdef __WIN32__
-WORD versionWanted = MAKEWORD(1, 1);
-WSADATA wsaData;
-WSAStartup(versionWanted, &wsaData);
-#endif
 #include <algorithm>
-#include <ctime>
 //#include "json.hpp"
 #include <cstring>
 #include <stdio.h>
 #include <string.h>
 #include <fstream>
-#pragma comment(lib,"graphics.lib")
 #include <sstream>
 #include <iomanip>
 #include <thread>
 #include <vector>
-#include <windows.h>
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
+
+#include <Windows.h>
+#include <iostream>
+#include <string>
+#include <string.h>
+#include <cstring>
+
 #include "afxsock.h"
+
+#include <memory>
+
+
 #define fi first
 #define se second
 //using json = nlohmann::json;
-using namespace std;
-using namespace cv;
 
-typedef pair <int, int> ii;
-typedef pair <ii, ii> iii;
+
+typedef std::pair <int, int> ii;
+typedef std::pair <ii, ii> iii;
 
 // Global variable
 
@@ -59,7 +60,9 @@ typedef pair <ii, ii> iii;
 
 
 struct user {
-    string username, strpass, idBanking;
+    char* username, * strpass;
+    // Co the doi
+    std::string idBanking;
 };
 
 class Server {
@@ -212,7 +215,7 @@ public:
 
 
     void Add_customer(customer* p);
-    void Load_info_hotel(ifstream& fin);
+    void Load_info_hotel(std::ifstream& fin);
     int Number_room_available(date date1, date date2);
     char* Get_info_hotel(date date1, date date2);
     int Number_kind_of_room_available(date date1, date date2);
@@ -222,26 +225,34 @@ public:
     bool Is_kind_of_room_available_on_date(date date1, date date2, int kind);
 
 };
-extern vector <thread> threadimages;
-extern vector <thread> threadclient;
-extern vector <CSocket* > socketclients;
+
+extern std::vector <std::thread> threadimages;
+extern std::vector <std::thread> threadclient;
 
 extern Hotel* list_hotel;
 extern int nClient;
 extern int bESCPressed;
-extern CSocket cserver;
+extern int server;
+extern sockaddr_in server_addr;
+extern std::vector <int> idsocketclient;
 
 
+
+
+void solve_client(int sockClient, int order_client);
 void Load_data_hotel();
-string int_to_string(int a);
-string double_to_string(double a);
-void string_to_char(string t, char*& s);
+std::string int_to_string(int a);
+void Press_ESC();
+std::string double_to_string(double a);
+void string_to_char(std::string t, char*& s);
 void copy_string(char*& s, char*& t);
 Hotel* get_hotel_from_list(char* name_hotel);
-void getRequirefromMenu(CSocket& sockClient);
-void getRequirefromLookup(CSocket& sockClient);
-void solve_client(CSocket* client1);
+void getRequirefromMenu(int sockClient);
+void getRequirefromLookup(int sockClient);
+void send_image(int socket, const char* name_file);
 
+
+void handle();
 bool kiem_tra_ngay_thang_nam(int day, int m, int y);
 int date_larger_than(date date1, date date2);
 int distance_time(date date1, date date2);

@@ -264,8 +264,10 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="core.hpp" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="graphics.h" />
+    <ClInclude Include="highgui.hpp" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />

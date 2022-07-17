@@ -2,20 +2,20 @@
 #include "framework.h"
 
 
-string int_to_string(int a)
+std::string int_to_string(int a)
 {
-	string s;
-	stringstream ss;
+	std::string s;
+	std::stringstream ss;
 	ss << a;
 	ss >> s;
 	return s;
 }
-string double_to_string(double a)
+std::string double_to_string(double a)
 {
-	string s = to_string(a);
+	std::string s = std::to_string(a);
 	return s;
 }
-void string_to_char(string t,char*& s)
+void string_to_char(std::string t, char*& s)
 {
 	s = new char[t.length() + 1];
 	for (int i = 0; i < t.length(); i++)
@@ -40,9 +40,9 @@ void copy_string(char*& s, char*& t)
 
 void Load_data_hotel()
 {
-	ifstream fin;
-	fin.open("hotel.txt", ios::in|ios::beg);
-	if (fin.is_open() == false) cout << "false open!" << endl;
+	std::ifstream fin;
+	fin.open("hotel.txt", std::ios::in | std::ios::beg);
+	if (fin.is_open() == false) std::cout << "false open!" << std::endl;
 
 	int number_hotel;
 	fin >> number_hotel;
@@ -58,10 +58,10 @@ void Load_data_hotel()
 	}
 	//for (int i = 0; i < number_hotel; i++)
 	//{
-	//	cout << i + 1 << endl;
-	//	cout<<list_hotel[i].Get_info_hotel();
-	//	cout << list_hotel[i].Number_room_available() << endl;
-	//	cout << list_hotel[i].Number_kind_of_room_available() << endl;
+	//	std::cout << i + 1 << std::endl;
+	//	std::cout<<list_hotel[i].Get_info_hotel();
+	//	std::cout << list_hotel[i].Number_room_available() << std::endl;
+	//	std::cout << list_hotel[i].Number_kind_of_room_available() << std::endl;
 	//}
 
 	fin.close();
@@ -69,11 +69,14 @@ void Load_data_hotel()
 }
 Hotel* get_hotel_from_list(char* name_hotel)
 {
+	std::cout << "in Here!";
 	int number_hotel = list_hotel[0].num_hotel;
 	for (int i = 0; i < number_hotel; i++)
 	{
+		//std::cout << list_hotel[i].name;
 		if (strcmp(name_hotel, list_hotel[i].name) == 0)
 		{
+			//std::cout << "True" << std::endl;
 			return (list_hotel + i);
 		}
 	}

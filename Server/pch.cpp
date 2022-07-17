@@ -1,5 +1,6 @@
 ﻿// pch.cpp: source file corresponding to the pre-compiled header
 #pragma once 
+
 #include "framework.h"
 #include "pch.h"
 #include <conio.h>
@@ -23,127 +24,145 @@ bool Server::loginValid(user clientA) {
 }
 
 
-void solve_client(CSocket* sockclient)
+void solve_client(int sockClient, int order_client)
 {
-    CSocket* sockClient = (CSocket*)sockclient;
-    cout << nClient << endl;
-    sockClient->Send((char*)&nClient, sizeof(int), 0);
-    int q = 0;
-    sockClient->Receive((char*)&q, sizeof(int), 0);
-    // user* s = new user;
-    // bool check = true;
-    // //sockClient;
-    // //
-    // //
-    // nClient++;
-    // cout << "Connected to client " << nClient << endl;
-    // sockClient->Send((char*)&nClient, sizeof(int), 0);
-    // int q=0;
-    // 
-    // int i = 0;
-    //// sockClient->Receive((char*)&q, sizeof(int), 0);
-    //// return;
-    // user client;
-    // // dang ki luu do file code o day duoi cai if
-    // if (q == 0)
-    // {
-    //     int p;
-    //     sockClient->Receive((char*)&p, sizeof(int), 0);
-    //   //  sockClient->Receive(&client.username, sizeof(p), 0);
-    //     int q;
-    //   //  sockClient->Receive((char*)&q, sizeof(int), 0);
-    //   //  sockClient->Receive(&client.strpass, sizeof(q), 0);
-    // }
-    // if (q == 1)
-    // {
-    //     // ktra dang nhap
-    //     while (1) {
-    //         // username 
-    //         int p;
-    //         sockClient->Receive((char*)&p, sizeof(int), 0);
-    //         sockClient->Receive(&client.username, sizeof(p), 0);
-    //         //password
-    //         int q;
-    //         sockClient->Receive((char*)&q, sizeof(int), 0);
-    //         sockClient->Receive(&client.strpass, sizeof(q), 0);
-    //         int flag;
-    //         //DANG TEST CHO NAY
-    //        // if (server.loginValid(client))
-    //         if (1)
-    //         {
-    //             flag = 1; // gui 1 xac nhan dang nhap thanh cong 
-    //             sockClient->Send((char*)&flag, sizeof(int), 0);
-    //         }
-    //         else
-    //         {
-    //             flag = 0; // gui 0 dang nhap that bai.
-    //             sockClient->Send((char*)&flag, sizeof(int), 0);
-    //         }
-    //         // nhan flag = 1 dang nhap thanh cong
-    //         sockClient->Receive((char*)&flag, sizeof(int), 0);
-    //         if (flag == 1) {
-    //             getRequirefromMenu(sockClient);
-    //             break;
-    //         }
-    //         // tien hanh kiem tra lai tai client thu i
-    //     }
-    // }
+    user client;
+    // dang ki luu do file code o day duoi cai if
+
+    bool c = true;
+    //Send flag
+    send(sockClient, (char*)&c, sizeof(bool), 0);
+    //Send numberous
+    send(sockClient, (char*)&order_client, sizeof(int), 0);
+
+    std::cout << "Connected with client " << order_client << std::endl;
+
+
+    int q = 1;
+    recv(sockClient, (char*)&q, sizeof(int), 0);
+    if (q == 0)
+    {
+        int p;
+        recv(sockClient, (char*)&p, sizeof(int), 0);
+        client.username = new char[p + 1];
+        recv(sockClient, (char*)client.username, p, 0);
+        client.username[p] = '\0';
+        std::cout << client.username << std::endl;
+        //password
+        int q;
+        recv(sockClient, (char*)&q, sizeof(int), 0);
+        client.strpass = new char[p + 1];
+
+        recv(sockClient, (char*)client.strpass, q, 0);
+        client.strpass[q] = '\0';
+        std::cout << client.strpass << std::endl;
+
+    }
+    if (q == 1)
+    {
+
+        // ktra dang nhap
+        while (1) {
+            // username 
+            int size_name;
+            recv(sockClient, (char*)&size_name, sizeof(int), 0);
+            std::cout << size_name;
+            client.username = new char[size_name + 1];
+            recv(sockClient, (char*)client.username, size_name, 0);
+            client.username[size_name] = '\0';
+            std::cout << client.username << std::endl;
+            //password
+            int size_pass;
+            recv(sockClient, (char*)&size_pass, sizeof(int), 0);
+            client.strpass = new char[size_pass + 1];
+
+            recv(sockClient, (char*)client.strpass, size_pass, 0);
+            client.strpass[size_pass] = '\0';
+            std::cout << client.strpass << std::endl;
+
+            int flag;
+            //DANG TEST CHO NAY
+           // if (server.loginValid(client))
+            if (1)
+            {
+                flag = 1; // gui 1 xac nhan dang nhap thanh cong 
+                send(sockClient, (char*)&flag, sizeof(int), 0);
+            }
+            else
+            {
+                flag = 0; // gui 0 dang nhap that bai.
+                send(sockClient, (char*)&flag, sizeof(int), 0);
+            }
+            // nhan flag = 1 dang nhap thanh cong
+            recv(sockClient, (char*)&flag, sizeof(int), 0);
+            if (flag == 1) {
+                getRequirefromMenu(sockClient);
+                break;
+            }
+            // tien hanh kiem tra lai tai client thu i
+        }
+        // }
+
+    }
+
+    std::cout << "Client " << order_client << " have done!" << std::endl;
+    closesocket(sockClient);
     return;
+
 }
 Server::Server()
 {
-
     const unsigned int port = 1234; // port server
 
-    cout << "Waiting for client access..." << endl;
-    int n = 2;
-    AfxSocketInit(NULL);
-    cserver.Create(1234);
-    cserver.Listen(5);
+    server = -1;
+    server = socket(AF_INET, SOCK_STREAM, 0);
 
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(1234);
+    server_addr.sin_addr.s_addr = INADDR_ANY;
 
-    while (1)
+    bind(server, (sockaddr*)&server_addr, sizeof(server_addr));
+    listen(server, 10);
+    int client_size = sizeof(sockaddr_in);
+
+    std::cout << "Waiting for client access..." << std::endl;
+    std::thread escape(Press_ESC);
+    while (bESCPressed == 0)
     {
-        CSocket* new_client = new CSocket;
-        //    // cout << "OKEE" << endl;
-        cserver.Accept(*new_client);
-
-        thread first(solve_client, new_client);
+        sockaddr_in client_addr;
+        int client_socket = accept(server, (sockaddr*)&client_addr, &client_size);
+        if (client_socket != -1)
+        {
+            nClient++;
+            idsocketclient.push_back(client_socket);
+            threadclient.push_back(std::thread(solve_client, client_socket, nClient));
+        }
     }
-    // thread Exit(Press_ESC);
+    escape.join();
+    return;
+}
 
-    //// pthread_create()
-    // while (bESCPressed == 0)
-    // {
-    //     CSocket* new_client=new CSocket;
-    //    // cout << "OKEE" << endl;
-    //     cserver.Accept(*new_client);
-    //     
-    //     if (bESCPressed == 1) break;
-    //     
-
-    //    // p_client->Send((char*)&nClient, sizeof(int), 0);
-    //     socketclients.push_back(new_client);
-    //    threadclient.push_back(thread(solve_client, new_client));
-    // }
-    // 
-    // for (int i = 0; i < threadclient.size(); i++)
-    // {
-    //     threadclient[i].join();
-    // }
-    // for (int i = 0; i < socketclients.size(); i++)
-    // {
-    //     socketclients[i]->Close();
-    // }
-
-
-
-    // while (1);
+void Press_ESC()
+{
+    bESCPressed = 0;
+    do
+    {
+        bESCPressed = (_getch() == 27);
+    } while (!bESCPressed);
+    std::cout << "Waiting for all clients done!" << std::endl;
+    for (int i = 0; i < threadclient.size(); i++)
+    {
+        threadclient[i].join();
+    }
+    shutdown(server, 2);
+    closesocket(server);
     return;
 }
 
 
-void Hotel::Load_info_hotel(ifstream& fin)
+
+
+void Hotel::Load_info_hotel(std::ifstream& fin)
 {
     char c[2];
 
@@ -189,32 +208,32 @@ void Hotel::Load_info_hotel(ifstream& fin)
         Add_customer(p);
 
         //Test
-        //cout << p->user_name << endl;
-        //cout << p->date_in.d << endl;
-        //cout << p->date_in.m << endl;
-        //cout << p->date_in.y << endl;
-        //cout << p->date_out.d << endl;
-        //cout << p->date_out.m << endl;
-        //cout << p->date_out.y << endl;
-        //cout << p->room << endl;
-        //cout << p->note << endl;
+        //std::cout << p->user_name << std::endl;
+        //std::cout << p->date_in.d << std::endl;
+        //std::cout << p->date_in.m << std::endl;
+        //std::cout << p->date_in.y << std::endl;
+        //std::cout << p->date_out.d << std::endl;
+        //std::cout << p->date_out.m << std::endl;
+        //std::cout << p->date_out.y << std::endl;
+        //std::cout << p->room << std::endl;
+        //std::cout << p->note << std::endl;
     }
 
     //TEST 
 
-    //cout << name << endl;
-    //cout << decription_Standard_room << endl;
-    //cout << decription_Superior_room << endl;
-    //cout << decription_Deluxe_room << endl;
-    //cout << decription_Suite_room << endl;
-    //cout << price_Standard_room << endl;
-    //cout << price_Superior_room << endl;
-    //cout << price_Deluxe_room << endl;
-    //cout << price_Suite_room << endl;
-    //cout << number_Standard_room << endl;
-    //cout << number_Superior_room<< endl;
-    //cout << number_Deluxe_room << endl;
-    //cout << number_Suite_room << endl;
+    //std::cout << name << std::endl;
+    //std::cout << decription_Standard_room << std::endl;
+    //std::cout << decription_Superior_room << std::endl;
+    //std::cout << decription_Deluxe_room << std::endl;
+    //std::cout << decription_Suite_room << std::endl;
+    //std::cout << price_Standard_room << std::endl;
+    //std::cout << price_Superior_room << std::endl;
+    //std::cout << price_Deluxe_room << std::endl;
+    //std::cout << price_Suite_room << std::endl;
+    //std::cout << number_Standard_room << std::endl;
+    //std::cout << number_Superior_room<< std::endl;
+    //std::cout << number_Deluxe_room << std::endl;
+    //std::cout << number_Suite_room << std::endl;
 
     return;
 }
@@ -293,45 +312,45 @@ char* Hotel::Get_info_hotel(date date1, date date2)
 
 
     int count = 1;
-    string tmp;
+    std::string tmp;
     if (number_Standard_room_available > 0)
     {
-        string num = int_to_string(count);
+        std::string num = int_to_string(count);
         tmp = tmp + num + ".\n";
 
-        tmp = tmp + string("Number Standard room available: ") + int_to_string(number_Standard_room_available) + "\n";
-        tmp = tmp + string("Price Standard room: ") + double_to_string(price_Standard_room) + " USD \n\n";
+        tmp = tmp + std::string("Number Standard room available: ") + int_to_string(number_Standard_room_available) + "\n";
+        tmp = tmp + std::string("Price Standard room: ") + double_to_string(price_Standard_room) + " USD \n\n";
         count++;
     }
 
     if (number_Superior_room_available > 0)
     {
-        string num = int_to_string(count);
+        std::string num = int_to_string(count);
         tmp = tmp + num + ".\n";
 
-        tmp = tmp + string("Number Superior room available: ") + int_to_string(number_Superior_room_available) + "\n";
-        tmp = tmp + string("Price Superior room: ") + double_to_string(price_Superior_room) + " USD \n\n";
+        tmp = tmp + std::string("Number Superior room available: ") + int_to_string(number_Superior_room_available) + "\n";
+        tmp = tmp + std::string("Price Superior room: ") + double_to_string(price_Superior_room) + " USD \n\n";
         count++;
     }
 
     if (number_Deluxe_room_available > 0)
     {
-        string num = int_to_string(count);
+        std::string num = int_to_string(count);
         tmp = tmp + num + ".\n";
 
-        tmp = tmp + string("Number Deluxe room available: ") + int_to_string(number_Deluxe_room_available) + "\n";
-        tmp = tmp + string("Price Deluxe room: ") + double_to_string(price_Deluxe_room) + " USD \n\n";
+        tmp = tmp + std::string("Number Deluxe room available: ") + int_to_string(number_Deluxe_room_available) + "\n";
+        tmp = tmp + std::string("Price Deluxe room: ") + double_to_string(price_Deluxe_room) + " USD \n\n";
         count++;
     }
 
 
     if (number_Suite_room_available > 0)
     {
-        string num = int_to_string(count);
+        std::string num = int_to_string(count);
         tmp = tmp + num + ".\n";
 
-        tmp = tmp + string("Number Suite room available: ") + int_to_string(number_Suite_room_available) + "\n";
-        tmp = tmp + string("Price Suite room: ") + double_to_string(price_Suite_room) + " USD \n\n";
+        tmp = tmp + std::string("Number Suite room available: ") + int_to_string(number_Suite_room_available) + "\n";
+        tmp = tmp + std::string("Price Suite room: ") + double_to_string(price_Suite_room) + " USD \n\n";
         count++;
     }
     char* s;

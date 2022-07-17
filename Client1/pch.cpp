@@ -36,31 +36,32 @@ void consoleGraphic::ShowCur(bool CursorVisibility) {
 	SetConsoleCursorInfo(handle, &cursor);
 }
 
-client::client() {	
+client::client() {
 	accountLogin();
-	
-	fstream out;
-	out.open("Text.txt", ios::app);
-	out << this->clientA.username << ' ' << this->clientA.strpass << endl;
-	out.close();
+
+	//fstream out;
+	//out.open("Text.txt", ios::app);
+	//out << this->clientA.username << ' ' << this->clientA.strpass << std::endl;
+	//out.close();
 
 	/*for (int i = 0;; i++) {
 		cin >> strPassword[i];
 		conSole.gotoxy(9 + i, 1);
-		cout << "*";
+		std::cout << "*";
 		if (strPassword[i] == '\n') {
 			strPassword[i] = '\0';
 			break;
 		}
 	}*/
 	/*if (loginValid(clientA))
-		cout << "valid!";
+		std::cout << "valid!";
 	else
-		cout << "Username or Password doesn't correct.\n";*/
+		std::cout << "Username or Password doesn't correct.\n";*/
+	return;
 }
 
 // phan nay cua server lam nham qua client :)
-//bool client::loginValid(string strA, string strB) {
+//bool client::loginValid(std::string strA, std::string strB) {
 //	user s[3];
 //	s[0].username = "thanh";
 //	s[1].username = "phuoc";
@@ -85,33 +86,33 @@ bool client::loginValid(user clientA) {
 }
 
 bool client::registerValid(user clientA) {
-	if (clientA.username.length() < 5 || clientA.strpass.length() < 3 || clientA.idBanking.length() != 10)
-		return 0;
-	for (int i = 0; i < clientA.username.length(); i++) {
-		if ((clientA.username[i] < '0' || clientA.username[i] > '9') && (clientA.username[i] < 'a' || clientA.username[i] > 'z'))
-			return 0;
-	}
-	for (int i = 0; i < clientA.idBanking.length(); i++) {
-		if (clientA.idBanking[i] < '0' || clientA.idBanking[i] > '9')
-			return 0;
-	}
+	//if (clientA.username.length() < 5 || clientA.strpass.length() < 3 || clientA.idBanking.length() != 10)
+	//	return 0;
+	//for (int i = 0; i < clientA.username.length(); i++) {
+	//	if ((clientA.username[i] < '0' || clientA.username[i] > '9') && (clientA.username[i] < 'a' || clientA.username[i] > 'z'))
+	//		return 0;
+	//}
+	//for (int i = 0; i < clientA.idBanking.length(); i++) {
+	//	if (clientA.idBanking[i] < '0' || clientA.idBanking[i] > '9')
+	//		return 0;
+	//}
 	return 1;
 }
 
 void accountRegister() {
 	client a;
 	do {
-		cout << "Username: "; a.conSole.gotoxy(30, 0); cout << "(Username is \'0\' to \'9\' and \'a\' to \'z\')\n";
-		cout << "Password: ";
-		a.conSole.gotoxy(0, 2); cout << "ID Banking: ";
+		std::cout << "Username: "; a.conSole.gotoxy(30, 0); std::cout << "(Username is \'0\' to \'9\' and \'a\' to \'z\')\n";
+		std::cout << "Password: ";
+		a.conSole.gotoxy(0, 2); std::cout << "ID Banking: ";
 		a.conSole.gotoxy(10, 0);
-		cin >> clientA.username;
+		cin.getline(clientA.username, 99);
 		a.conSole.gotoxy(10, 1);
-		cin >> clientA.strpass;
+		cin.getline(clientA.strpass, 99);
 		a.conSole.gotoxy(12, 2);
 		cin >> clientA.idBanking;
 		if (a.registerValid(clientA) == 0) {
-			a.conSole.gotoxy(0, 4); cout << "Username or password is not valid. Please try another one.\n";
+			a.conSole.gotoxy(0, 4); std::cout << "Username or password is not valid. Please try another one.\n";
 			system("pause");
 			system("cls");
 		}
@@ -121,12 +122,13 @@ void accountRegister() {
 void client::accountLogin() {
 	// neu da co tien hanh dang nhap
 	system("cls");
-	cout << "Username: ";
+	std::cout << "Username: ";
 	conSole.gotoxy(0, 1);
-	cout << "Password: ";
+	std::cout << "Password: ";
 	conSole.gotoxy(10, 0);
-	cin >> clientA.username;
+	cin.getline(clientA.username, 99);
 	conSole.gotoxy(10, 1);
-	cin >> clientA.strpass;
+	cin.getline(clientA.strpass, 99);
+	return;
 }
 
