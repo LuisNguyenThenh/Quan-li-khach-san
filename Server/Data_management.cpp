@@ -202,7 +202,7 @@ StackUser::~StackUser()
 {
     if (this == NULL || this->Head == NULL)
         return;
-    std::ofstream out("user.json", std::ios::out | std::ios::app | std::ios::in);
+    std::ofstream out("user.json", std::ios::trunc);
     json j;
     out << this->number_user;
     while (this->Head!=NULL)
@@ -282,4 +282,5 @@ void Finish(Hotel* a)
     out << a->num_hotel << " ";
     out.close();
     delete[] a;
+    USER->~StackUser();
 }
