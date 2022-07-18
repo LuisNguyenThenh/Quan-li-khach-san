@@ -182,7 +182,7 @@
       <AdditionalDependencies>opencv_world440d.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d $(SolutionDir)Server\opencv_world440d.dll $(OutDir)</Command>
+      <Command>xcopy /y /d "$(SolutionDir)Server\opencv_world440d.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>
@@ -230,7 +230,7 @@
       <AdditionalDependencies>opencv_world440d.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d $(SolutionDir)Server\opencv_world440d.dll $(OutDir)</Command>
+      <Command>xcopy /y /d "$(SolutionDir)Server\opencv_world440d.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">

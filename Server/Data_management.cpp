@@ -12,6 +12,18 @@ void from_json(const json& j, date& p) {
     j.at("m").get_to(p.m);
     j.at("y").get_to(p.y);
 };
+void to_json(json& j, const user& p) {
+    j = json{
+        {"username", p.username},
+        {"strpass", p.strpass },
+        {"idBanking", p.idBanking }
+    };
+}
+void from_json(const json& j, user& p) {
+    j.at("username").get_to(p.username);
+    j.at("strpass").get_to(p.strpass);
+    j.at("idBanking").get_to(p.idBanking);
+};
 void to_json(json& j, const customer& p) {
     j = json{
         {"user_name", p.user_name},
@@ -59,6 +71,148 @@ void from_json(const json& j, Hotel& p) {
     j.at("decription_Deluxe_room").get_to(p.decription_Deluxe_room);
     j.at("decription_Suite_room").get_to(p.decription_Suite_room);
 };
+bool link_list::is_empty()
+{
+    if (this->head == NULL)
+        return true;
+    return false;
+}
+customer* link_list::find(char* s)
+{
+    if (this == NULL) return NULL;
+    for (customer* p = this->head; p; p = p->next)
+        if (p->user_name == s)
+            return p;
+    return NULL;
+}
+void link_list::add(customer* p)
+{
+    number_customer++;
+    if (this->head == NULL)
+    {
+        this->head = this->tail = p;
+        return;
+    }
+    else
+    {
+        this->tail->next = p;
+        p->pre = this->tail;
+        this->tail = p;
+        return;
+    }
+}
+void link_list::remove(char* s)
+{
+    number_customer--;
+    customer* x = NULL;
+    for (customer* p = this->head; p; p = p->next)
+        if (p->user_name == s)
+        {
+            x = p;
+            break;
+        }
+    if (x == NULL)
+        return;
+    else
+    {
+        if (x == this->head)
+        {
+            if (this->head != this->tail)
+            {
+                this->head = this->head->next;
+                this->head->pre = NULL;
+            }
+            else
+            {
+                this->head = NULL;
+                this->tail = NULL;
+            }
+            delete x;
+            return;
+        }
+        if (x == this->tail)
+        {
+            this->tail = this->tail->pre;
+            this->tail->next = NULL;
+            delete x;
+            return;
+        }
+        else
+        {
+            x->next->pre = x->pre;
+            x->pre->next = x->next;
+            delete x;
+            x = NULL;
+            return;
+        }
+    }
+}
+bool StackUser::IsEmpty()
+{
+    if (this->Head == NULL)
+        return true;
+    return false;
+}
+void StackUser::RemoveNode(user* p)
+{
+    if (this->Head == p)
+        this->Head = p->Next;
+    else
+    {
+        user* temp = this->Head;
+        while (temp->Next != p)
+            temp = temp->Next;
+        temp->Next = p->Next;
+    }
+    delete p;
+}
+void StackUser::Push(user* temp)
+{
+    temp->Next = this->Head;
+    this->Head = temp;
+    this->number_user++;
+}
+void StackUser::Input(json j)
+{
+    user* temp = new user;
+    j.get_to(*temp);
+    this->Push(temp);
+}
+void StackUser::Pop()
+{
+    if (IsEmpty())
+        return;
+    RemoveNode(this->Head);
+}
+StackUser::StackUser()
+{
+    std::ifstream inp("user.json");
+    json j;
+    int number;
+    inp >> number;
+    for (int i = 0; i < number; i++)
+    {
+        inp >> j;
+        this->Input(j);
+    }
+    inp.close();
+}
+
+StackUser::~StackUser()
+{
+    if (this == NULL || this->Head == NULL)
+        return;
+    std::ofstream out("user.json", std::ios::out | std::ios::app | std::ios::in);
+    json j;
+    out << this->number_user;
+    while (this->Head!=NULL)
+    {
+        j = *this->Head;
+        out << j;
+        this->Pop();
+    }
+    out.close();
+}
 Hotel::Hotel()
 {
     json j;
@@ -111,19 +265,21 @@ link_list::~link_list()
     delete temp;
     out.close();
 }
-void Load_data_hotel()
+void Load_data()
 {
     int number;
     fin >> number;
-
+    fin.ignore();
     list_hotel = new Hotel[number];
     list_hotel->num_hotel = number;
+    USER = new StackUser;
     fin.close();
     return;
 }
 void Finish(Hotel* a)
 {
     std::ofstream out("hotel.json", std::ios::trunc);
-    out << a->num_hotel;
+    out << a->num_hotel << " ";
+    out.close();
     delete[] a;
 }

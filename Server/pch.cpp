@@ -28,46 +28,50 @@ void solve_client(int sockClient, int order_client)
             int p;
             recv(sockClient, (char*)&p, sizeof(int), 0);
             std::cout << p;
-            client.username = new char[p + 1];
-            recv(sockClient, (char*)client.username, p, 0);
-            client.username[p] = '\0';
+            char* temp1 = new char[p + 1];
+            recv(sockClient, (char*)temp1, p, 0);
+            client.username.assign(temp1, p);
             std::cout << client.username << std::endl;
+            delete[] temp1;
             //password
             int k;
             recv(sockClient, (char*)&k, sizeof(int), 0);
-            client.strpass = new char[k + 1];
+            char* temp2 = new char[k + 1];
             std::cout << k;
-            recv(sockClient, (char*)client.strpass, k, 0);
-            client.strpass[k] = '\0';
+            recv(sockClient, (char*)temp2, k, 0);
+            client.strpass.assign(temp2, k);
             std::cout << client.strpass << std::endl;
+            delete[] temp2;
             //ID banking
             int r;
             recv(sockClient, (char*)&r, sizeof(int), 0);
-            client.idBanking = new char[r + 1];
-            recv(sockClient, (char*)client.idBanking, r, 0);
+            char* temp3 = new char[r + 1];
+            recv(sockClient, (char*)temp3, r, 0);
             std::cout << r;
-            client.idBanking[r] = '\0';
+            client.idBanking.assign(temp3, r);
             recv(sockClient, (char*)&tmp, sizeof(int), 0);
             std::cout << client.idBanking;
             std::cout << tmp;
+            delete[] temp3;
             // tien hanh dang nhap sau khi dki
             if (tmp == 1) {
                 int size_name;
                 user clientB;
                 recv(sockClient, (char*)&size_name, sizeof(int), 0);
                 //std::cout << size_name;
-                clientB.username = new char[size_name + 1];
-                recv(sockClient, (char*)clientB.username, size_name, 0);
-                clientB.username[size_name] = '\0';
+                temp1 = new char[size_name + 1];
+                recv(sockClient, (char*)temp1, size_name, 0);
+                clientB.username.assign(temp1, size_name);
+                delete[] temp1;
                 //std::cout << client.username << std::endl;
                 //password
                 int size_pass;
                 recv(sockClient, (char*)&size_pass, sizeof(int), 0);
-                clientB.strpass = new char[size_pass + 1];
+                temp2 = new char[size_pass + 1];
 
-                recv(sockClient, (char*)clientB.strpass, size_pass, 0);
-                clientB.strpass[size_pass] = '\0';
-
+                recv(sockClient, (char*)temp2, size_pass, 0);
+                clientB.strpass.assign(temp2, size_pass);
+                delete[] temp2;
                 int flag;
                 //DANG TEST CHO NAY
                 //if (server.loginValid(client))
@@ -98,22 +102,23 @@ void solve_client(int sockClient, int order_client)
             int size_name;
             recv(sockClient, (char*)&size_name, sizeof(int), 0);
             //std::cout << size_name;
-            client.username = new char[size_name + 1];
-            recv(sockClient, (char*)client.username, size_name, 0);
-            client.username[size_name] = '\0';
+            char* temp1 = new char[size_name + 1];
+            recv(sockClient, (char*)temp1, size_name, 0);
+            client.username.assign(temp1, size_name);
             //std::cout << client.username << std::endl;
             //password
             int size_pass;
             recv(sockClient, (char*)&size_pass, sizeof(int), 0);
-            client.strpass = new char[size_pass + 1];
+            char* temp2 = new char[size_pass + 1];
 
-            recv(sockClient, (char*)client.strpass, size_pass, 0);
-            client.strpass[size_pass] = '\0';
+            recv(sockClient, (char*)temp2, size_pass, 0);
+            client.strpass.assign(temp2, size_pass);
+            delete[] temp2;
             //std::cout << client.strpass << std::endl;
 
             int flag;
             //DANG TEST CHO NAY
-            //if (server.loginValid(client))
+            
             if (1)
             {
                 flag = 1; // gui 1 xac nhan dang nhap thanh cong 

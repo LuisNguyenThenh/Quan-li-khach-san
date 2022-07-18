@@ -48,12 +48,28 @@ typedef std::pair <int, int> ii;
 typedef std::pair <ii, ii> iii;
 
 // Global variable
+class user 
+{
+public:
+    std::string username, strpass, idBanking;
+    user* Next = NULL;
+};
+class StackUser
+{
+public:
+    int number_user = 0;
+    user* Head;
 
+    StackUser();
 
+    void Input(json j);
+    bool IsEmpty();
+    void RemoveNode(user* p);
+    void Push(user* temp);
+    void Pop();
 
+    ~StackUser();
 
-struct user {
-    char* username, * strpass, * idBanking;
 };
 
 class Server {
@@ -81,96 +97,11 @@ public:
     int number_customer = 0;
     customer* head = NULL;
     customer* tail = NULL; 
-    bool is_empty()
-    {
-        if (this->head == NULL)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    customer* find(char* s)
-    {
-        if (this == NULL) return NULL;
-        for (customer* p = this->head; p; p = p->next)
-        {
-            if (p->user_name == s)
-            {
-                return p;
-            }
-        }
-        return NULL;
-    }
-    void add(customer* p)
-    {
-        number_customer++;
-        if (this->head == NULL)
-        {
-            this->head = this->tail = p;
-            return;
-        }
-        else
-        {
-            this->tail->next = p;
-            p->pre = this->tail;
-            this->tail = p;
-            return;
-        }
-    }
-    void remove(char* s)
-    {
-        number_customer--;
-        customer* x = NULL;
-        for (customer* p = this->head; p; p = p->next)
-        {
-            if (p->user_name == s)
-            {
-                x = p;
-                break;
-            }
-        }
-        if (x == NULL)
-        {
-            return;
-        }
-        else
-        {
-            if (x == this->head)
-            {
-                if (this->head != this->tail)
-                {
-                    this->head = this->head->next;
-                    this->head->pre = NULL;
-                }
-                else
-                {
-                    this->head = NULL;
-                    this->tail = NULL;
-                }
-                delete x;
-                return;
-            }
-            if (x == this->tail)
-            {
-                this->tail = this->tail->pre;
-                this->tail->next = NULL;
-                delete x;
-                return;
-            }
-            else
-            {
-                x->next->pre = x->pre;
-                x->pre->next = x->next;
-                delete x;
-                x = NULL;
-                return;
-            }
-        }
-    }
     link_list();
+    bool is_empty();
+    customer* find(char* s);
+    void add(customer* p);
+    void remove(char* s);
     void addtolist(const json j);
     ~link_list();
 };
@@ -213,6 +144,7 @@ extern std::vector <std::thread> threadimages;
 extern std::vector <std::thread> threadclient;
 
 extern Hotel* list_hotel;
+extern StackUser* USER;
 extern int nClient;
 extern int bESCPressed;
 extern int server;
@@ -223,7 +155,7 @@ extern std::vector <int> idsocketclient;
 
 
 void solve_client(int sockClient, int order_client);
-void Load_data_hotel();
+void Load_data();
 std::string int_to_string(int a);
 void Press_ESC();
 std::string double_to_string(double a);

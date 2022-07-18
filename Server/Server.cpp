@@ -19,6 +19,7 @@ std::vector <std::thread> threadimages;
 std::vector <std::thread> threadclient;
 std::vector <int> idsocketclient;
 Hotel* list_hotel;
+StackUser* USER;
 int nClient = 0;
 int bESCPressed;
 int server;
@@ -52,7 +53,7 @@ int main()
             {
                 // cerr << "Can't Initialize winsock! Quitting" << std::endl;
             }
-            Load_data_hotel();
+            Load_data();
             std::cout << "Load data successfully!" << std::endl;
 
             std::cout << "Start" << std::endl;

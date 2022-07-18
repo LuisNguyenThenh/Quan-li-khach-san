@@ -184,7 +184,7 @@
       </AdditionalManifestDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d $(SolutionDir)Server\opencv_world440d.dll $(OutDir)</Command>
+      <Command>xcopy /y /d "$(SolutionDir)Server\opencv_world440d.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PreLinkEvent>
       <Command>
@@ -238,7 +238,7 @@
       </AdditionalManifestDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y /d $(SolutionDir)Server\opencv_world440d.dll $(OutDir)</Command>
+      <Command>xcopy /y /d "$(SolutionDir)Server\opencv_world440d.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
@@ -301,11 +301,8 @@
     <Image Include="hotel.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DATA\hotel.json" />
-    <None Include="Userdata.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="hotel.txt" />
+    <None Include="hotel.json" />
+    <None Include="user.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
