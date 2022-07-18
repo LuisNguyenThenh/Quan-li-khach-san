@@ -25,7 +25,7 @@
 #include "highgui.hpp"
 
 #include <algorithm>
-//#include "json.hpp"
+#include "json.hpp"
 #include <cstring>
 #include <stdio.h>
 #include <string.h>
@@ -48,7 +48,7 @@
 
 #define fi first
 #define se second
-//using json = nlohmann::json;
+using json = nlohmann::json;
 
 
 typedef std::pair <int, int> ii;
@@ -78,24 +78,22 @@ struct date
 {
     int d, m, y;
 };
-
 class customer
 {
 public:
-    char* user_name;
+    std::string user_name;
     date date_in, date_out;
     int kind_room;
-    char* note;
+    std::string note;
     customer* next = NULL;
     customer* pre = NULL;
 };
-
 class link_list
 {
 public:
     int number_customer = 0;
     customer* head = NULL;
-    customer* tail = NULL;
+    customer* tail = NULL; 
     bool is_empty()
     {
         if (this->head == NULL)
@@ -183,20 +181,19 @@ public:
                 x = NULL;
                 return;
             }
-
-
         }
     }
+    link_list();
+    void addtolist(const json j);
+    ~link_list();
 };
 class Hotel
 {
 public:
     // First hotel will manage 
     int num_hotel = 0;
-
-    link_list list_booking;
-
-    char* name = new char[200];
+    link_list* list_booking;
+    std::string name;
 
     int number_Standard_room;
     int number_Superior_room;
@@ -208,14 +205,12 @@ public:
     double price_Deluxe_room;
     double price_Suite_room;
 
-    char* decription_Standard_room = new char[200];
-    char* decription_Superior_room = new char[200];
-    char* decription_Deluxe_room = new char[200];
-    char* decription_Suite_room = new char[200];
+    std::string decription_Standard_room;
+    std::string decription_Superior_room;
+    std::string decription_Deluxe_room;
+    std::string decription_Suite_room;
 
-
-    void Add_customer(customer* p);
-    void Load_info_hotel(std::ifstream& fin);
+    Hotel::Hotel(std::string Hotelname);
     int Number_room_available(date date1, date date2);
     char* Get_info_hotel(date date1, date date2);
     int Number_kind_of_room_available(date date1, date date2);

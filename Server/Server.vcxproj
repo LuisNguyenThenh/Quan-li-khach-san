@@ -295,6 +295,7 @@
     <Image Include="hotel.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="DATA\Marriot Hotel\Marriot Hotel.json" />
     <None Include="Userdata.json" />
   </ItemGroup>
   <ItemGroup>
