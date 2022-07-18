@@ -135,8 +135,11 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opencv_world440d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opencv_world440d.lib</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d $(SolutionDir)Server\opencv_world440d.dll $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -156,8 +159,11 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opencv_world440d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opencv_world440d.lib</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d $(SolutionDir)Server\opencv_world440d.dll $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -295,7 +301,7 @@
     <Image Include="hotel.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DATA\Marriot Hotel\Marriot Hotel.json" />
+    <None Include="DATA\hotel.json" />
     <None Include="Userdata.json" />
   </ItemGroup>
   <ItemGroup>

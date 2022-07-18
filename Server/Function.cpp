@@ -81,6 +81,7 @@ void booking(int connector)
 	for (int i = 0; i < number_of_room_booking; i++)
 	{
 		customer* new_booking = new customer;
+		
 		copy_string(new_booking->user_name, username);
 		//char* content_kinds_of_room;
 		//int sz_content_kinds_of_room;
@@ -135,7 +136,7 @@ void booking(int connector)
 		note[size_note] = '\0';
 		std::cout << note << std::endl;
 		new_booking->note = note;
-		hotel->Add_customer(new_booking);
+		hotel->list_booking->add(new_booking);
 	}
 	//getchar();
 	// Hoa don

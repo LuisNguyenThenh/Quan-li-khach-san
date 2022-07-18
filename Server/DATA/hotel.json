@@ -1,0 +1,169 @@
+4 {
+  "decription_Deluxe_room": "ccccacc",
+  "decription_Standard_room": "aaaa12aaaaaaa",
+  "decription_Suite_room": "dddd23d",
+  "decription_Superior_room": "b5bbbbbbbb",
+  "name": "Moevenpick Hotel",
+  "number_Deluxe_room": 34,
+  "number_Standard_room": 128,
+  "number_Suite_room": 10,
+  "number_Superior_room": 65,
+  "price_Deluxe_room": 599.99,
+  "price_Standard_room": 12.99,
+  "price_Suite_room": 1599.99,
+  "price_Superior_room": 100.99
+}2 {
+  "date_in": {
+    "d": 6,
+    "m": 7,
+    "y": 2016
+  },
+  "date_out": {
+    "d": 8,
+    "m": 9,
+    "y": 2023
+  },
+  "kind_room": 4,
+  "note": "Get more water",
+  "user_name": "lenguyenthai"
+} {
+  "date_in": {
+    "d": 1,
+    "m": 2,
+    "y": 2012
+  },
+  "date_out": {
+    "d": 2,
+    "m": 3,
+    "y": 2023
+  },
+  "kind_room": 1,
+  "note": "Get me more water",
+  "user_name": "lenguyenkhang"
+} {
+  "decription_Deluxe_room": "ccccccc",
+  "decription_Standard_room": "aaaaaaaaaaaaa",
+  "decription_Suite_room": "ddddddd",
+  "decription_Superior_room": "bbbbbbbbbbb",
+  "name": "Marriot_Hotel",
+  "number_Deluxe_room": 34,
+  "number_Standard_room": 128,
+  "number_Suite_room": 10,
+  "number_Superior_room": 65,
+  "price_Deluxe_room": 599.99,
+  "price_Standard_room": 12.99,
+  "price_Suite_room": 1599.99,
+  "price_Superior_room": 100.99
+}2 {
+  "date_in": {
+    "d": 6,
+    "m": 7,
+    "y": 2016
+  },
+  "date_out": {
+    "d": 8,
+    "m": 9,
+    "y": 2023
+  },
+  "kind_room": 4,
+  "note": "Get more water",
+  "user_name": "lenguyenthai"
+} {
+  "date_in": {
+    "d": 1,
+    "m": 2,
+    "y": 2012
+  },
+  "date_out": {
+    "d": 2,
+    "m": 3,
+    "y": 2023
+  },
+  "kind_room": 1,
+  "note": "Get me more water",
+  "user_name": "lenguyenkhang"
+} {
+  "decription_Deluxe_room": "ccccacc",
+  "decription_Standard_room": "aaaa12aaaaaaa",
+  "decription_Suite_room": "dddd23d",
+  "decription_Superior_room": "b5bbbbbbbb",
+  "name": "Muong Thanh Hotel",
+  "number_Deluxe_room": 34,
+  "number_Standard_room": 128,
+  "number_Suite_room": 10,
+  "number_Superior_room": 65,
+  "price_Deluxe_room": 599.99,
+  "price_Standard_room": 12.99,
+  "price_Suite_room": 1599.99,
+  "price_Superior_room": 100.99
+}2 {
+  "date_in": {
+    "d": 6,
+    "m": 7,
+    "y": 2016
+  },
+  "date_out": {
+    "d": 8,
+    "m": 9,
+    "y": 2023
+  },
+  "kind_room": 4,
+  "note": "Get more water",
+  "user_name": "lenguyenthai"
+} {
+  "date_in": {
+    "d": 1,
+    "m": 2,
+    "y": 2012
+  },
+  "date_out": {
+    "d": 2,
+    "m": 3,
+    "y": 2023
+  },
+  "kind_room": 1,
+  "note": "Get me more water",
+  "user_name": "lenguyenkhang"
+} {
+  "decription_Deluxe_room": "ccccccc",
+  "decription_Standard_room": "aaaaaaaaaaaaa",
+  "decription_Suite_room": "ddddddd",
+  "decription_Superior_room": "bbbbbbbbbbb",
+  "name": "Pullman Hotel",
+  "number_Deluxe_room": 34,
+  "number_Standard_room": 128,
+  "number_Suite_room": 10,
+  "number_Superior_room": 65,
+  "price_Deluxe_room": 599.99,
+  "price_Standard_room": 12.99,
+  "price_Suite_room": 1599.99,
+  "price_Superior_room": 100.99
+}2 {
+  "date_in": {
+    "d": 6,
+    "m": 7,
+    "y": 2016
+  },
+  "date_out": {
+    "d": 8,
+    "m": 9,
+    "y": 2023
+  },
+  "kind_room": 4,
+  "note": "Get more water",
+  "user_name": "lenguyenthai"
+} {
+  "date_in": {
+    "d": 1,
+    "m": 2,
+    "y": 2012
+  },
+  "date_out": {
+    "d": 2,
+    "m": 3,
+    "y": 2023
+  },
+  "kind_room": 1,
+  "note": "Get me more water",
+  "user_name": "lenguyenkhang"
+}

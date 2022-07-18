@@ -26,47 +26,16 @@ void string_to_char(std::string t, char*& s)
 	return;
 }
 
-void copy_string(char*& s, char*& t)
+void copy_string(std::string& s, char*& t)
 {
-	s = new char[strlen(t) + 1];
 	for (int i = 0; i < strlen(t); i++)
 	{
 		s[i] = t[i];
 	}
-	s[strlen(t)] = '\0';
 	return;
 }
 
 
-void Load_data_hotel()
-{
-	std::ifstream fin;
-	fin.open("hotel.txt", std::ios::in | std::ios::beg);
-	if (fin.is_open() == false) std::cout << "false open!" << std::endl;
-
-	int number_hotel;
-	fin >> number_hotel;
-
-	char c[2];
-	fin.getline(c, 1);
-	list_hotel = new Hotel[number_hotel];
-
-	list_hotel[0].num_hotel = number_hotel;
-	for (int i = 0; i < number_hotel; i++)
-	{
-		list_hotel[i].Load_info_hotel(fin);
-	}
-	//for (int i = 0; i < number_hotel; i++)
-	//{
-	//	std::cout << i + 1 << std::endl;
-	//	std::cout<<list_hotel[i].Get_info_hotel();
-	//	std::cout << list_hotel[i].Number_room_available() << std::endl;
-	//	std::cout << list_hotel[i].Number_kind_of_room_available() << std::endl;
-	//}
-
-	fin.close();
-	return;
-}
 Hotel* get_hotel_from_list(char* name_hotel)
 {
 	std::cout << "in Here!";
@@ -74,7 +43,7 @@ Hotel* get_hotel_from_list(char* name_hotel)
 	for (int i = 0; i < number_hotel; i++)
 	{
 		//std::cout << list_hotel[i].name;
-		if (strcmp(name_hotel, list_hotel[i].name) == 0)
+		if (strcmp(name_hotel, list_hotel[i].name.c_str()) == 0)
 		{
 			//std::cout << "True" << std::endl;
 			return (list_hotel + i);

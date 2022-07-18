@@ -1,4 +1,5 @@
 #include "pch.h"
+std::ifstream fin("hotel.json");
 void to_json(json& j, const date& p) {
     j = json{
         {"d", p.d},
@@ -58,23 +59,20 @@ void from_json(const json& j, Hotel& p) {
     j.at("decription_Deluxe_room").get_to(p.decription_Deluxe_room);
     j.at("decription_Suite_room").get_to(p.decription_Suite_room);
 };
-Hotel::Hotel(std::string Hotelname)
+Hotel::Hotel()
 {
-    Hotelname += ".json";
-    std::ifstream fin(Hotelname.c_str(), std::ios::in);
     json j;
     fin >> j;
     j.get_to(*this);
     this->list_booking = new link_list;
-    fin.close();
 }
 Hotel::~Hotel()
 {
-    std::string temp = this->name + ".json";
-    std::ofstream out(temp.c_str(), std::ios::trunc);
+    std::ofstream out("hotel.json", std::ios::out | std::ios::app | std::ios::in);
     json j = *this;
     out << j;
     out.close();
+    this->list_booking->~link_list();
 }
 void link_list::addtolist(const json j)
 {
@@ -84,7 +82,6 @@ void link_list::addtolist(const json j)
 }
 link_list::link_list()
 {
-    std::ifstream fin("customer.json", std::ios::beg);
     json j;
     int number;
     fin >> number;
@@ -93,13 +90,12 @@ link_list::link_list()
         fin >> j;
         this->addtolist(j);
     }
-    fin.close();
 }
 link_list::~link_list()
 {
-    if (this->head == NULL)
+    if (this == NULL || this->head == NULL)
         return;
-    std::ofstream out("customer.json", std::ios::trunc);
+    std::ofstream out("hotel.json", std::ios::out | std::ios::app | std::ios::in);
     json j;
     out << this->number_customer;
     customer* temp = this->head;
@@ -114,4 +110,20 @@ link_list::~link_list()
     out << j;
     delete temp;
     out.close();
+}
+void Load_data_hotel()
+{
+    int number;
+    fin >> number;
+
+    list_hotel = new Hotel[number];
+    list_hotel->num_hotel = number;
+    fin.close();
+    return;
+}
+void Finish(Hotel* a)
+{
+    std::ofstream out("hotel.json", std::ios::trunc);
+    out << a->num_hotel;
+    delete[] a;
 }

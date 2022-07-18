@@ -16,9 +16,6 @@
     <Filter Include="Resource Files\DATA">
       <UniqueIdentifier>{71ea175b-75da-4b0a-a4c9-3398a5bfaf72}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\DATA\Marriot Hotel">
-      <UniqueIdentifier>{041672d7-5b4c-464b-a003-673eaae8d080}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -80,8 +77,8 @@
     <None Include="Userdata.json">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="DATA\Marriot Hotel\Marriot Hotel.json">
-      <Filter>Resource Files\DATA\Marriot Hotel</Filter>
+    <None Include="DATA\hotel.json">
+      <Filter>Resource Files\DATA</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

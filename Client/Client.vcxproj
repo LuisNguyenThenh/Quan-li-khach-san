@@ -137,6 +137,9 @@
       <AdditionalLibraryDirectories>lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_world440d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d $(SolutionDir)Server\opencv_world440d.dll $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -158,6 +161,9 @@
       <AdditionalLibraryDirectories>lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_world440d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d $(SolutionDir)Server\opencv_world440d.dll $(OutDir)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>

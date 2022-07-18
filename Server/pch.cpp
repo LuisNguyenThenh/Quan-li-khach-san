@@ -198,7 +198,7 @@ iii Hotel::Number_available_room_of_each_kind_on_date(date date1, date date2)
     int number_Superior_room_available = number_Superior_room;
     int number_Deluxe_room_available = number_Deluxe_room;
     int number_Suite_room_available = number_Suite_room;
-    for (customer* p = list_booking.head; p; p = p->next)
+    for (customer* p = list_booking->head; p; p = p->next)
     {
         bool date1_internal = (date_larger_than(date1, p->date_in) >= 0) & (date_larger_than(date1, p->date_out) <= 0);
         bool date2_internal = (date_larger_than(date2, p->date_in) >= 0) & (date_larger_than(date2, p->date_out) <= 0);
@@ -341,11 +341,6 @@ int Hotel::Number_kind_of_room_available(date date1, date date2)
     return count;
 }
 
-void Hotel::Add_customer(customer* p)
-{
-    list_booking.add(p);
-    return;
-}
 bool Hotel::Is_kind_of_room_available_on_date(date date1, date date2, int kind)
 {
     iii number_kinds_of_room = Number_available_room_of_each_kind_on_date(date1, date2);

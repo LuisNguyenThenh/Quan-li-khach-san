@@ -64,6 +64,7 @@ int main()
 
             WSACleanup();
             // TODO: code your application's behavior here.
+            Finish(list_hotel);
         }
     }
     else
@@ -72,6 +73,5 @@ int main()
         wprintf(L"Fatal Error: GetModuleHandle failed\n");
         nRetCode = 1;
     }
-
     return nRetCode;
 }
