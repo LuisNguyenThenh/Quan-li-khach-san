@@ -149,9 +149,11 @@ int main()
                 int number;
 
                 recv(clientsocket, (char*)&number, sizeof(int), 0);
-                std::cout << number << std::endl;
+                //std::cout << number << std::endl;
                 // thong bao da co account hay ch? 
-                std::cout << "Did you have any account ? (Y or N)\n";
+                client a; consoleGraphic Graphic;
+                Graphic.gotoxy(35, 10);
+                std::cout << "Did you have any account? (Y or N)\n";
                 char c = _getch();
                 int flag = 1;
                 // tien hanh dki tai khoan
@@ -159,35 +161,41 @@ int main()
                     system("cls");
                     flag = 0;
                     send(clientsocket, (char*)&flag, sizeof(int), 0);
-                    accountRegister();
+                    a.accountRegister(clientA);
                     int p = strlen(clientA.username),
-                        q = strlen(clientA.strpass);
+                        q = strlen(clientA.strpass),
+                        r = strlen(clientA.idBanking);
                     send(clientsocket, (char*)&p, sizeof(int), 0);
                     send(clientsocket, (char*)&clientA.username, p, 0);
+                    std::cout << clientA.username << std::endl;
                     send(clientsocket, (char*)&q, sizeof(int), 0);
                     send(clientsocket, (char*)&clientA.strpass, q, 0);
-                }
-                // tien hanh dang nhhap
-                else {
-
-                    send(clientsocket, (char*)&flag, sizeof(int), 0);
-
+                    std::cout << clientA.strpass << std::endl;
+                    send(clientsocket, (char*)&r, sizeof(r), 0);
+                    send(clientsocket, (char*)&clientA.idBanking, r, 0);
+                    std::cout << clientA.idBanking << std::endl;
+                    system("cls");
+                    int tmp = 1;
+                    send(clientsocket, (char*)&tmp, sizeof(int), 0);
+                    // dki r thi dang nhap th xD
+                    a.accountLogin(); // cho nay nhin` phen` qua :D
                     while (1) {
-                        client a = client();
-                        int p = strlen(a.clientA.username),
-                            q = strlen(a.clientA.strpass);
-                        cout << p << endl;
-                        cout << a.clientA.username << endl;
-                        cout << q << endl;
-                        cout << a.clientA.strpass << endl;
-                        clientA.username = a.clientA.username;
+                        int p = strlen(clientA.username),
+                            p2 = strlen(clientA.strpass);
+                        /* cout << p << endl;
+                         cout << a.clientA.username << endl;
+                         cout << q << endl;
+                         cout << a.clientA.strpass << endl;*/
+                         //clientA.username = clientA.username; //bo truong clientA trong client di do k co td j het :D
                         send(clientsocket, (char*)&p, sizeof(int), 0);
-                        send(clientsocket, (char*)a.clientA.username, p, 0);
-                        send(clientsocket, (char*)&q, sizeof(int), 0);
-                        send(clientsocket, (char*)a.clientA.strpass, q, 0);
+                        send(clientsocket, (char*)clientA.username, p, 0);
+                        send(clientsocket, (char*)&p2, sizeof(int), 0);
+                        send(clientsocket, (char*)clientA.strpass, p2, 0);
 
                         recv(clientsocket, (char*)&flag, sizeof(int), 0);
                         if (flag == 1) {
+                            system("cls");
+                            Graphic.gotoxy(45, 6);
                             std::cout << "Login Successfully.\n";
                             send(clientsocket, (char*)&flag, sizeof(int), 0);
                             menuClient(clientsocket);
@@ -198,11 +206,39 @@ int main()
                             std::cout << "Username or Password does not correct.\n";
                         }
                     }
-
+                }
+                // tien hanh dang nhhap
+                else {
+                    send(clientsocket, (char*)&flag, sizeof(int), 0);
+                    a.accountLogin();
+                    while (1) {
+                        int p = strlen(clientA.username),
+                            p2 = strlen(clientA.strpass);
+                        /* cout << p << endl;
+                         cout << a.clientA.username << endl;
+                         cout << q << endl;
+                         cout << a.clientA.strpass << endl;*/
+                         //clientA.username = clientA.username; //bo truong clientA trong client di do k co td j het :D
+                        send(clientsocket, (char*)&p, sizeof(int), 0);
+                        send(clientsocket, (char*)clientA.username, p, 0);
+                        send(clientsocket, (char*)&p2, sizeof(int), 0);
+                        send(clientsocket, (char*)clientA.strpass, p2, 0);
+                        recv(clientsocket, (char*)&flag, sizeof(int), 0);
+                        if (flag == 1) {
+                            system("cls");
+                            Graphic.gotoxy(45, 6);
+                            std::cout << "Login Successfully.\n";
+                            send(clientsocket, (char*)&flag, sizeof(int), 0);
+                            menuClient(clientsocket);
+                            break;
+                        }
+                        else {
+                            send(clientsocket, (char*)&flag, sizeof(int), 0);
+                            std::cout << "Username or Password does not correct.\n";
+                        }
+                    }
                 }
             }
-
-
             closesocket(clientsocket);
             WSACleanup();
             for (int i = 0; i < threadimage.size(); i++)

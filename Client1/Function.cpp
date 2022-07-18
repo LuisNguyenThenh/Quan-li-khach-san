@@ -158,13 +158,21 @@ void booking(int connector)
 
 
 void menuClient(int connector) {
+	consoleGraphic Graphic;
+	Graphic.gotoxy(43, 9);
 	std::cout << "+---------------------+\n";
+	Graphic.gotoxy(43, 10);
 	std::cout << "|         MENU        |\n";
+	Graphic.gotoxy(43, 11);
 	std::cout << "+---------------------+\n";
-	std::cout << "| 1. Lookup           |\n";
-	std::cout << "| 2. Preservation     |\n";
-	std::cout << "+---------------------+\n";
-
+	Graphic.gotoxy(43, 12);
+	std::cout << "| 1. Lookup           |";
+	Graphic.gotoxy(43, 13);
+	std::cout << "| 2. Preservation     |";
+	Graphic.gotoxy(43, 14);
+	std::cout << "| 3. Quit             |";
+	Graphic.gotoxy(43, 15);
+	std::cout << "+---------------------+";
 	char c = _getch();
 	int flag = 1;
 	if (c == '1') {
@@ -176,6 +184,8 @@ void menuClient(int connector) {
 		send(connector, (char*)&flag, sizeof(int), 0);
 		booking(connector);
 	}
+	if (c == '3')
+		return;
 }
 
 void show_image(cv::Mat image)

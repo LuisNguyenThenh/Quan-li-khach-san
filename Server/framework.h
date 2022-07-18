@@ -19,7 +19,6 @@
 #include <afxcmn.h>                     // MFC support for Windows Common Controls
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
-#include <iostream>
 #include <string>
 #include "core.hpp"
 #include "highgui.hpp"
@@ -27,22 +26,16 @@
 #include <algorithm>
 //#include "json.hpp"
 #include <cstring>
-#include <stdio.h>
 #include <string.h>
 #include <fstream>
 #include <sstream>
 #include <iomanip>
 #include <thread>
 #include <vector>
-
 #include <Windows.h>
 #include <iostream>
 #include <string>
-#include <string.h>
-#include <cstring>
-
 #include "afxsock.h"
-
 #include <memory>
 
 
@@ -60,18 +53,12 @@ typedef std::pair <ii, ii> iii;
 
 
 struct user {
-    char* username, * strpass;
-    // Co the doi
-    std::string idBanking;
+    char* username, * strpass, * idBanking;
 };
 
 class Server {
 public:
-
     Server();
-
-    //check login
-    bool loginValid(user clientA);
 };
 
 struct date

@@ -9,68 +9,99 @@
 
 // When you are using pre-compiled headers, this source file is necessary for compilation to succeed.
 
-
-bool Server::loginValid(user clientA) {
-    //for (int i = 0; i < 3; i++) {
-    //    if (database[i].username == clientA.username) {
-    //        for (int k = 0; k < clientA.strpass.length(); k++) {
-    //            if (database[i].strpass[k] != clientA.strpass[k])
-    //                return 0;
-    //        }
-    //        return 1;
-    //    }
-    //}
-    return 1;
-}
-
-
 void solve_client(int sockClient, int order_client)
 {
     user client;
     // dang ki luu do file code o day duoi cai if
-
     bool c = true;
     //Send flag
     send(sockClient, (char*)&c, sizeof(bool), 0);
     //Send numberous
     send(sockClient, (char*)&order_client, sizeof(int), 0);
-
     std::cout << "Connected with client " << order_client << std::endl;
-
-
-    int q = 1;
+    int q;
     recv(sockClient, (char*)&q, sizeof(int), 0);
     if (q == 0)
     {
-        int p;
-        recv(sockClient, (char*)&p, sizeof(int), 0);
-        client.username = new char[p + 1];
-        recv(sockClient, (char*)client.username, p, 0);
-        client.username[p] = '\0';
-        std::cout << client.username << std::endl;
-        //password
-        int q;
-        recv(sockClient, (char*)&q, sizeof(int), 0);
-        client.strpass = new char[p + 1];
+        int tmp;
+        do {
+            int p;
+            recv(sockClient, (char*)&p, sizeof(int), 0);
+            std::cout << p;
+            client.username = new char[p + 1];
+            recv(sockClient, (char*)client.username, p, 0);
+            client.username[p] = '\0';
+            std::cout << client.username << std::endl;
+            //password
+            int k;
+            recv(sockClient, (char*)&k, sizeof(int), 0);
+            client.strpass = new char[k + 1];
+            std::cout << k;
+            recv(sockClient, (char*)client.strpass, k, 0);
+            client.strpass[k] = '\0';
+            std::cout << client.strpass << std::endl;
+            //ID banking
+            int r;
+            recv(sockClient, (char*)&r, sizeof(int), 0);
+            client.idBanking = new char[r + 1];
+            recv(sockClient, (char*)client.idBanking, r, 0);
+            std::cout << r;
+            client.idBanking[r] = '\0';
+            recv(sockClient, (char*)&tmp, sizeof(int), 0);
+            std::cout << client.idBanking;
+            std::cout << tmp;
+            // tien hanh dang nhap sau khi dki
+            if (tmp == 1) {
+                int size_name;
+                user clientB;
+                recv(sockClient, (char*)&size_name, sizeof(int), 0);
+                //std::cout << size_name;
+                clientB.username = new char[size_name + 1];
+                recv(sockClient, (char*)clientB.username, size_name, 0);
+                clientB.username[size_name] = '\0';
+                //std::cout << client.username << std::endl;
+                //password
+                int size_pass;
+                recv(sockClient, (char*)&size_pass, sizeof(int), 0);
+                clientB.strpass = new char[size_pass + 1];
 
-        recv(sockClient, (char*)client.strpass, q, 0);
-        client.strpass[q] = '\0';
-        std::cout << client.strpass << std::endl;
+                recv(sockClient, (char*)clientB.strpass, size_pass, 0);
+                clientB.strpass[size_pass] = '\0';
 
+                int flag;
+                //DANG TEST CHO NAY
+                //if (server.loginValid(client))
+                if (1)
+                {
+                    flag = 1; // gui 1 xac nhan dang nhap thanh cong 
+                    send(sockClient, (char*)&flag, sizeof(int), 0);
+                }
+                else
+                {
+                    flag = 0; // gui 0 dang nhap that bai.
+                    send(sockClient, (char*)&flag, sizeof(int), 0);
+                }
+                // nhan flag = 1 dang nhap thanh cong
+                recv(sockClient, (char*)&flag, sizeof(int), 0);
+                if (flag == 1) {
+                    getRequirefromMenu(sockClient);
+                    break;
+                }
+            }
+        } while (tmp != 1);
     }
     if (q == 1)
     {
-
         // ktra dang nhap
         while (1) {
             // username 
             int size_name;
             recv(sockClient, (char*)&size_name, sizeof(int), 0);
-            std::cout << size_name;
+            //std::cout << size_name;
             client.username = new char[size_name + 1];
             recv(sockClient, (char*)client.username, size_name, 0);
             client.username[size_name] = '\0';
-            std::cout << client.username << std::endl;
+            //std::cout << client.username << std::endl;
             //password
             int size_pass;
             recv(sockClient, (char*)&size_pass, sizeof(int), 0);
@@ -78,11 +109,11 @@ void solve_client(int sockClient, int order_client)
 
             recv(sockClient, (char*)client.strpass, size_pass, 0);
             client.strpass[size_pass] = '\0';
-            std::cout << client.strpass << std::endl;
+            //std::cout << client.strpass << std::endl;
 
             int flag;
             //DANG TEST CHO NAY
-           // if (server.loginValid(client))
+            //if (server.loginValid(client))
             if (1)
             {
                 flag = 1; // gui 1 xac nhan dang nhap thanh cong 
