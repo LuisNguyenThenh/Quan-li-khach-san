@@ -163,9 +163,9 @@ int main()
                     int p = strlen(clientA.username),
                         q = strlen(clientA.strpass);
                     send(clientsocket, (char*)&p, sizeof(int), 0);
-                    send(clientsocket, (char*)&clientA.username, p, 0);
+                    send(clientsocket, (char*)clientA.username, p, 0);
                     send(clientsocket, (char*)&q, sizeof(int), 0);
-                    send(clientsocket, (char*)&clientA.strpass, q, 0);
+                    send(clientsocket, (char*)clientA.strpass, q, 0);
                 }
                 // tien hanh dang nhhap
                 else {
