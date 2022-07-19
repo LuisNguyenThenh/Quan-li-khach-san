@@ -119,10 +119,14 @@ void accountRegister();
 void booking(int connector);
 void lookup(int connector);
 void menuClient(int connector);
+void show_image(cv::Mat image, char* name);
 void recv_image(int socket);
-void show_image(cv::Mat image);
 
 int date_larger_than(date date1, date date2);
 bool kiem_tra_ngay_thang_nam(date date);
 bool kiem_tra_nam_nhuan(int y);
 void string_to_char(string t, char*& s);
+std::string int_to_string(int a);
+std::string double_to_string(double a);
+void string_to_char(std::string t, char*& s);
+void copy_string(std::string& s, char* t);

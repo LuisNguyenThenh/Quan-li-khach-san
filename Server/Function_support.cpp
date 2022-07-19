@@ -26,17 +26,14 @@ void string_to_char(std::string t, char*& s)
 	return;
 }
 
-void copy_string(std::string& s, char*& t)
+void copy_string(std::string& s, char* t)
 {
-	for (int i = 0; i < strlen(t); i++)
-	{
-		s[i] = t[i];
-	}
+	std::string str(t);
 	return;
 }
 
 
-Hotel* get_hotel_from_list(char* name_hotel)
+Hotel* get_hotel_from_list(const char* name_hotel)
 {
 	std::cout << "in Here!";
 	int number_hotel = list_hotel[0].num_hotel;

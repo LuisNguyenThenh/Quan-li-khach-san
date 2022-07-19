@@ -195,7 +195,46 @@ void Press_ESC()
     return;
 }
 
+void Hotel::Send_image_of_room(int socket, int kind)
+{
+    cv::Mat image;
+    std::string name_file;
 
+    if (kind == 1)
+    {
+        name_file = name + " Standard.jpg";
+    }
+    if (kind == 2)
+    {
+        name_file = name + " Superior.jpg";
+    }
+
+    if (kind == 3)
+    {
+        name_file = name + " Deluxe.jpg";
+    }
+    if (kind == 4)
+    {
+        name_file = name + " Suite.jpg";
+    }
+    std::cout << name_file << std::endl;
+
+    char* file;
+    string_to_char(name_file,file);
+    image = cv::imread(file, 1);
+    int size_name_file = name_file.length();
+    send(socket, (char*)&size_name_file, sizeof(int), 0);
+    send(socket, (char*)file, size_name_file, 0);
+
+    int image_row = image.rows;
+    int image_col = image.cols;
+    int image_size = image.total() * image.elemSize();
+    send(socket, (char*)&image_row, sizeof(int), 0);
+    send(socket, (char*)&image_col, sizeof(int), 0);
+    send(socket, (char*)&image_size, sizeof(int), 0);
+    send(socket, (char*)image.data, image_size, 0);
+    return;
+}
 
 iii Hotel::Number_available_room_of_each_kind_on_date(date date1, date date2)
 {

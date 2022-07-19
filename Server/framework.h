@@ -25,7 +25,6 @@
 
 #include <algorithm>
 #include "json.hpp"
-#include <cstring>
 #include <string.h>
 #include <fstream>
 #include <sstream>
@@ -135,7 +134,7 @@ public:
     int Number_kind_of_room_available(date date1, date date2);
     double Price_of_kind_room(int kind);
     iii Number_available_room_of_each_kind_on_date(date date1, date date2);
-
+    void Send_image_of_room(int socket, int kind);
     bool Is_kind_of_room_available_on_date(date date1, date date2, int kind);
 
 };
@@ -160,12 +159,11 @@ std::string int_to_string(int a);
 void Press_ESC();
 std::string double_to_string(double a);
 void string_to_char(std::string t, char*& s);
-void copy_string(std::string& s, char*& t);
-Hotel* get_hotel_from_list(char* name_hotel);
+void copy_string(std::string& s, char* t);
+Hotel* get_hotel_from_list(const char* name_hotel);
 void getRequirefromMenu(int sockClient);
 void getRequirefromLookup(int sockClient);
-void send_image(int socket, const char* name_file);
-
+void sovle_image(int sockClient, char* name_hotel, date date_in, date date_out);
 
 void handle();
 bool kiem_tra_ngay_thang_nam(int day, int m, int y);

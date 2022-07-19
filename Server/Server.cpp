@@ -54,6 +54,7 @@ int main()
                 // cerr << "Can't Initialize winsock! Quitting" << std::endl;
             }
             Load_data();
+
             std::cout << "Load data successfully!" << std::endl;
 
             std::cout << "Start" << std::endl;

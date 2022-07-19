@@ -165,31 +165,53 @@ void getRequirefromMenu(int sockClient)
 }
 // nhan lenh tra cuu ten khach san, ngay vao o va ngay roi di.
 
-void send_image(int socket, const char* name_file)
+void sovle_image(int sockClient,char* name_hotel,date date_in,date date_out)
 {
-	cv::Mat image;
-	image = cv::imread(name_file, 1);
-	int image_row = image.rows;
-	int image_col = image.cols;
-	int image_size = image.total() * image.elemSize();
+	Hotel* hotel = get_hotel_from_list(name_hotel);
 
-	send(socket, (char*)&image_row, sizeof(int), 0);
-	send(socket, (char*)&image_col, sizeof(int), 0);
-	send(socket, (char*)&image_size, sizeof(int), 0);
-	send(socket, (char*)image.data, image_size, 0);
-	//cv::imshow("Hotel", image);
-	return;
+	std::cout << hotel->name << std::endl;
+
+	int number_image = hotel->Number_kind_of_room_available(date_in, date_out);
+	std::cout << number_image << std::endl;
+	send(sockClient, (char*)&number_image, sizeof(int), 0);
+
+	for (int i = 1; i <= 4; i++)
+	{
+		if (hotel->Is_kind_of_room_available_on_date(date_in, date_out, i))
+		{
+			hotel->Send_image_of_room(sockClient, i);
+		}
+	}
+
 }
 
-void getRequirefromLookup(int sockClient) {
-	int flag;
-	send_image(sockClient, "hotel.jpg");
-	recv(sockClient, (char*)&flag, sizeof(int), 0);
-	if (flag == 1) {
+void getRequirefromLookup(int sockClient) 
+{
+	int size_name_hotel;
+	char* name_hotel;
 
-	}
-	if (flag == 0) {
+	recv(sockClient, (char*)&size_name_hotel, sizeof(int), 0);
+	name_hotel = new char[size_name_hotel + 1];
 
-	}
+	recv(sockClient, (char*)name_hotel, size_name_hotel, 0);
+	name_hotel[size_name_hotel] = '\0';
+
+	std::cout << name_hotel << std::endl;
+	
+	date date_in, date_out;
+	
+	recv(sockClient, (char*)&date_in, sizeof(date), 0);
+	recv(sockClient, (char*)&date_out, sizeof(date), 0);
+
+
+
+	//Send image
+	sovle_image(sockClient,name_hotel, date_in, date_out);
+
+
+
+	//solve_image(sockClient,date_in,date_out);
+	
+
 	return;
 }

@@ -188,34 +188,55 @@ void menuClient(int connector) {
 		return;
 }
 
-void show_image(cv::Mat image)
+void show_image(cv::Mat image, char* name)
 {
-	cv::imshow("Hotel", image);
+
+	cv::imshow(name, image);
 	waitKey(0);
 }
 void recv_image(int socket)
 {
-	int image_row;
-	int image_col;
-	int image_size;
+	int number_image;
 
-
-	recv(socket, (char*)&image_row, sizeof(int), 0);
-	recv(socket, (char*)&image_col, sizeof(int), 0);
-	recv(socket, (char*)&image_size, sizeof(int), 0);
-
-	cv::Mat image(image_row, image_col, CV_8UC3);
-
-	int bytes_catched = 0;
-	for (int i = 0; i < image_size; i = i + bytes_catched)
+	recv(socket, (char*)&number_image, sizeof(int), 0);
+	char* name_room;
+	for (int i = 0; i < number_image; i++)
 	{
-		bytes_catched = recv(socket, (char*)image.data + i, image_size - i, 0);
-	}
-	image.data = (uchar*)image.data;
+		int size_name_room;
+		recv(socket, (char*)&size_name_room, sizeof(int), 0);
+		name_room = new char[size_name_room + 1];
+		recv(socket, (char*)name_room, size_name_room, 0);
+		name_room[size_name_room] = '\0';
 
-	threadimage.push_back(thread(show_image, image));
+		int image_row;
+		int image_col;
+		int image_size;
+
+
+		recv(socket, (char*)&image_row, sizeof(int), 0);
+
+		recv(socket, (char*)&image_col, sizeof(int), 0);
+
+		recv(socket, (char*)&image_size, sizeof(int), 0);
+
+		cv::Mat image(image_row, image_col, CV_8UC3);
+
+		int bytes_catched = 0;
+		for (int i = 0; i < image_size; i = i + bytes_catched)
+		{
+			bytes_catched = recv(socket, (char*)image.data + i, image_size - i, 0);
+		}
+		image.data = (uchar*)image.data;
+
+		threadimage.push_back(thread(show_image, image, name_room));
+	}
 	return;
 }
+/*
+Pullman Hotel
+21/2/2022
+23/3/2022
+*/
 void lookup(int connector) {
 	std::cout << "+-------------------------+\n";
 	std::cout << "|       INFORMATION       |\n";
@@ -223,18 +244,32 @@ void lookup(int connector) {
 	std::cout << "| 1. Hotel                |\n";
 	std::cout << "| 2. Booking information  |\n";
 	std::cout << "+-------------------------+\n";
+	
+	char* name_hotel=new char[100];
+	std::cout << "Name hotel: ";
+	cin.getline(name_hotel, 99);
+
+	int size_name_hotel = strlen(name_hotel);
+	cout << name_hotel << endl;
+	send(connector, (char*)&size_name_hotel, sizeof(int), 0);
+	send(connector, (char*)name_hotel, size_name_hotel, 0);
+
+	date date_in, date_out;
+	char c;
+	cout << "Date in:";
+	cin >> date_in.d >> c >> date_in.m >> c >> date_in.y;
+	cout << "Date out";
+	cin >> date_out.d >> c >> date_out.m >> c >> date_out.y;
+
+	send(connector, (char*)&date_in, sizeof(date), 0);
+	send(connector, (char*)&date_out, sizeof(date), 0);
+
+	//Nhan hinh anh
 	recv_image(connector);
 
-	char c = _getch();
-	int flag = 1;
-	if (c == '1') {
-		send(connector, (char*)&flag, sizeof(int), 0);
-	}
-	if (c == '2') {
-		flag = 0;
-		send(connector, (char*)&flag, sizeof(int), 0);
 
-	}
+	
+
 	return;
 }
 
