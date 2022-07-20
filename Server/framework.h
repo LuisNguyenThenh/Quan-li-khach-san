@@ -113,6 +113,7 @@ public:
     customer* find(char* s);
     void add(customer* p);
     void remove(char* s);
+    void remove(customer* p);
     void addtolist(const json j);
     ~link_list();
 };

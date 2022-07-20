@@ -71,3 +71,8 @@ void copy_string(std::string& s, char* t)
 	std::string str(t);
 	return;
 }
+void string_to_int(string s, int& a)
+{
+	a = stoi(s);
+	return;
+}

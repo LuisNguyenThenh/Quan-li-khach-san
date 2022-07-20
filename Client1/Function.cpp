@@ -30,7 +30,7 @@ void booking(int connector)
 		send(connector, (char*)&size_of_name_hotel, sizeof(int), 0);
 		send(connector, (char*)name_hotel, size_of_name_hotel, 0);
 
-		//Nhận thông báo từ server để xem tên khách sạn có hợp lên ko?
+		//Nhận thông báo từ server để xem tên khách sạn có hợp lê ko?
 		recv(connector, (char*)&name_hotel_exist, sizeof(bool), 0);
 		if (name_hotel_exist == false)
 		{
@@ -68,18 +68,6 @@ void booking(int connector)
 		std::cout << "2. Superior Room." << std::endl;
 		std::cout << "3. Deluxe Room." << std::endl;
 		std::cout << "4. Suite Room." << std::endl;
-
-
-		//char* content_kinds_of_room = new char[500];
-		//int sz_content_kinds_of_room;
-
-		//// Nhận bảng thông tin từ server với các chi tiết cụ thể về từng loại phòng.
-		//recv(connector,(char*)&sz_content_kinds_of_room, sizeof(int), 0);
-		//recv(connector,content_kinds_of_room, sz_content_kinds_of_room, 0);
-		//content_kinds_of_room[sz_content_kinds_of_room + 1] = '\0';
-
-		//// Xuất bảng thông tin nhận từ server
-		//std::cout << content_kinds_of_room << std::endl;
 
 		int option_of_client;
 		bool kind_of_this_room_exist;
@@ -122,7 +110,6 @@ void booking(int connector)
 
 			// Chọn loại phòng dựa vào số thứ tự trong bảng thông tin
 
-
 			//Nhận thông báo từ server để xem loại phòng này có không?
 			recv(connector, (char*)&kind_of_this_room_exist, sizeof(bool), 0);
 			if (kind_of_this_room_exist == false)
@@ -155,7 +142,95 @@ void booking(int connector)
 	std::cout << "Have good vacation!" << std::endl;
 	return;
 }
+void cancel_booking(int connector)
+{
+	char* name_hotel = new char[101];
+	bool name_hotel_exist = false;
+	std::cout << "Name of hotel:";
+	do
+	{
+		cin.getline(name_hotel, 100);
+		int size_of_name_hotel = strlen(name_hotel);
 
+		// Gui ten khach san di
+		send(connector, (char*)&size_of_name_hotel, sizeof(int), 0);
+		send(connector, (char*)name_hotel, size_of_name_hotel, 0);
+
+		//Nhận thông báo từ server để xem tên khách sạn có hợp lê ko?
+		recv(connector, (char*)&name_hotel_exist, sizeof(bool), 0);
+		if (name_hotel_exist == false)
+		{
+			std::cout << "Sorry we don't have this hotel! Please try again:";
+		}
+	} while (name_hotel_exist == false);
+	
+	int size_username = strlen(clientA.username);
+	// Gui username cho server
+	send(connector, (char*)&size_username, sizeof(int), 0);
+	send(connector, (char*)clientA.username, size_username, 0);
+
+
+	int number_booking_of_client = 0;
+	// Gui di thong tin cac luot booking cua user do
+	recv(connector, (char*)&number_booking_of_client, sizeof(int), 0);
+	int order = 0;
+	for (int i = 0; i < number_booking_of_client; i++)
+	{
+		cout << "Booking " << i+1 << ":" << endl;
+		customer p;
+		recv(connector, (char*)&p.kind_room, sizeof(int), 0);
+		recv(connector, (char*)&p.date_in, sizeof(date), 0);
+		recv(connector, (char*)&p.date_out, sizeof(date), 0);
+
+		int size_time;
+		recv(connector, (char*)&size_time, sizeof(int), 0);
+		char* time_dat_phong = new char[size_time + 1];
+		recv(connector, (char*)time_dat_phong, size_time, 0);
+		time_dat_phong[size_time] = '\0';
+		if (p.kind_room == 1)
+		{
+			std::cout << "Standard Room." << std::endl;
+		}
+		if (p.kind_room == 2)
+		{
+			std::cout << "Superior Room." << std::endl;
+		}
+		if (p.kind_room == 3)
+		{
+			std::cout << "Deluxe Room." << std::endl;
+		}
+		if (p.kind_room == 4)
+		{
+			std::cout << "Suite Room." << std::endl;
+		}
+		cout << "Date in:" << p.date_in.d << "-" << p.date_in.m << "-" << p.date_in.y << endl;
+		cout << "Date out:" << p.date_out.d << "-" << p.date_out.m << "-" << p.date_out.y << endl;
+		cout << "Time reservation:" << time_dat_phong << endl;
+	}
+	cout << "Choose the number of booking to cancel!" << endl;
+	cout << "Number of booking want to cancel: ";
+	string number_booking_cancel;
+	cin >> number_booking_cancel;
+	int int_number_booking_cancel;
+	string_to_int(number_booking_cancel, int_number_booking_cancel);
+
+	//cout << int_number_booking_cancel << endl;
+	send(connector, (char*)&int_number_booking_cancel, sizeof(int), 0);
+
+	bool flag1;
+
+	recv(connector, (char*)&flag1, sizeof(bool), 0);
+	cout << flag1 << endl;
+	if (flag1 == true)
+	{
+		cout << "Cancel reservation successfully!" << endl;
+	}
+	else
+	{
+		cout << "Can not cancel because time out!" << endl;
+	}
+	return;
+}
 
 void menuClient(int connector) {
 	consoleGraphic Graphic;
@@ -170,8 +245,10 @@ void menuClient(int connector) {
 	Graphic.gotoxy(43, 13);
 	std::cout << "| 2. Preservation     |";
 	Graphic.gotoxy(43, 14);
-	std::cout << "| 3. Quit             |";
+	std::cout << "| 3. Cancel Booking   |";
 	Graphic.gotoxy(43, 15);
+	std::cout << "| 4. Quit	            |";
+	Graphic.gotoxy(43, 16);
 	std::cout << "+---------------------+";
 	char c = _getch();
 	int flag = 1;
@@ -185,7 +262,15 @@ void menuClient(int connector) {
 		booking(connector);
 	}
 	if (c == '3')
+	{
+		flag = 3;
+		send(connector, (char*)&flag, sizeof(int), 0);
+		cancel_booking(connector);
+	}
+	if (c == '4')
+	{
 		return;
+	}
 }
 
 void show_image(cv::Mat image, char* name)

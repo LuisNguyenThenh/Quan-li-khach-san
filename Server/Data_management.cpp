@@ -91,6 +91,58 @@ void link_list::remove(char* s)
         }
     }
 }
+
+
+void link_list::remove(customer* s)
+{
+    number_customer--;
+    customer* x = NULL;
+    for (customer* p = this->head; p; p = p->next)
+        if (p == s)
+        {
+            x = p;
+            break;
+        }
+    if (x == NULL)
+        return;
+    else
+    {
+        if (x == this->head)
+        {
+            if (this->head != this->tail)
+            {
+                this->head = this->head->next;
+                this->head->pre = NULL;
+            }
+            else
+            {
+                this->head = NULL;
+                this->tail = NULL;
+            }
+            delete x;
+            return;
+        }
+        if (x == this->tail)
+        {
+            this->tail = this->tail->pre;
+            this->tail->next = NULL;
+            delete x;
+            return;
+        }
+        else
+        {
+            x->next->pre = x->pre;
+            x->pre->next = x->next;
+            delete x;
+            x = NULL;
+            return;
+        }
+    }
+}
+
+
+
+
 bool StackUser::IsEmpty()
 {
     if (this->Head == NULL)

@@ -57,6 +57,22 @@ struct user {
 		* strpass = new char[101],
 		* idBanking = new char[11];
 };
+class date
+{
+public:
+	int d, m, y;
+};
+class customer
+{
+public:
+	std::string user_name;
+	date date_in, date_out;
+	std::string ThoigianDatPhong;
+	int kind_room;
+	std::string note;
+	customer* next = NULL;
+	customer* pre = NULL;
+};
 
 class client
 {
@@ -106,11 +122,7 @@ public:
 	void accountLogin();
 };
 
-class date
-{
-public:
-	int d, m, y;
-};
+
 
 extern user clientA;
 extern vector <thread> threadimage;
@@ -130,3 +142,4 @@ std::string int_to_string(int a);
 std::string double_to_string(double a);
 void string_to_char(std::string t, char*& s);
 void copy_string(std::string& s, char* t);
+void string_to_int(string s, int& a);

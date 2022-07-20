@@ -150,6 +150,101 @@ void booking(int connector)
 	return;
 }
 
+void cancel_booking(int connector)
+{
+	Hotel* hotel;
+	bool name_hotel_exist;
+	char* name_hotel = new char[100];
+	int size_of_name_hotel;
+	bool is_hotel_available;
+	do
+	{
+		// Gui ten khach san di
+		recv(connector, (char*)&size_of_name_hotel, sizeof(int), 0);
+		recv(connector, (char*)name_hotel, size_of_name_hotel, 0);
+
+		name_hotel[size_of_name_hotel] = '\0';
+		std::cout << name_hotel << std::endl;
+		//Nhận thông báo từ server để xem tên khách sạn có hợp lên ko?
+		hotel = get_hotel_from_list(name_hotel);
+		if (hotel == NULL)
+		{
+			name_hotel_exist = false;
+		}
+		else
+		{
+			name_hotel_exist = true;
+		}
+		send(connector, (char*)&name_hotel_exist, sizeof(bool), 0);
+
+	} while (name_hotel_exist == false);
+
+	char* user_name;
+	int size_user_name;
+	recv(connector, (char*)&size_user_name, sizeof(int), 0);
+	user_name = new char[size_user_name + 1];
+	recv(connector, (char*)user_name, size_user_name, 0);
+	user_name[size_user_name] = '\0';
+
+	std::cout << user_name << std::endl;
+	
+	// Tinh so luong booking cua username
+	int number_booking_of_client = 0;
+	for (customer* p = hotel->list_booking->head; p; p = p->next)
+	{
+		if (strcmp(p->user_name.c_str(), user_name) == 0)
+		{
+			number_booking_of_client++;
+		}
+	}
+
+	// Gui di thong tin cac luot booking cua user do
+	send(connector, (char*)&number_booking_of_client, sizeof(int), 0);
+	for (customer* p = hotel->list_booking->head; p; p = p->next)
+	{
+		if (strcmp(p->user_name.c_str(), user_name) == 0)
+		{
+			send(connector, (char*)&p->kind_room, sizeof(int), 0);
+			send(connector, (char*)&p->date_in, sizeof(date), 0);
+			send(connector, (char*)&p->date_out, sizeof(date), 0);
+			
+
+			char* c_time_dat_phong;
+			string_to_char(p->ThoigianDatPhong, c_time_dat_phong);
+			std::cout << c_time_dat_phong << std::endl;
+			int size_time =strlen(c_time_dat_phong);
+			send(connector, (char*)&size_time, sizeof(int), 0);
+			send(connector, (char*)c_time_dat_phong, size_time, 0);
+		}
+	}
+	int number_booking_want_to_cancel;
+	recv(connector, (char*)&number_booking_want_to_cancel, sizeof(int), 0);
+	for (customer* p = hotel->list_booking->head; p; p = p->next)
+	{
+		if (strcmp(p->user_name.c_str(), user_name) == 0)
+		{
+			number_booking_want_to_cancel--;
+			if (number_booking_want_to_cancel == 0)
+			{
+				bool flag1;
+				if (Valid(p->ThoigianDatPhong.c_str()) == 1)
+				{
+					flag1 = true;
+					hotel->list_booking->remove(p);
+				}
+				else
+				{
+					flag1 = false;
+				}
+				send(connector, (char*)&flag1, sizeof(bool), 0);
+				break;
+			}
+		}
+	}
+	return;
+}
+
+
 // nhan lenh tra cuu hoac dat phong tu client
 void getRequirefromMenu(int sockClient)
 {
@@ -160,10 +255,19 @@ void getRequirefromMenu(int sockClient)
 		// look up
 		getRequirefromLookup(sockClient);
 	}
-	if (flag == 0) {
+	if (flag == 2) {
 		// preservation
 		//std::cout << "kjsdf" << std::endl;
 		booking(sockClient);
+	}
+	if (flag == 3)
+	{
+		cancel_booking(sockClient);
+	}
+	if (flag == 4)
+	{
+		//Quit
+		return;
 	}
 }
 // nhan lenh tra cuu ten khach san, ngay vao o va ngay roi di.
