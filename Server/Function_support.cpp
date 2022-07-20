@@ -137,3 +137,53 @@ int distance_time(date date1, date date2)
 	}
 	return 0;
 }
+char* getDtTm(char* buff) {
+	time_t now = time(0);
+	struct tm newtime;
+	localtime_s(&newtime, &now);
+	strftime(buff, DTTMSZ, DTTMFMT, &newtime);
+	return buff;
+}
+int Getint(const char* input, int& vitri)
+{
+	int y = 0;
+	while (input[vitri] != 45 && input[vitri] != 0)
+	{
+		y *= 10;
+		y += input[vitri] - 48;
+		vitri++;
+	}
+	vitri++;
+	return y;
+}
+bool Valid(const char* ngaydatphong)
+{
+	char* buff = new char[DTTMSZ];
+	dateTime* a = new dateTime(getDtTm(buff));
+	dateTime* b = new dateTime(ngaydatphong);
+	if (a->y != b->y || a->m != b->m)
+		return 0;
+	if (b->s > a->s)
+	{
+		--a->mi;
+	}
+	if (b->mi > a->mi)
+	{
+		--a->h;
+	}
+	if (b->h > a->h)
+	{
+		--a->d;
+	}
+	if (a->d - b->d > 1)
+	{
+		delete a;
+		delete[] buff;
+		delete b;
+		return 0;
+	}
+	delete a;
+	delete[] buff;
+	delete b;
+	return 1;
+}

@@ -1,9 +1,1 @@
-2 {
-  "idBanking": "1234567890",
-  "strpass": "123456789",
-  "username": "hahaha123"
-} {
-  "idBanking": "1234567890",
-  "strpass": "123456789",
-  "username": "hehehe123"
-}
+2{"idBanking":"1234567890","strpass":"123456789","username":"hehehe123"}{"idBanking":"1234567890","strpass":"123456789","username":"hahaha123"}

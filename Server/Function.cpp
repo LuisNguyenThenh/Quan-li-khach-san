@@ -136,6 +136,9 @@ void booking(int connector)
 		note[size_note] = '\0';
 		std::cout << note << std::endl;
 		new_booking->note = note;
+		char* buff = new char[DTTMSZ];
+		new_booking->ThoigianDatPhong.assign(getDtTm(buff), DTTMSZ);
+		delete[] buff;
 		hotel->list_booking->add(new_booking);
 	}
 	//getchar();

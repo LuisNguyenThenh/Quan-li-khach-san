@@ -40,6 +40,10 @@
 
 #define fi first
 #define se second
+#define DTTMFMT "%Y-%m-%d-%H-%M-%S "
+
+#define DTTMSZ 21
+
 using json = nlohmann::json;
 
 
@@ -76,6 +80,13 @@ public:
     Server();
 };
 
+class dateTime
+{
+public:
+    int y = 0, m = 0, d = 0, h = 0, mi = 0, s = 0;
+    dateTime(const char* input);
+};
+
 struct date
 {
     int d, m, y;
@@ -85,6 +96,7 @@ class customer
 public:
     std::string user_name;
     date date_in, date_out;
+    std::string ThoigianDatPhong;
     int kind_room;
     std::string note;
     customer* next = NULL;
@@ -170,3 +182,6 @@ bool kiem_tra_ngay_thang_nam(int day, int m, int y);
 int date_larger_than(date date1, date date2);
 int distance_time(date date1, date date2);
 void Finish(Hotel* a);
+char* getDtTm(char* buff);
+int Getint(const char* input, int& vitri);
+bool Valid(const char* ngaydatphong);

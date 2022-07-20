@@ -1,5 +1,4 @@
-4 
-{
+4 {
   "decription_Deluxe_room": "ccccccc",
   "decription_Standard_room": "aaaaaaaaaaaaa",
   "decription_Suite_room": "ddddddd",
@@ -14,6 +13,7 @@
   "price_Suite_room": 1599.99,
   "price_Superior_room": 100.99
 }2 {
+  "ThoigianDatPhong": "2022-7-20-12-25-00 ",
   "date_in": {
     "d": 6,
     "m": 7,
@@ -28,6 +28,7 @@
   "note": "Get more water",
   "user_name": "lenguyenthai"
 } {
+  "ThoigianDatPhong": "2022-7-20-12-25-00 ",
   "date_in": {
     "d": 1,
     "m": 2,
@@ -56,6 +57,7 @@
   "price_Suite_room": 1599.99,
   "price_Superior_room": 100.99
 }2 {
+  "ThoigianDatPhong": "2022-7-20-12-25-00 ",
   "date_in": {
     "d": 6,
     "m": 7,
@@ -70,6 +72,7 @@
   "note": "Get more water",
   "user_name": "lenguyenthai"
 } {
+  "ThoigianDatPhong": "2022-7-20-12-25-00 ",
   "date_in": {
     "d": 1,
     "m": 2,
@@ -84,11 +87,11 @@
   "note": "Get me more water",
   "user_name": "lenguyenkhang"
 } {
-  "decription_Deluxe_room": "Ban se co trai nghiem vo cung tuyet voi khi duoc o can phong day du tien nghi",
+  "decription_Deluxe_room": "ccccccc",
   "decription_Standard_room": "aaaaaaaaaaaaa",
   "decription_Suite_room": "ddddddd",
   "decription_Superior_room": "bbbbbbbbbbb",
-  "name": "Marriot Hotel",
+  "name": "Marriot_Hotel",
   "number_Deluxe_room": 34,
   "number_Standard_room": 128,
   "number_Suite_room": 10,
@@ -98,6 +101,7 @@
   "price_Suite_room": 1599.99,
   "price_Superior_room": 100.99
 }2 {
+  "ThoigianDatPhong": "2022-7-20-12-25-00 ",
   "date_in": {
     "d": 6,
     "m": 7,
@@ -112,6 +116,7 @@
   "note": "Get more water",
   "user_name": "lenguyenthai"
 } {
+  "ThoigianDatPhong": "2022-7-20-12-25-00 ",
   "date_in": {
     "d": 1,
     "m": 2,
@@ -140,6 +145,7 @@
   "price_Suite_room": 1599.99,
   "price_Superior_room": 100.99
 }2 {
+  "ThoigianDatPhong": "2022-7-20-12-25-00 ",
   "date_in": {
     "d": 6,
     "m": 7,
@@ -154,6 +160,7 @@
   "note": "Get more water",
   "user_name": "lenguyenthai"
 } {
+  "ThoigianDatPhong": "2022-7-20-12-25-00 ",
   "date_in": {
     "d": 1,
     "m": 2,
