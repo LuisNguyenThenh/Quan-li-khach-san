@@ -42,6 +42,19 @@ int date_larger_than(date date1, date date2)
 
 	return 0;
 }
+std::string int_to_string(int a)
+{
+	std::string s;
+	std::stringstream ss;
+	ss << a;
+	ss >> s;
+	return s;
+}
+std::string double_to_string(double a)
+{
+	std::string s = std::to_string(a);
+	return s;
+}
 void string_to_char(std::string t, char*& s)
 {
 	s = new char[t.length() + 1];
@@ -50,5 +63,16 @@ void string_to_char(std::string t, char*& s)
 		s[i] = t[i];
 	}
 	s[t.length()] = '\0';
+	return;
+}
+
+void copy_string(std::string& s, char* t)
+{
+	std::string str(t);
+	return;
+}
+void string_to_int(string s, int& a)
+{
+	a = stoi(s);
 	return;
 }

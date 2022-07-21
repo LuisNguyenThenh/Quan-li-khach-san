@@ -37,98 +37,84 @@ void consoleGraphic::ShowCur(bool CursorVisibility) {
 }
 
 client::client() {
-	accountLogin();
-
-	//fstream out;
-	//out.open("Text.txt", ios::app);
-	//out << this->clientA.username << ' ' << this->clientA.strpass << std::endl;
-	//out.close();
-
-	/*for (int i = 0;; i++) {
-		cin >> strPassword[i];
-		conSole.gotoxy(9 + i, 1);
-		std::cout << "*";
-		if (strPassword[i] == '\n') {
-			strPassword[i] = '\0';
-			break;
-		}
-	}*/
-	/*if (loginValid(clientA))
-		std::cout << "valid!";
-	else
-		std::cout << "Username or Password doesn't correct.\n";*/
 	return;
 }
 
-// phan nay cua server lam nham qua client :)
-//bool client::loginValid(std::string strA, std::string strB) {
-//	user s[3];
-//	s[0].username = "thanh";
-//	s[1].username = "phuoc";
-//	s[2].username = "thai";
-//	s[0].strpass = "thanh123";
-//	s[1].strpass = "thanh123";
-//	s[2].strpass = "thanh123";
-//	for (int i = 0; i < 3; i++) {
-//		if (strA == s[i].username) {
-//			for (int j = 0; j < strB.length(); j++) {
-//				if (s[i].strpass[j] != strB[j])
-//					return 0;
-//			}
-//			return 1;
-//		}
-//	}
-//	return 0;
-//}
-
-bool client::loginValid(user clientA) {
-	return 1;
-}
-
 bool client::registerValid(user clientA) {
-	//if (clientA.username.length() < 5 || clientA.strpass.length() < 3 || clientA.idBanking.length() != 10)
-	//	return 0;
-	//for (int i = 0; i < clientA.username.length(); i++) {
-	//	if ((clientA.username[i] < '0' || clientA.username[i] > '9') && (clientA.username[i] < 'a' || clientA.username[i] > 'z'))
-	//		return 0;
-	//}
-	//for (int i = 0; i < clientA.idBanking.length(); i++) {
-	//	if (clientA.idBanking[i] < '0' || clientA.idBanking[i] > '9')
-	//		return 0;
-	//}
+	if (strlen(clientA.username) < 5) {
+		this->conSole.gotoxy(35, 17); std::cout << "Username is not valid. Try another one";
+		return 0;
+	}
+	if (strlen(clientA.strpass) < 3) {
+		this->conSole.gotoxy(35, 17); std::cout << "Password is not valid. Try another one";
+		return 0;
+	}
+	if (strlen(clientA.idBanking) != 10) {
+		cout << strlen(clientA.idBanking) << endl;
+		this->conSole.gotoxy(35, 17); std::cout << "ID banking is not valid. Try another one";
+		return 0;
+	}
+
+	for (int i = 0; i < strlen(clientA.username); i++) {
+		if ((clientA.username[i] < '0' || clientA.username[i] > '9') && (clientA.username[i] < 'a' || clientA.username[i] > 'z'))
+			return 0;
+	}
+	for (int i = 0; i < strlen(clientA.idBanking); i++) {
+		if (clientA.idBanking[i] < '0' || clientA.idBanking[i] > '9')
+			return 0;
+	}
 	return 1;
 }
 
-void accountRegister() {
-	client a;
-	do {
-		std::cout << "Username: "; a.conSole.gotoxy(30, 0); std::cout << "(Username is \'0\' to \'9\' and \'a\' to \'z\')\n";
-		std::cout << "Password: ";
-		a.conSole.gotoxy(0, 2); std::cout << "ID Banking: ";
-		a.conSole.gotoxy(10, 0);
-		cin.getline(clientA.username, 99);
-		a.conSole.gotoxy(10, 1);
-		cin.getline(clientA.strpass, 99);
-		a.conSole.gotoxy(12, 2);
-		cin >> clientA.idBanking;
-		if (a.registerValid(clientA) == 0) {
-			a.conSole.gotoxy(0, 4); std::cout << "Username or password is not valid. Please try another one.\n";
-			system("pause");
-			system("cls");
-		}
-	} while (a.registerValid(clientA) == 0);
+void backspaceKey(char*& str) {
+	if (str[0] == '\0')
+		return;
+	str[strlen(str) - 1] = '\0';
 }
 
 void client::accountLogin() {
 	// neu da co tien hanh dang nhap
 	system("cls");
-	std::cout << "Username: ";
-	conSole.gotoxy(0, 1);
-	std::cout << "Password: ";
-	conSole.gotoxy(10, 0);
-	cin.getline(clientA.username, 99);
-	conSole.gotoxy(10, 1);
-	cin.getline(clientA.strpass, 99);
+	this->conSole.gotoxy(35, 7);
+	std::cout << "+--------------------------------------------+";
+	this->conSole.gotoxy(35, 8);
+	std::cout << "|                  Log in                    |";
+	this->conSole.gotoxy(35, 9);
+	std::cout << "+--------------------------------------------+";
+	this->conSole.gotoxy(35, 10);
+	std::cout << "| Username:                                  |";
+	this->conSole.gotoxy(35, 11);
+	std::cout << "| Password:                                  |";
+	this->conSole.gotoxy(35, 12);
+	std::cout << "+--------------------------------------------+";
+	conSole.gotoxy(47, 10);
+	cin.getline(clientA.username, 100);
+	char c;
+	int i = 0;
+	int cnt = 0;
+	do {
+		int h = i + 47;
+		if (h < 47)
+			h = 47;
+		c = _getch();
+		if (c == 13) {
+			clientA.strpass[cnt] = '\0';
+			break;
+		}
+		if (c == 8) {
+			backspaceKey(clientA.strpass);
+			conSole.gotoxy(h - 1, 11);
+			std::cout << ' ';
+			conSole.gotoxy(h - 1, 11);
+			cnt--;
+			i--;
+		}
+		else {
+			conSole.gotoxy(h, 11);
+			std::cout << '*';
+			clientA.strpass[cnt] = c;
+			i++; cnt++;
+		}
+	} while (1);
 	return;
 }
-

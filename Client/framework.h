@@ -39,7 +39,7 @@ using namespace std;
 using namespace cv;
 
 enum statusCursor { UP, DOWN, LEFT, RIGHT, enter, BACK };
-
+void backspaceKey(char*& str);
 class consoleGraphic
 {
 public:
@@ -53,43 +53,120 @@ public:
 };
 
 struct user {
-	char* username = new char[100];
-	char* strpass = new char[100];
-	// Co the doi
-	std::string idBanking;
-};
-
-class client
-{
-public:
-	user clientA; consoleGraphic conSole;
-	client();
-	// Register
-	bool registerValid(user clientA);
-	// Log in
-	bool loginValid(user clientA);
-	void accountLogin();
+	char* username = new char[101],
+		* strpass = new char[101],
+		* idBanking = new char[11];
 };
 class date
 {
 public:
 	int d, m, y;
 };
+class customer
+{
+public:
+	std::string user_name;
+	date date_in, date_out;
+	std::string ThoigianDatPhong;
+	int kind_room;
+	std::string note;
+	customer* next = NULL;
+	customer* pre = NULL;
+};
+
+class client
+{
+public:
+	consoleGraphic conSole;
+	client();
+	// Register
+	bool registerValid(user clientA);
+
+	void accountRegister(user& clientA) {
+		do {
+			this->conSole.gotoxy(35, 7);
+			std::cout << "+--------------------------------------------+";
+			this->conSole.gotoxy(35, 8);
+			std::cout << "|                   Register                 |";
+			this->conSole.gotoxy(35, 9);
+			std::cout << "+--------------------------------------------+";
+			this->conSole.gotoxy(35, 10);
+			std::cout << "| Username:                                  |";
+			this->conSole.gotoxy(35, 11);
+			std::cout << "| Password:                                  |";
+			this->conSole.gotoxy(35, 12);
+			std::cout << "| ID Banking:                                |";
+			this->conSole.gotoxy(35, 13);
+			std::cout << "+--------------------------------------------+";
+			this->conSole.gotoxy(35, 15); std::cout << "(Username is \'0\' to \'9\' and \'a\' to \'z\')\n";
+			this->conSole.gotoxy(35, 16); std::cout << "(ID banking (10 numbers) include: \'0\' to \'9\')";
+			this->conSole.gotoxy(47, 10);
+			cin.getline(clientA.username, 100);
+			char c;
+			int i = 0;
+			int cnt = 0;
+			do {
+				int h = i + 47;
+				if (h < 47)
+					h = 47;
+				c = _getch();
+				if (c == 13) {
+					clientA.strpass[cnt] = '\0';
+					break;
+				}
+				if (c == 8) {
+					backspaceKey(clientA.strpass);
+					this->conSole.gotoxy(h - 1, 11);
+					std::cout << ' ';
+					this->conSole.gotoxy(h - 1, 11);
+					cnt--;
+					i--;
+				}
+				else {
+					this->conSole.gotoxy(h, 11);
+					std::cout << '*';
+					clientA.strpass[cnt] = c;
+					i++; cnt++;
+				}
+			} while (1);
+			this->conSole.gotoxy(49, 12);
+			cin.getline(clientA.idBanking, 11);
+			if (this->registerValid(clientA) == 0) {
+				this->conSole.gotoxy(35, 18);
+				system("pause");
+				system("cls");
+			}
+		} while (this->registerValid(clientA) == 0);
+		this->conSole.gotoxy(0, 0);
+		this->conSole.gotoxy(35, 17);
+		std::cout << "                                                        ";
+		this->conSole.gotoxy(35, 17);
+		std::cout << "Register Successfully\n";
+		this->conSole.gotoxy(35, 18);
+		system("pause");
+	}
+
+	void accountLogin();
+};
+
+
 
 extern user clientA;
 extern vector <thread> threadimage;
-
 
 void accountRegister();
 void booking(int connector);
 void lookup(int connector);
 void menuClient(int connector);
+void show_image(cv::Mat image, char* name);
 void recv_image(int socket);
-void show_image(cv::Mat image);
-
-
 
 int date_larger_than(date date1, date date2);
 bool kiem_tra_ngay_thang_nam(date date);
 bool kiem_tra_nam_nhuan(int y);
 void string_to_char(string t, char*& s);
+std::string int_to_string(int a);
+std::string double_to_string(double a);
+void string_to_char(std::string t, char*& s);
+void copy_string(std::string& s, char* t);
+void string_to_int(string s, int& a);
