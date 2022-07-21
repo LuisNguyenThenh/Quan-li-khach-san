@@ -26,7 +26,9 @@ int server;
 sockaddr_in server_addr;
 int main()
 {
-
+   /* const char *aaa="hello";
+    std::string s(aaa);
+    std::cout << s;*/
     //std::cout << double_to_string(31.46566);
     int a = 0;
     int nRetCode = 0;

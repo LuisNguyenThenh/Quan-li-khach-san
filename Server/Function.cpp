@@ -35,6 +35,7 @@ void lookup(int connector) {
 
 	char* infoHotel = hotel_ofClient->Get_info_hotel(in, out);
 	int len = strlen(infoHotel);
+	send(connector, (char*)&len, sizeof(int), 0);
 	send(connector, (char*)infoHotel, len, 0);
 	sovle_image(connector, name_hotel, in, out);
 	return;
@@ -98,8 +99,9 @@ void booking(int connector)
 	for (int i = 0; i < number_of_room_booking; i++)
 	{
 		customer* new_booking = new customer;
-		
-		copy_string(new_booking->user_name, username);
+		const char* tmp = username;
+		std::string str(tmp);
+		new_booking->user_name = str;
 		//char* content_kinds_of_room;
 		//int sz_content_kinds_of_room;
 
@@ -236,6 +238,7 @@ void cancel_booking(int connector)
 	}
 	int number_booking_want_to_cancel;
 	recv(connector, (char*)&number_booking_want_to_cancel, sizeof(int), 0);
+	bool check = false;
 	for (customer* p = hotel->list_booking->head; p; p = p->next)
 	{
 		if (strcmp(p->user_name.c_str(), user_name) == 0)
@@ -243,6 +246,7 @@ void cancel_booking(int connector)
 			number_booking_want_to_cancel--;
 			if (number_booking_want_to_cancel == 0)
 			{
+				check = true;
 				bool flag1;
 				if (Valid(p->ThoigianDatPhong.c_str()) == 1)
 				{
@@ -257,6 +261,10 @@ void cancel_booking(int connector)
 				break;
 			}
 		}
+	}
+	if (check == false)
+	{
+		send(connector, (char*)&check, sizeof(bool), 0);
 	}
 	return;
 }

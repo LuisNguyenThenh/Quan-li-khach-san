@@ -197,17 +197,24 @@ int main()
                             Graphic.gotoxy(45, 6);
                             std::cout << "Login Successfully.\n";
                             menuClient(clientsocket);
+                            break;
                         }
                         if (flag == 0) {
+                            Graphic.gotoxy(40, 13);
                             std::cout << "Username or Password does not correct.\n";
+                            Graphic.gotoxy(40, 14);
+                            std::cout << "Press Enter to continue......";
+                            cin.get();
                         }
                     }
                 }
                 // tien hanh dang nhhap
                 else {
                     send(clientsocket, (char*)&flag, sizeof(int), 0);
-                    a.accountLogin();
-                    while (1) {
+                    
+                    while (1) 
+                    {
+                        a.accountLogin();
                         int p = strlen(clientA.username),
                             p2 = strlen(clientA.strpass);
                         /* cout << p << endl;
@@ -219,6 +226,7 @@ int main()
                         send(clientsocket, (char*)clientA.username, p, 0);
                         send(clientsocket, (char*)&p2, sizeof(int), 0);
                         send(clientsocket, (char*)clientA.strpass, p2, 0);
+
                         recv(clientsocket, (char*)&flag, sizeof(int), 0);
                         if (flag == 1) {
                             system("cls");
@@ -228,17 +236,23 @@ int main()
                             break;
                         }
                         else {
+                            Graphic.gotoxy(40, 13);
                             std::cout << "Username or Password does not correct.\n";
+                            Graphic.gotoxy(40, 14);
+                            std::cout << "Press Enter to continue......";
+                            cin.get();
                         }
                     }
                 }
             }
             closesocket(clientsocket);
             WSACleanup();
+            cout << endl;
             for (int i = 0; i < threadimage.size(); i++)
             {
-                threadimage[i].join();
+                threadimage[i].detach();
             }
+            return 0;
         }
     }
     else

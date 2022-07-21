@@ -26,9 +26,9 @@ void string_to_char(std::string t, char*& s)
 	return;
 }
 
-void copy_string(std::string& s, char* t)
+void copy_string(std::string& str,const char* t)
 {
-	std::string str(t);
+	/*std::str(t);*/
 	return;
 }
 

@@ -10,7 +10,7 @@ void booking(int connector)
 	// Gui username cho server
 	send(connector, (char*)&size_username, sizeof(int), 0);
 	send(connector, (char*)clientA.username, size_username, 0);
-
+	cout << clientA.username << endl;
 	bool name_hotel_exist;
 	char* name_hotel = new char[100];
 	int size_of_name_hotel;
@@ -140,6 +140,10 @@ void booking(int connector)
 	recv(connector, (char*)&total_money, sizeof(double), 0);
 	std::cout << fixed << setprecision(2) << "Total: " << total_money << " USD" << std::endl;
 	std::cout << "Have good vacation!" << std::endl;
+
+	cout << "Press Enter to return..." << endl;
+	cin.get();
+	//cin.get();
 	return;
 }
 void cancel_booking(int connector)
@@ -213,13 +217,11 @@ void cancel_booking(int connector)
 	int int_number_booking_cancel;
 	string_to_int(number_booking_cancel, int_number_booking_cancel);
 
-	//cout << int_number_booking_cancel << endl;
 	send(connector, (char*)&int_number_booking_cancel, sizeof(int), 0);
 
 	bool flag1;
 
 	recv(connector, (char*)&flag1, sizeof(bool), 0);
-	cout << flag1 << endl;
 	if (flag1 == true)
 	{
 		cout << "Cancel reservation successfully!" << endl;
@@ -228,13 +230,17 @@ void cancel_booking(int connector)
 	{
 		cout << "Can not cancel because time out!" << endl;
 	}
+	cout << "Press Enter to return..." << endl;
+	cin.get();
+	cin.get();
 	return;
 }
 
 void menuClient(int connector) {
-	system("cls");
+	
 	char c;
 	do {
+		system("cls");
 		consoleGraphic Graphic;
 		Graphic.gotoxy(43, 9);
 		std::cout << "+---------------------+\n";
@@ -252,6 +258,7 @@ void menuClient(int connector) {
 		std::cout << "| 4. Quit	         |";
 		Graphic.gotoxy(43, 16);
 		std::cout << "+---------------------+";
+		cout << endl;
 		c = _getch();
 		int flag = 1;
 		if (c == '1') {
@@ -269,13 +276,20 @@ void menuClient(int connector) {
 			send(connector, (char*)&flag, sizeof(int), 0);
 			cancel_booking(connector);
 		}
+		if (c == '4')
+		{
+			flag = 4;
+			send(connector, (char*)&flag, sizeof(int), 0);
+		}
 	} while (c != '4');
+	
 }
 
 void show_image(cv::Mat image, char* name)
 {
 	cv::imshow(name, image);
 	waitKey(0);
+	return;
 }
 
 void recv_image(int socket)
@@ -374,6 +388,11 @@ void lookup(int connector) {
 	cout << infoHotel;
 	//Nhan hinh anh
 	recv_image(connector);
+	
+	cout << "Press Enter to return..." << endl;
+	cin.get();
+	cin.get();
+	//Sleep(10000);
 	return;
 }
 

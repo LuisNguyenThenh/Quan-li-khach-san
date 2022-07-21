@@ -282,9 +282,12 @@ void Finish(Hotel* a)
 }
 
 bool isValid(user* a) {
-    for (int i = 0; i < USER->number_user; i++) {
-        if (a->username == USER->Head->username && a->strpass == USER->Head->strpass)
+    for (user* p = USER->Head; p; p = p->Next)
+    {
+        if (a->username == p->username && a->strpass == p->strpass)
+        {
             return 1;
+        }
     }
     return 0;
 }

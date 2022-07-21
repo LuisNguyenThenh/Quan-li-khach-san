@@ -9,6 +9,61 @@
 
 // When you are using pre-compiled headers, this source file is necessary for compilation to succeed.
 
+
+void login(int sockClient)
+{
+    user* client = new user;
+    while (1)
+    {
+        // username 
+        int size_name;
+        recv(sockClient, (char*)&size_name, sizeof(int), 0);
+        //std::cout << size_name;
+        char* temp1 = new char[size_name + 1];
+        recv(sockClient, (char*)temp1, size_name, 0);
+        client->username.assign(temp1, size_name);
+        //std::cout << client.username << std::endl;
+        //password
+        int size_pass;
+        recv(sockClient, (char*)&size_pass, sizeof(int), 0);
+        char* temp2 = new char[size_pass + 1];
+
+        recv(sockClient, (char*)temp2, size_pass, 0);
+        client->strpass.assign(temp2, size_pass);
+        delete[] temp2;
+        //std::cout << client.strpass << std::endl;
+
+        int flag;
+        bool check = isValid(client);
+        if (check == 1)
+        {
+            flag = 1; // gui 1 xac nhan dang nhap thanh cong 
+            send(sockClient, (char*)&flag, sizeof(int), 0);
+            while (1) {
+                recv(sockClient, (char*)&flag, sizeof(int), 0);
+                if (flag == 1) {
+                    lookup(sockClient);
+                }
+                if (flag == 2) {
+                    booking(sockClient);
+                }
+                if (flag == 3) {
+                    cancel_booking(sockClient);
+                }
+                if (flag == 4)
+                    break;
+            }
+            break;
+        }
+        else
+        {
+            flag = 0; // gui 0 dang nhap that bai.
+            send(sockClient, (char*)&flag, sizeof(int), 0);
+        }
+
+    }
+}
+
 void solve_client(int sockClient, int order_client)
 {
     user* client = new user;
@@ -53,112 +108,18 @@ void solve_client(int sockClient, int order_client)
             //std::cout << client->idBanking << std::endl;
             std::cout << tmp;
             delete[] temp3;
+            USER->Push(client);
             // tien hanh dang nhap sau khi dki
-            if (tmp == 1) {
-                int size_name;
-                user clientB;
-                recv(sockClient, (char*)&size_name, sizeof(int), 0);
-                std::cout << size_name;
-                temp1 = new char[size_name + 1];
-                recv(sockClient, (char*)temp1, size_name, 0);
-                clientB.username.assign(temp1, size_name);
-                delete[] temp1;
-                std::cout << clientB.username << std::endl;
-                //password
-                int size_pass;
-                recv(sockClient, (char*)&size_pass, sizeof(int), 0);
-                temp2 = new char[size_pass + 1];
-
-                recv(sockClient, (char*)temp2, size_pass, 0);
-                clientB.strpass.assign(temp2, size_pass);
-                std::cout << clientB.strpass << std::endl;
-                delete[] temp2;
-                int flag;
-                //DANG TEST CHO NAY
-                //if (server.loginValid(client))
-                USER->Push(client);
-                bool check = isValid(&clientB);
-                std::cout << check;
-                if (check == 1)
-                {
-                    flag = 1; // gui 1 xac nhan dang nhap thanh cong 
-                    send(sockClient, (char*)&flag, sizeof(int), 0);
-                }
-                else
-                {
-                    flag = 0; // gui 0 dang nhap that bai.
-                    send(sockClient, (char*)&flag, sizeof(int), 0);
-                }
-                // nhan flag = 1 dang nhap thanh cong
-                while (1) {
-                    recv(sockClient, (char*)&flag, sizeof(int), 0);
-                    if (flag == 1) {
-                        lookup(sockClient);
-                    }
-                    if (flag == 2) {
-                        booking(sockClient);
-                    }
-                    if (flag == 3) {
-                        cancel_booking(sockClient);
-                    }
-                    if (flag == 4)
-                        break;
-                }
+            if (tmp == 1)
+            {
+                login(sockClient);
             }
         } while (tmp != 1);
     }
     if (q == 1)
     {
         // ktra dang nhap
-        while (1) {
-            // username 
-            int size_name;
-            recv(sockClient, (char*)&size_name, sizeof(int), 0);
-            //std::cout << size_name;
-            char* temp1 = new char[size_name + 1];
-            recv(sockClient, (char*)temp1, size_name, 0);
-            client->username.assign(temp1, size_name);
-            //std::cout << client.username << std::endl;
-            //password
-            int size_pass;
-            recv(sockClient, (char*)&size_pass, sizeof(int), 0);
-            char* temp2 = new char[size_pass + 1];
-
-            recv(sockClient, (char*)temp2, size_pass, 0);
-            client->strpass.assign(temp2, size_pass);
-            delete[] temp2;
-            //std::cout << client.strpass << std::endl;
-
-            int flag;
-            bool check = isValid(client);
-            if (check == 1)
-            {
-                flag = 1; // gui 1 xac nhan dang nhap thanh cong 
-                send(sockClient, (char*)&flag, sizeof(int), 0);
-                while (1) {
-                    recv(sockClient, (char*)&flag, sizeof(int), 0);
-                    if (flag == 1) {
-                        lookup(sockClient);
-                    }
-                    if (flag == 2) {
-                        booking(sockClient);
-                    }
-                    if (flag == 3) {
-                        cancel_booking(sockClient);
-                    }
-                    if (flag == 4)
-                        break;
-                }
-                break;
-            }
-            else
-            {
-                flag = 0; // gui 0 dang nhap that bai.
-                send(sockClient, (char*)&flag, sizeof(int), 0);
-            }
-            // nhan flag = 1 dang nhap thanh cong
-            // tien hanh kiem tra lai tai client thu i
-        }
+        login(sockClient);
     }
 
     std::cout << "Client " << order_client << " have done!" << std::endl;
@@ -322,7 +283,7 @@ char* Hotel::Get_info_hotel(date date1, date date2)
     //double price_Suite_room;
 
     iii number_kinds_of_room = Number_available_room_of_each_kind_on_date(date1, date2);
-
+    
     int number_Standard_room_available = number_kinds_of_room.first.first;
     int number_Superior_room_available = number_kinds_of_room.first.second;
     int number_Deluxe_room_available = number_kinds_of_room.second.first;
@@ -337,7 +298,8 @@ char* Hotel::Get_info_hotel(date date1, date date2)
         tmp = tmp + num + ".\n";
 
         tmp = tmp + std::string("Number Standard room available: ") + int_to_string(number_Standard_room_available) + "\n";
-        tmp = tmp + std::string("Price Standard room: ") + double_to_string(price_Standard_room) + " USD \n\n";
+        tmp = tmp + std::string("Price Standard room: ") + double_to_string(price_Standard_room) + " USD \n";
+        tmp = tmp + std::string("Description: ") + decription_Standard_room + "\n\n";
         count++;
     }
 
@@ -347,7 +309,8 @@ char* Hotel::Get_info_hotel(date date1, date date2)
         tmp = tmp + num + ".\n";
 
         tmp = tmp + std::string("Number Superior room available: ") + int_to_string(number_Superior_room_available) + "\n";
-        tmp = tmp + std::string("Price Superior room: ") + double_to_string(price_Superior_room) + " USD \n\n";
+        tmp = tmp + std::string("Price Superior room: ") + double_to_string(price_Superior_room) + " USD \n";
+        tmp = tmp + std::string("Description: ") + decription_Suite_room + "\n\n";
         count++;
     }
 
@@ -357,7 +320,8 @@ char* Hotel::Get_info_hotel(date date1, date date2)
         tmp = tmp + num + ".\n";
 
         tmp = tmp + std::string("Number Deluxe room available: ") + int_to_string(number_Deluxe_room_available) + "\n";
-        tmp = tmp + std::string("Price Deluxe room: ") + double_to_string(price_Deluxe_room) + " USD \n\n";
+        tmp = tmp + std::string("Price Deluxe room: ") + double_to_string(price_Deluxe_room) + " USD \n";
+        tmp = tmp + std::string("Description: ") + decription_Deluxe_room + "\n\n";
         count++;
     }
 
@@ -368,7 +332,8 @@ char* Hotel::Get_info_hotel(date date1, date date2)
         tmp = tmp + num + ".\n";
 
         tmp = tmp + std::string("Number Suite room available: ") + int_to_string(number_Suite_room_available) + "\n";
-        tmp = tmp + std::string("Price Suite room: ") + double_to_string(price_Suite_room) + " USD \n\n";
+        tmp = tmp + std::string("Price Suite room: ") + double_to_string(price_Suite_room) + " USD \n";
+        tmp = tmp + std::string("Description: ") + decription_Suite_room + "\n\n";
         count++;
     }
     char* s;
