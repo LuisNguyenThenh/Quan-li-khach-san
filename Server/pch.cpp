@@ -11,7 +11,7 @@
 
 void solve_client(int sockClient, int order_client)
 {
-    user client;
+    user* client = new user;
     // dang ki luu do file code o day duoi cai if
     bool c = true;
     //Send flag
@@ -27,30 +27,30 @@ void solve_client(int sockClient, int order_client)
         do {
             int p;
             recv(sockClient, (char*)&p, sizeof(int), 0);
-            std::cout << p;
+            //std::cout << p;
             char* temp1 = new char[p + 1];
             recv(sockClient, (char*)temp1, p, 0);
-            client.username.assign(temp1, p);
-            std::cout << client.username << std::endl;
+            client->username.assign(temp1, p);
+            std::cout << client->username << std::endl;
             delete[] temp1;
             //password
             int k;
             recv(sockClient, (char*)&k, sizeof(int), 0);
             char* temp2 = new char[k + 1];
-            std::cout << k;
+            //std::cout << k;
             recv(sockClient, (char*)temp2, k, 0);
-            client.strpass.assign(temp2, k);
-            std::cout << client.strpass << std::endl;
+            client->strpass.assign(temp2, k);
+            std::cout << client->strpass << std::endl;
             delete[] temp2;
             //ID banking
             int r;
             recv(sockClient, (char*)&r, sizeof(int), 0);
             char* temp3 = new char[r + 1];
             recv(sockClient, (char*)temp3, r, 0);
-            std::cout << r;
-            client.idBanking.assign(temp3, r);
+            //std::cout << r;
+            client->idBanking.assign(temp3, r);
             recv(sockClient, (char*)&tmp, sizeof(int), 0);
-            std::cout << client.idBanking;
+            //std::cout << client->idBanking << std::endl;
             std::cout << tmp;
             delete[] temp3;
             // tien hanh dang nhap sau khi dki
@@ -58,12 +58,12 @@ void solve_client(int sockClient, int order_client)
                 int size_name;
                 user clientB;
                 recv(sockClient, (char*)&size_name, sizeof(int), 0);
-                //std::cout << size_name;
+                std::cout << size_name;
                 temp1 = new char[size_name + 1];
                 recv(sockClient, (char*)temp1, size_name, 0);
                 clientB.username.assign(temp1, size_name);
                 delete[] temp1;
-                //std::cout << client.username << std::endl;
+                std::cout << clientB.username << std::endl;
                 //password
                 int size_pass;
                 recv(sockClient, (char*)&size_pass, sizeof(int), 0);
@@ -71,11 +71,15 @@ void solve_client(int sockClient, int order_client)
 
                 recv(sockClient, (char*)temp2, size_pass, 0);
                 clientB.strpass.assign(temp2, size_pass);
+                std::cout << clientB.strpass << std::endl;
                 delete[] temp2;
                 int flag;
                 //DANG TEST CHO NAY
                 //if (server.loginValid(client))
-                if (1)
+                USER->Push(client);
+                bool check = isValid(&clientB);
+                std::cout << check;
+                if (check == 1)
                 {
                     flag = 1; // gui 1 xac nhan dang nhap thanh cong 
                     send(sockClient, (char*)&flag, sizeof(int), 0);
@@ -86,10 +90,19 @@ void solve_client(int sockClient, int order_client)
                     send(sockClient, (char*)&flag, sizeof(int), 0);
                 }
                 // nhan flag = 1 dang nhap thanh cong
-                recv(sockClient, (char*)&flag, sizeof(int), 0);
-                if (flag == 1) {
-                    getRequirefromMenu(sockClient);
-                    break;
+                while (1) {
+                    recv(sockClient, (char*)&flag, sizeof(int), 0);
+                    if (flag == 1) {
+                        lookup(sockClient);
+                    }
+                    if (flag == 2) {
+                        booking(sockClient);
+                    }
+                    if (flag == 3) {
+                        cancel_booking(sockClient);
+                    }
+                    if (flag == 4)
+                        break;
                 }
             }
         } while (tmp != 1);
@@ -104,7 +117,7 @@ void solve_client(int sockClient, int order_client)
             //std::cout << size_name;
             char* temp1 = new char[size_name + 1];
             recv(sockClient, (char*)temp1, size_name, 0);
-            client.username.assign(temp1, size_name);
+            client->username.assign(temp1, size_name);
             //std::cout << client.username << std::endl;
             //password
             int size_pass;
@@ -112,17 +125,31 @@ void solve_client(int sockClient, int order_client)
             char* temp2 = new char[size_pass + 1];
 
             recv(sockClient, (char*)temp2, size_pass, 0);
-            client.strpass.assign(temp2, size_pass);
+            client->strpass.assign(temp2, size_pass);
             delete[] temp2;
             //std::cout << client.strpass << std::endl;
 
             int flag;
-            //DANG TEST CHO NAY
-            
-            if (1)
+            bool check = isValid(client);
+            if (check == 1)
             {
                 flag = 1; // gui 1 xac nhan dang nhap thanh cong 
                 send(sockClient, (char*)&flag, sizeof(int), 0);
+                while (1) {
+                    recv(sockClient, (char*)&flag, sizeof(int), 0);
+                    if (flag == 1) {
+                        lookup(sockClient);
+                    }
+                    if (flag == 2) {
+                        booking(sockClient);
+                    }
+                    if (flag == 3) {
+                        cancel_booking(sockClient);
+                    }
+                    if (flag == 4)
+                        break;
+                }
+                break;
             }
             else
             {
@@ -130,15 +157,8 @@ void solve_client(int sockClient, int order_client)
                 send(sockClient, (char*)&flag, sizeof(int), 0);
             }
             // nhan flag = 1 dang nhap thanh cong
-            recv(sockClient, (char*)&flag, sizeof(int), 0);
-            if (flag == 1) {
-                getRequirefromMenu(sockClient);
-                break;
-            }
             // tien hanh kiem tra lai tai client thu i
         }
-        // }
-
     }
 
     std::cout << "Client " << order_client << " have done!" << std::endl;

@@ -280,3 +280,11 @@ void Finish(Hotel* a)
     delete[] a;
     USER->~StackUser();
 }
+
+bool isValid(user* a) {
+    for (int i = 0; i < USER->number_user; i++) {
+        if (a->username == USER->Head->username && a->strpass == USER->Head->strpass)
+            return 1;
+    }
+    return 0;
+}

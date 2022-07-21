@@ -169,7 +169,6 @@ void cancel_booking(int connector)
 	send(connector, (char*)&size_username, sizeof(int), 0);
 	send(connector, (char*)clientA.username, size_username, 0);
 
-
 	int number_booking_of_client = 0;
 	// Gui di thong tin cac luot booking cua user do
 	recv(connector, (char*)&number_booking_of_client, sizeof(int), 0);
@@ -233,56 +232,55 @@ void cancel_booking(int connector)
 }
 
 void menuClient(int connector) {
-	consoleGraphic Graphic;
-	Graphic.gotoxy(43, 9);
-	std::cout << "+---------------------+\n";
-	Graphic.gotoxy(43, 10);
-	std::cout << "|         MENU        |\n";
-	Graphic.gotoxy(43, 11);
-	std::cout << "+---------------------+\n";
-	Graphic.gotoxy(43, 12);
-	std::cout << "| 1. Lookup           |";
-	Graphic.gotoxy(43, 13);
-	std::cout << "| 2. Preservation     |";
-	Graphic.gotoxy(43, 14);
-	std::cout << "| 3. Cancel Booking   |";
-	Graphic.gotoxy(43, 15);
-	std::cout << "| 4. Quit	            |";
-	Graphic.gotoxy(43, 16);
-	std::cout << "+---------------------+";
-	char c = _getch();
-	int flag = 1;
-	if (c == '1') {
-		send(connector, (char*)&flag, sizeof(int), 0);
-		lookup(connector);
-	}
-	if (c == '2') {
-		flag = 0;
-		send(connector, (char*)&flag, sizeof(int), 0);
-		booking(connector);
-	}
-	if (c == '3')
-	{
-		flag = 3;
-		send(connector, (char*)&flag, sizeof(int), 0);
-		cancel_booking(connector);
-	}
-	if (c == '4')
-	{
-		return;
-	}
+	system("cls");
+	char c;
+	do {
+		consoleGraphic Graphic;
+		Graphic.gotoxy(43, 9);
+		std::cout << "+---------------------+\n";
+		Graphic.gotoxy(43, 10);
+		std::cout << "|         MENU        |\n";
+		Graphic.gotoxy(43, 11);
+		std::cout << "+---------------------+\n";
+		Graphic.gotoxy(43, 12);
+		std::cout << "| 1. Lookup           |";
+		Graphic.gotoxy(43, 13);
+		std::cout << "| 2. Preservation     |";
+		Graphic.gotoxy(43, 14);
+		std::cout << "| 3. Cancel Booking   |";
+		Graphic.gotoxy(43, 15);
+		std::cout << "| 4. Quit	         |";
+		Graphic.gotoxy(43, 16);
+		std::cout << "+---------------------+";
+		c = _getch();
+		int flag = 1;
+		if (c == '1') {
+			send(connector, (char*)&flag, sizeof(int), 0);
+			lookup(connector);
+		}
+		if (c == '2') {
+			flag = 2;
+			send(connector, (char*)&flag, sizeof(int), 0);
+			booking(connector);
+		}
+		if (c == '3')
+		{
+			flag = 3;
+			send(connector, (char*)&flag, sizeof(int), 0);
+			cancel_booking(connector);
+		}
+	} while (c != '4');
 }
 
 void show_image(cv::Mat image, char* name)
 {
-
 	cv::imshow(name, image);
 	waitKey(0);
 }
+
 void recv_image(int socket)
 {
 	int number_image;
-
 	recv(socket, (char*)&number_image, sizeof(int), 0);
 	char* name_room;
 	for (int i = 0; i < number_image; i++)
@@ -292,27 +290,19 @@ void recv_image(int socket)
 		name_room = new char[size_name_room + 1];
 		recv(socket, (char*)name_room, size_name_room, 0);
 		name_room[size_name_room] = '\0';
-
 		int image_row;
 		int image_col;
 		int image_size;
-
-
 		recv(socket, (char*)&image_row, sizeof(int), 0);
-
 		recv(socket, (char*)&image_col, sizeof(int), 0);
-
 		recv(socket, (char*)&image_size, sizeof(int), 0);
-
 		cv::Mat image(image_row, image_col, CV_8UC3);
-
 		int bytes_catched = 0;
 		for (int i = 0; i < image_size; i = i + bytes_catched)
 		{
 			bytes_catched = recv(socket, (char*)image.data + i, image_size - i, 0);
 		}
 		image.data = (uchar*)image.data;
-
 		threadimage.push_back(thread(show_image, image, name_room));
 	}
 	return;
@@ -323,38 +313,67 @@ Pullman Hotel
 23/3/2022
 */
 void lookup(int connector) {
-	std::cout << "+-------------------------+\n";
-	std::cout << "|       INFORMATION       |\n";
-	std::cout << "+-------------------------+\n";
-	std::cout << "| 1. Hotel                |\n";
-	std::cout << "| 2. Booking information  |\n";
-	std::cout << "+-------------------------+\n";
+	system("cls");
+	consoleGraphic gra;
+	gra.gotoxy(35, 10);
+	std::cout << "Which hotel do you want to choose?";
+	char* name_hotel = new char[101];
 	
-	char* name_hotel=new char[100];
-	std::cout << "Name hotel: ";
-	cin.getline(name_hotel, 99);
+	int tmp = 0;
+	do {
+		tmp = 0;
+		gra.gotoxy(35, 11);
+		std::cout << "Hotel: ";
+		gra.gotoxy(42, 11);
+		cin.getline(name_hotel, 100);
+		int size_name_hotel = strlen(name_hotel);
+		//cout << name_hotel << endl;
+		send(connector, (char*)&size_name_hotel, sizeof(int), 0);
+		send(connector, (char*)name_hotel, size_name_hotel, 0);
+		recv(connector, (char*)&tmp, sizeof(int), 0);
 
-	int size_name_hotel = strlen(name_hotel);
-	cout << name_hotel << endl;
-	send(connector, (char*)&size_name_hotel, sizeof(int), 0);
-	send(connector, (char*)name_hotel, size_name_hotel, 0);
+		if (tmp == 0) {
+			gra.gotoxy(42, 11);
+			std::cout << "                                               ";
+			gra.gotoxy(30, 14);
+			std::cout << "Sorry! We can't find this Hotel. Try another one.";
+		}
+	} while (tmp == 0);
 
-	date date_in, date_out;
-	char c;
-	cout << "Date in:";
-	cin >> date_in.d >> c >> date_in.m >> c >> date_in.y;
-	cout << "Date out";
-	cin >> date_out.d >> c >> date_out.m >> c >> date_out.y;
-
-	send(connector, (char*)&date_in, sizeof(date), 0);
-	send(connector, (char*)&date_out, sizeof(date), 0);
-
+	date in, out;
+	bool check_invaild_date;
+	do {
+		char c;
+		gra.gotoxy(35, 12);
+		cout << "Date in:";
+		gra.gotoxy(44, 12);
+		cin >> in.d >> c >> in.m >> c >> in.y;
+		gra.gotoxy(35, 13);
+		cout << "Date out";
+		gra.gotoxy(44, 13);
+		cin >> out.d >> c >> out.m >> c >> out.y;
+		send(connector, (char*)&in, sizeof(date), 0);
+		send(connector, (char*)&out, sizeof(date), 0);
+		check_invaild_date = (kiem_tra_ngay_thang_nam(in) == false) | (kiem_tra_ngay_thang_nam(out) == false) | (date_larger_than(out, in) < 0);
+		if (check_invaild_date == 1)
+		{
+			gra.gotoxy(42, 12);
+			cout << "                ";
+			gra.gotoxy(44, 13);
+			cout << "                ";
+			gra.gotoxy(44, 14);
+			cout << "Something wrong with date. Please check it again.";
+		}
+	} while (check_invaild_date == 1);
+	system("cls");
+	char* infoHotel; int len;
+	recv(connector, (char*)&len, sizeof(int), 0);
+	infoHotel = new char[len + 1];
+	recv(connector, (char*)infoHotel, len, 0);
+	infoHotel[len] = '\0';
+	cout << infoHotel;
 	//Nhan hinh anh
 	recv_image(connector);
-
-
-	
-
 	return;
 }
 

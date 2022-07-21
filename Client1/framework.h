@@ -39,7 +39,7 @@ using namespace std;
 using namespace cv;
 
 enum statusCursor { UP, DOWN, LEFT, RIGHT, enter, BACK };
-
+void backspaceKey(char*& str);
 class consoleGraphic
 {
 public:
@@ -102,8 +102,33 @@ public:
 			this->conSole.gotoxy(35, 16); std::cout << "(ID banking (10 numbers) include: \'0\' to \'9\')";
 			this->conSole.gotoxy(47, 10);
 			cin.getline(clientA.username, 100);
-			this->conSole.gotoxy(47, 11);
-			cin.getline(clientA.strpass, 100);
+			char c;
+			int i = 0;
+			int cnt = 0;
+			do {
+				int h = i + 47;
+				if (h < 47)
+					h = 47;
+				c = _getch();
+				if (c == 13) {
+					clientA.strpass[cnt] = '\0';
+					break;
+				}
+				if (c == 8) {
+					backspaceKey(clientA.strpass);
+					this->conSole.gotoxy(h -1, 11);
+					std::cout << ' ';
+					this->conSole.gotoxy(h - 1, 11);
+					cnt--;
+					i--;
+				}
+				else {
+					this->conSole.gotoxy(h, 11);
+					std::cout << '*';
+					clientA.strpass[cnt] = c;
+					i++; cnt++;
+				}
+			} while (1);
 			this->conSole.gotoxy(49, 12);
 			cin.getline(clientA.idBanking, 11);
 			if (this->registerValid(clientA) == 0) {
@@ -113,6 +138,8 @@ public:
 			}
 		} while (this->registerValid(clientA) == 0);
 		this->conSole.gotoxy(0, 0);
+		this->conSole.gotoxy(35, 17);
+		std::cout << "                                                        ";
 		this->conSole.gotoxy(35, 17);
 		std::cout << "Register Successfully\n";
 		this->conSole.gotoxy(35, 18);

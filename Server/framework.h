@@ -64,7 +64,6 @@ public:
     user* Head;
 
     StackUser();
-
     void Input(json j);
     bool IsEmpty();
     void RemoveNode(user* p);
@@ -152,9 +151,10 @@ public:
 
 };
 
+void booking(int connector);
 extern std::vector <std::thread> threadimages;
 extern std::vector <std::thread> threadclient;
-
+void lookup(int connector);
 extern Hotel* list_hotel;
 extern StackUser* USER;
 extern int nClient;
@@ -162,10 +162,6 @@ extern int bESCPressed;
 extern int server;
 extern sockaddr_in server_addr;
 extern std::vector <int> idsocketclient;
-
-
-
-
 void solve_client(int sockClient, int order_client);
 void Load_data();
 std::string int_to_string(int a);
@@ -174,10 +170,8 @@ std::string double_to_string(double a);
 void string_to_char(std::string t, char*& s);
 void copy_string(std::string& s, char* t);
 Hotel* get_hotel_from_list(const char* name_hotel);
-void getRequirefromMenu(int sockClient);
-void getRequirefromLookup(int sockClient);
 void sovle_image(int sockClient, char* name_hotel, date date_in, date date_out);
-
+bool isValid(user* a);
 void handle();
 bool kiem_tra_ngay_thang_nam(int day, int m, int y);
 int date_larger_than(date date1, date date2);
@@ -186,3 +180,4 @@ void Finish(Hotel* a);
 char* getDtTm(char* buff);
 int Getint(const char* input, int& vitri);
 bool Valid(const char* ngaydatphong);
+void cancel_booking(int connector);

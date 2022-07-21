@@ -167,19 +167,18 @@ int main()
                         r = strlen(clientA.idBanking);
                     send(clientsocket, (char*)&p, sizeof(int), 0);
                     send(clientsocket, (char*)clientA.username, p, 0);
-                    std::cout << clientA.username << std::endl;
+                    //std::cout << clientA.username << std::endl;
                     send(clientsocket, (char*)&q, sizeof(int), 0);
                     send(clientsocket, (char*)clientA.strpass, q, 0);
-                    std::cout << clientA.strpass << std::endl;
+                    //std::cout << clientA.strpass << std::endl;
                     send(clientsocket, (char*)&r, sizeof(r), 0);
                     send(clientsocket, (char*)clientA.idBanking, r, 0);
-                    std::cout << clientA.idBanking << std::endl;
-                    system("cls");
+                    //std::cout << clientA.idBanking << std::endl;
                     int tmp = 1;
                     send(clientsocket, (char*)&tmp, sizeof(int), 0);
                     // dki r thi dang nhap th xD
-                    a.accountLogin(); // cho nay nhin` phen` qua :D
                     while (1) {
+                        a.accountLogin();
                         int p = strlen(clientA.username),
                             p2 = strlen(clientA.strpass);
                         /* cout << p << endl;
@@ -197,12 +196,9 @@ int main()
                             system("cls");
                             Graphic.gotoxy(45, 6);
                             std::cout << "Login Successfully.\n";
-                            send(clientsocket, (char*)&flag, sizeof(int), 0);
                             menuClient(clientsocket);
-                            break;
                         }
-                        else {
-                            send(clientsocket, (char*)&flag, sizeof(int), 0);
+                        if (flag == 0) {
                             std::cout << "Username or Password does not correct.\n";
                         }
                     }
@@ -228,12 +224,10 @@ int main()
                             system("cls");
                             Graphic.gotoxy(45, 6);
                             std::cout << "Login Successfully.\n";
-                            send(clientsocket, (char*)&flag, sizeof(int), 0);
                             menuClient(clientsocket);
                             break;
                         }
                         else {
-                            send(clientsocket, (char*)&flag, sizeof(int), 0);
                             std::cout << "Username or Password does not correct.\n";
                         }
                     }

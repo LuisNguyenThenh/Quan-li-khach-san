@@ -3,22 +3,40 @@
 #include <conio.h>
 //
 //
-void lookup(CSocket& connector) {
-	std::cout << "+-------------------------+\n";
-	std::cout << "|       INFORMATION       |\n";
-	std::cout << "+-------------------------+\n";
-	std::cout << "| 1. Hotel                |\n";
-	std::cout << "| 2. Booking information  |\n";
-	std::cout << "+-------------------------+\n";
-	char c = _getch();
-	int flag = 1;
-	if (c == '1') {
-		send(connector, (char*)&flag, sizeof(int), 0);
-	}
-	if (c == '2') {
-		flag = 0;
-		send(connector, (char*)&flag, sizeof(int), 0);
-	}
+void lookup(int connector) {
+	int size_name_hotel;
+	char* name_hotel;
+	Hotel* hotel_ofClient;
+	int tmp = 0;
+	std::cout << 1234 << std::endl;
+	do {
+		tmp = 0;
+		recv(connector, (char*)&size_name_hotel, sizeof(int), 0);
+		name_hotel = new char[size_name_hotel + 1];
+		recv(connector, (char*)name_hotel, size_name_hotel, 0);
+		name_hotel[size_name_hotel] = '\0';
+		hotel_ofClient = get_hotel_from_list(name_hotel);
+		if (hotel_ofClient == nullptr) {
+			std::cout << 12345 << std::endl;
+			send(connector, (char*)&tmp, sizeof(int), 0);
+		}
+		else {
+			tmp = 1;
+			std::cout << 1123;
+			send(connector, (char*)&tmp, sizeof(int), 0);
+		}
+	} while (tmp == 0);
+	std::cout << name_hotel << std::endl;
+
+	date in, out;
+
+	recv(connector, (char*)&in, sizeof(date), 0);
+	recv(connector, (char*)&out, sizeof(date), 0);
+
+	char* infoHotel = hotel_ofClient->Get_info_hotel(in, out);
+	int len = strlen(infoHotel);
+	send(connector, (char*)infoHotel, len, 0);
+	sovle_image(connector, name_hotel, in, out);
 	return;
 }
 
@@ -33,7 +51,6 @@ void booking(int connector)
 	recv(connector, (char*)username, size_username, 0);
 	username[size_username] = '\0';
 	std::cout << username << std::endl;
-
 
 	double total_money = 0;
 	// Choose hotel
@@ -244,34 +261,6 @@ void cancel_booking(int connector)
 	return;
 }
 
-
-// nhan lenh tra cuu hoac dat phong tu client
-void getRequirefromMenu(int sockClient)
-{
-	int flag;
-	recv(sockClient, (char*)&flag, sizeof(int), 0);
-	if (flag == 1)
-	{
-		// look up
-		getRequirefromLookup(sockClient);
-	}
-	if (flag == 2) {
-		// preservation
-		//std::cout << "kjsdf" << std::endl;
-		booking(sockClient);
-	}
-	if (flag == 3)
-	{
-		cancel_booking(sockClient);
-	}
-	if (flag == 4)
-	{
-		//Quit
-		return;
-	}
-}
-// nhan lenh tra cuu ten khach san, ngay vao o va ngay roi di.
-
 void sovle_image(int sockClient,char* name_hotel,date date_in,date date_out)
 {
 	Hotel* hotel = get_hotel_from_list(name_hotel);
@@ -290,35 +279,4 @@ void sovle_image(int sockClient,char* name_hotel,date date_in,date date_out)
 		}
 	}
 
-}
-
-void getRequirefromLookup(int sockClient) 
-{
-	int size_name_hotel;
-	char* name_hotel;
-
-	recv(sockClient, (char*)&size_name_hotel, sizeof(int), 0);
-	name_hotel = new char[size_name_hotel + 1];
-
-	recv(sockClient, (char*)name_hotel, size_name_hotel, 0);
-	name_hotel[size_name_hotel] = '\0';
-
-	std::cout << name_hotel << std::endl;
-	
-	date date_in, date_out;
-	
-	recv(sockClient, (char*)&date_in, sizeof(date), 0);
-	recv(sockClient, (char*)&date_out, sizeof(date), 0);
-
-
-
-	//Send image
-	sovle_image(sockClient,name_hotel, date_in, date_out);
-
-
-
-	//solve_image(sockClient,date_in,date_out);
-	
-
-	return;
 }

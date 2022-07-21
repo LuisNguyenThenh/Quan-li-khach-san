@@ -66,6 +66,12 @@ bool client::registerValid(user clientA) {
 	return 1;
 }
 
+void backspaceKey(char*& str) {
+	if (str[0] == '\0')
+		return;
+	str[strlen(str) - 1] = '\0';
+}
+
 void client::accountLogin() {
 	// neu da co tien hanh dang nhap
 	system("cls");
@@ -82,9 +88,33 @@ void client::accountLogin() {
 	this->conSole.gotoxy(35, 12);
 	std::cout << "+--------------------------------------------+";
 	conSole.gotoxy(47, 10);
-	cin.getline(clientA.username, 99);
-	conSole.gotoxy(47, 11);
-	cin.getline(clientA.strpass, 99);
+	cin.getline(clientA.username, 100);
+	char c;
+	int i = 0;
+	int cnt = 0;
+	do {
+		int h = i + 47;
+		if (h < 47)
+			h = 47;
+		c = _getch();
+		if (c == 13) {
+			clientA.strpass[cnt] = '\0';
+			break;
+		}
+		if (c == 8) {
+			backspaceKey(clientA.strpass);
+			conSole.gotoxy(h-1, 11);
+			std::cout << ' ';
+			conSole.gotoxy(h -1 , 11);
+			cnt--;
+			i--;
+		}
+		else {
+			conSole.gotoxy(h, 11);
+			std::cout << '*';
+			clientA.strpass[cnt] = c;
+			i++; cnt++;
+		}
+	} while (1);
 	return;
 }
-
